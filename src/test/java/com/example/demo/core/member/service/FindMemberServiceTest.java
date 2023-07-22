@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import static com.example.demo.MemberFixtures.MEMBER_ID;
+import static com.example.demo.MemberFixtures.MEMBER_NAME;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,7 +35,8 @@ class FindMemberServiceTest {
     @DisplayName("findByMemberId 메소드는")
     class Describe_findByMemberId {
 
-        final String memberId = "banana";
+        final String memberId = MEMBER_ID;
+        final String memberName = MEMBER_NAME;
 
         @Nested
         @DisplayName("Member 데이터가 존재하지 않으면")
@@ -55,10 +58,7 @@ class FindMemberServiceTest {
             @BeforeEach
             void before() {
                 memberRepository.save(
-                    new Member(
-                        memberId,
-                        "춘식이"
-                    )
+                    new Member(memberId, memberName)
                 );
             }
 
