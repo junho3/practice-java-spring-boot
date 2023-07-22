@@ -2,6 +2,8 @@ package com.example.demo.core.member.service;
 
 import com.example.demo.core.member.param.CreateMemberParam;
 import com.example.demo.core.member.result.FindMemberResult;
+import com.example.demo.infrastructure.persistence.MemberRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,8 +15,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 class CreateMemberServiceTest {
+
+    @Autowired
+    private MemberRepository memberRepository;
+
     @Autowired
     private CreateMemberService createMemberService;
+
+    @AfterEach
+    void tearDown() {
+        memberRepository.deleteAll();
+    }
 
     @Nested
     @DisplayName("create 메소드는")
