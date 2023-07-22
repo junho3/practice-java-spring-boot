@@ -27,6 +27,11 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
+    public ApiResponse(Boolean success, T data) {
+        this(success, null, null);
+        this.data = data;
+    }
+
     @Override
     public String toString() {
         return "ApiResponse{" +
@@ -41,8 +46,8 @@ public class ApiResponse<T> {
         return new ApiResponse<>(FALSE, code, message, null);
     }
 
-    public static <D> ApiResponse<D> success(String code, String message, D data) {
-        return new ApiResponse<>(TRUE, code, message, data);
+    public static <D> ApiResponse<D> success(D data) {
+        return new ApiResponse<>(TRUE, data);
     }
 }
 
