@@ -1,5 +1,9 @@
 package com.example.demo.common.constants;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class DateFormatConstants {
     public static final String TIMEZONE = "Asia/Seoul";
 
