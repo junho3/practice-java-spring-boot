@@ -21,10 +21,10 @@ public class Member extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberNo;
 
-    @Column(name = "member_id")
+    @Column(name = "member_id", nullable = false, updatable = false, unique = true)
     private String memberId;
 
-    @Column(name = "member_name")
+    @Column(name = "member_name", nullable = false, updatable = false)
     private String memberName;
 
     public Member(
