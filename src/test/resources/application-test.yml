@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:practice?MODE=MYSQL&rewriteBatchedStatements=true&profileSQL=true&logger=Slf4JLogger&maxQuerySizeToLog=999999
+    username: sa
+    password:
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
