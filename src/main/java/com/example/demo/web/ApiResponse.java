@@ -1,18 +1,18 @@
 package com.example.demo.web;
 
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
-@NoArgsConstructor
+@Getter
 public class ApiResponse<T> {
 
-    private boolean success;
+    private final boolean success;
 
-    private String code;
+    private final String code;
 
-    private String message;
+    private final String message;
 
     private T data;
 
