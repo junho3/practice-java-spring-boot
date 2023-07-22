@@ -1,5 +1,6 @@
 package com.example.demo.core.member.domain;
 
+import com.example.demo.config.persistence.AuditEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "member")
-public class Member {
+public class Member extends AuditEntity {
     @Id
     @Column(name = "member_no")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
