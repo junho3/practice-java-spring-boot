@@ -7,6 +7,9 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+import static com.example.demo.common.constants.DateFormatConstants.ISO_8601;
+import static com.example.demo.common.constants.DateFormatConstants.TIMEZONE;
+
 @Getter
 @Builder
 public class CreateMemberResponse {
@@ -17,7 +20,7 @@ public class CreateMemberResponse {
 
     private String memberName;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+    @JsonFormat(pattern = ISO_8601, timezone = TIMEZONE)
     private LocalDateTime createdAt;
 
     public static CreateMemberResponse from(FindMemberResult result) {
