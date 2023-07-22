@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-import static com.example.demo.config.constants.ApplicationConstants.APPLICATION_NAME;
+import static com.example.demo.common.constants.ApplicationConstants.APPLICATION_NAME;
 
 @Getter
 @MappedSuperclass
