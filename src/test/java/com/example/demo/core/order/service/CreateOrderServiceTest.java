@@ -4,6 +4,7 @@ import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.utils.OrderNoGenerator;
 import com.example.demo.core.order.domain.Order;
 import com.example.demo.core.order.param.CreateOrderParam;
+import com.example.demo.core.order.result.CreateOrderResult;
 import com.example.demo.infrastructure.persistence.order.OrderRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,7 @@ import static com.example.demo.OrderFixtures.ORDER_NO;
 import static com.example.demo.ProductFixtures.PRODUCT_CODE;
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
@@ -74,12 +76,12 @@ class CreateOrderServiceTest {
             @Test
             @DisplayName("Order를 생성한다.")
             void it() {
-                createOrderService.create(param);
+                CreateOrderResult result = createOrderService.create(param);
+                assertInstanceOf(CreateOrderResult.class, result);
+                assertEquals(orderNo, result.getOrderNo());
+                assertEquals(10_000L, result.getTransactionAmount());
 
-                Order order = orderRepository.findByOrderNo(orderNo).orElseThrow();
-
-                assertEquals(orderNo, order.getOrderNo());
-                assertEquals(10_000L, order.getTransactionAmount());
+                orderRepository.findByOrderNo(orderNo).orElseThrow();
             }
         }
 
