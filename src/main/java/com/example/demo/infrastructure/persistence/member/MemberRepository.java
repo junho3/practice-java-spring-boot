@@ -1,4 +1,4 @@
-package com.example.demo.infrastructure.persistence;
+package com.example.demo.infrastructure.persistence.member;
 
 import com.example.demo.core.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

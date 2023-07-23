@@ -3,7 +3,7 @@ package com.example.demo.core.member.service;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.core.member.param.CreateMemberParam;
 import com.example.demo.core.member.result.FindMemberResult;
-import com.example.demo.infrastructure.persistence.MemberRepository;
+import com.example.demo.infrastructure.persistence.member.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
