@@ -46,8 +46,9 @@ public class CreateOrderParam {
         this.products = products;
     }
 
-    public Order toEntity() {
+    public Order toEntity(String orderNo) {
         return new Order(
+            orderNo,
             this.memberNo,
             getOrderName(),
             this.products.stream().mapToLong(Product::getTransactionAmount).sum(),

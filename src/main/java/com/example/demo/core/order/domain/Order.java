@@ -22,9 +22,12 @@ import java.util.Set;
 @Table(name = "orders")
 public class Order extends AuditEntity {
     @Id
-    @Column(name = "order_no")
+    @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderNo;
+    private Long orderId;
+
+    @Column(name = "order_no", nullable = false, updatable = false, unique = true)
+    private String orderNo;
 
     @Column(name = "member_no", nullable = false, updatable = false)
     private long memberNo;
@@ -39,7 +42,14 @@ public class Order extends AuditEntity {
     @JoinColumn(name = "order_product_id")
     private Set<OrderProduct> products;
 
-    public Order(long memberNo, String orderName, long transactionAmount, Set<OrderProduct> products) {
+    public Order(
+        String orderNo,
+        long memberNo,
+        String orderName,
+        long transactionAmount,
+        Set<OrderProduct> products
+    ) {
+        this.orderNo = orderNo;
         this.memberNo = memberNo;
         this.orderName = orderName;
         this.transactionAmount = transactionAmount;
