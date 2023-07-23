@@ -1,29 +1,34 @@
 package com.example.demo.core.member.result;
 
 import com.example.demo.core.member.domain.Member;
-import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
 public class FindMemberResult {
 
-    private long memberNo;
+    private final long memberNo;
 
-    private String memberId;
+    private final String memberId;
 
-    private String memberName;
+    private final String memberName;
 
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
+
+    public FindMemberResult(long memberNo, String memberId, String memberName, LocalDateTime createdAt) {
+        this.memberNo = memberNo;
+        this.memberId = memberId;
+        this.memberName = memberName;
+        this.createdAt = createdAt;
+    }
 
     public static FindMemberResult from(Member member) {
-        return FindMemberResult.builder()
-            .memberNo(member.getMemberNo())
-            .memberId(member.getMemberId())
-            .memberName(member.getMemberName())
-            .createdAt(member.getCreatedAt())
-            .build();
+        return new FindMemberResult(
+            member.getMemberNo(),
+            member.getMemberId(),
+            member.getMemberName(),
+            member.getCreatedAt()
+        );
     }
 }

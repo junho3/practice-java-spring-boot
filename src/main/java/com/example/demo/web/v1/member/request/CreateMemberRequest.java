@@ -17,9 +17,6 @@ public class CreateMemberRequest {
     private String memberName;
 
     public CreateMemberParam toParam() {
-        return CreateMemberParam.builder()
-            .memberId(memberId)
-            .memberName(memberName)
-            .build();
+        return new CreateMemberParam(memberId, memberName);
     }
 }

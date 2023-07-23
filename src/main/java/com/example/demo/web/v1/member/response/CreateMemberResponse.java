@@ -2,7 +2,6 @@ package com.example.demo.web.v1.member.response;
 
 import com.example.demo.core.member.result.FindMemberResult;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -11,24 +10,30 @@ import static com.example.demo.common.constants.DateFormatConstants.ISO_8601;
 import static com.example.demo.common.constants.DateFormatConstants.TIMEZONE;
 
 @Getter
-@Builder
 public class CreateMemberResponse {
 
-    private long memberNo;
+    private final long memberNo;
 
-    private String memberId;
+    private final String memberId;
 
-    private String memberName;
+    private final String memberName;
 
     @JsonFormat(pattern = ISO_8601, timezone = TIMEZONE)
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
+
+    public CreateMemberResponse(long memberNo, String memberId, String memberName, LocalDateTime createdAt) {
+        this.memberNo = memberNo;
+        this.memberId = memberId;
+        this.memberName = memberName;
+        this.createdAt = createdAt;
+    }
 
     public static CreateMemberResponse from(FindMemberResult result) {
-        return CreateMemberResponse.builder()
-            .memberNo(result.getMemberNo())
-            .memberId(result.getMemberId())
-            .memberName(result.getMemberName())
-            .createdAt(result.getCreatedAt())
-            .build();
+        return new CreateMemberResponse(
+            result.getMemberNo(),
+            result.getMemberId(),
+            result.getMemberName(),
+            result.getCreatedAt()
+        );
     }
 }
