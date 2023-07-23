@@ -15,7 +15,7 @@ public class CreateOrderParam {
     private final Set<Product> products;
 
     @Getter
-    private static class Product {
+    public static class Product {
 
         private final String productCode;
 
