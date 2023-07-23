@@ -39,10 +39,7 @@ class CreateMemberServiceTest {
             private final String memberId = MEMBER_ID;
             private final String memberName = MEMBER_NAME;
 
-            final CreateMemberParam param = CreateMemberParam.builder()
-                .memberId(memberId)
-                .memberName(memberName)
-                .build();
+            final CreateMemberParam param = new CreateMemberParam(memberId, memberName);
 
             @Test
             @DisplayName("Member를 생성한다.")
