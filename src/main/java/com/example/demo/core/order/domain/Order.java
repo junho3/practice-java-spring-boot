@@ -38,4 +38,11 @@ public class Order extends AuditEntity {
     @OneToMany(cascade = {CascadeType.PERSIST})
     @JoinColumn(name = "order_product_id")
     private Set<OrderProduct> products;
+
+    public Order(long memberNo, String orderName, long transactionAmount, Set<OrderProduct> products) {
+        this.memberNo = memberNo;
+        this.orderName = orderName;
+        this.transactionAmount = transactionAmount;
+        this.products = products;
+    }
 }
