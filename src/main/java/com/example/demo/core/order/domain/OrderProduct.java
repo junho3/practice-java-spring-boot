@@ -32,4 +32,11 @@ public class OrderProduct extends AuditEntity {
 
     @Column(name = "product_amount", updatable = false, nullable = false)
     private long productAmount;
+
+    public OrderProduct(String productCode, String productName, long quantity, long productAmount) {
+        this.productCode = productCode;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.productAmount = productAmount;
+    }
 }
