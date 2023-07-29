@@ -2,7 +2,6 @@ package com.example.demo.core.order.service;
 
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.utils.OrderNoGenerator;
-import com.example.demo.core.order.domain.Order;
 import com.example.demo.core.order.param.CreateOrderParam;
 import com.example.demo.core.order.result.CreateOrderResult;
 import com.example.demo.infrastructure.persistence.order.OrderRepository;
