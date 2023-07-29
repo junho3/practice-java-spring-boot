@@ -1,6 +1,7 @@
 package com.example.demo.core.product.result;
 
 import com.example.demo.common.enums.product.ProductStatus;
+import com.example.demo.core.product.domain.Product;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -34,5 +35,16 @@ public class FindProductResult {
         this.productAmount = productAmount;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public static FindProductResult from(Product product) {
+        return new FindProductResult(
+            product.getProductCode(),
+            product.getProductName(),
+            product.getProductStatus(),
+            product.getProductAmount(),
+            product.getCreatedAt(),
+            product.getUpdatedAt()
+        );
     }
 }
