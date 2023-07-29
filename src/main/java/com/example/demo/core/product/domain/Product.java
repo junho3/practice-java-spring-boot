@@ -1,8 +1,11 @@
 package com.example.demo.core.product.domain;
 
+import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.config.persistence.AuditEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,6 +29,10 @@ public class Product extends AuditEntity {
 
     @Column(name = "product_name", nullable = false)
     private String productName;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "product_status", nullable = false)
+    private ProductStatus productStatus;
 
     @Column(name = "product_amount", nullable = false)
     private long productAmount;
