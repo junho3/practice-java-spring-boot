@@ -1,8 +1,8 @@
 package com.example.demo.core.product.service;
 
 import com.example.demo.annotation.IntegrationTest;
-import com.example.demo.core.order.param.CreateOrderParam;
-import com.example.demo.core.order.result.CreateOrderResult;
+import com.example.demo.core.product.domain.Product;
+import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.CreateProductParam;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import com.example.demo.infrastructure.persistence.product.StockRepository;
@@ -14,13 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.util.Set;
-
-import static com.example.demo.MemberFixtures.MEMBER_NO;
-import static com.example.demo.OrderFixtures.ORDER_NO;
 import static com.example.demo.ProductFixtures.PRODUCT_CODE;
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
 class CreateProductServiceTest {
@@ -46,12 +43,13 @@ class CreateProductServiceTest {
 
         private final String productCode = PRODUCT_CODE;
         private final String productName = PRODUCT_NAME;
+        private final long quantity = 1_000;
 
         final CreateProductParam param = new CreateProductParam(
             productCode,
             productName,
             1_000,
-            1_000
+            quantity
         );
 
         @AfterEach
@@ -68,6 +66,14 @@ class CreateProductServiceTest {
             @DisplayName("Product와 Stock을 생성한다.")
             void it() {
                 createProductService.create(param);
+
+                Product product = productRepository.findByProductCode(productCode)
+                    .orElseThrow();
+                assertEquals(productName, product.getProductName());
+
+                Stock stock = stockRepository.findByProductCode(productCode)
+                        .orElseThrow();
+                assertEquals(quantity, stock.getQuantity());
             }
         }
 
