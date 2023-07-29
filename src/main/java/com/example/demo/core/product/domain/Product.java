@@ -41,6 +41,6 @@ public class Product extends AuditEntity {
     private long productAmount;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stock_id", referencedColumnName = "stock_id")
+    @JoinColumn(name = "stock_id", referencedColumnName = "stock_id", nullable = false, updatable = false)
     private Stock stock;
 }
