@@ -32,6 +32,10 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
+    public ApiResponse(Boolean success) {
+        this(success, null, null);
+    }
+
     @Override
     public String toString() {
         return "ApiResponse{" +
@@ -48,6 +52,10 @@ public class ApiResponse<T> {
 
     public static <D> ApiResponse<D> success(D data) {
         return new ApiResponse<>(TRUE, data);
+    }
+
+    public static ApiResponse<Void> success() {
+        return new ApiResponse<>(TRUE);
     }
 }
 
