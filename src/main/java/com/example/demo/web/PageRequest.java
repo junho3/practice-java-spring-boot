@@ -4,10 +4,10 @@ import jakarta.validation.constraints.Positive;
 
 public abstract class PageRequest {
     @Positive
-    private Integer pageNumber;
+    private final Integer pageNumber;
 
     @Positive
-    private Integer pageSize;
+    private final Integer pageSize;
 
     protected PageRequest(Integer pageNumber, Integer pageSize) {
         this.pageNumber = pageNumber;

@@ -7,15 +7,15 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public class SearchProductRequest extends PageRequest {
 
-    private String productName;
+    private final String productName;
 
     @PositiveOrZero
-    private Long fromProductAmount;
+    private final Long fromProductAmount;
 
     @PositiveOrZero
-    private Long toProductAmount;
+    private final Long toProductAmount;
 
-    private ProductStatus productStatus;
+    private final ProductStatus productStatus;
 
     public SearchProductRequest(
         String productName,
@@ -34,7 +34,7 @@ public class SearchProductRequest extends PageRequest {
 
     public SearchProductParam toParam() {
         return new SearchProductParam(
-            productName,
+            productName.trim(),
             fromProductAmount,
             toProductAmount,
             productStatus,
