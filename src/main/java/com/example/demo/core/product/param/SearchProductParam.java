@@ -21,12 +21,14 @@ public class SearchProductParam {
         String productName,
         Long fromProductAmount,
         Long toProductAmount,
-        ProductStatus productStatus
+        ProductStatus productStatus,
+        int pageNumber,
+        int pageSize
     ) {
         this.productName = productName;
         this.fromProductAmount = fromProductAmount;
         this.toProductAmount = toProductAmount;
         this.productStatus = productStatus;
-        this.pageable = PageRequest.of(0, 10);
+        this.pageable = PageRequest.of(pageNumber, pageSize);
     }
 }
