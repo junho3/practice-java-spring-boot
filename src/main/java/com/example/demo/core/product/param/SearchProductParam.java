@@ -16,8 +16,8 @@ public class SearchProductParam {
 
     public SearchProductParam(
         String productName,
-        long fromProductAmount,
-        long toProductAmount,
+        Long fromProductAmount,
+        Long toProductAmount,
         ProductStatus productStatus
     ) {
         this.productName = productName;
