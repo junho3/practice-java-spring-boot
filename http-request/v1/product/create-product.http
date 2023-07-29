@@ -1,0 +1,18 @@
+### 주문 생성
+POST http://localhost:8080/v1/product
+Accept: application/json
+Content-Type: application/json
+
+{
+  "productCode": "A1000000",
+  "productName": "수박",
+  "productAmount": 10000,
+  "quantity": 100
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.body.success === true, "Api failed")
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}
