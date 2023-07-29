@@ -1,15 +1,19 @@
 package com.example.demo.common.exceptions;
 
-public abstract class BusinessException extends RuntimeException {
+public class BusinessException extends RuntimeException {
 
     private final BusinessErrorCode businessErrorCode;
 
-    protected BusinessException(BusinessErrorCode businessErrorCode) {
+    public BusinessException(BusinessErrorCode businessErrorCode) {
         this.businessErrorCode = businessErrorCode;
     }
 
-    protected BusinessException(String message, BusinessErrorCode businessErrorCode) {
+    public BusinessException(String message, BusinessErrorCode businessErrorCode) {
         super(message);
         this.businessErrorCode = businessErrorCode;
+    }
+
+    public BusinessErrorCode getBusinessErrorCode() {
+        return businessErrorCode;
     }
 }
