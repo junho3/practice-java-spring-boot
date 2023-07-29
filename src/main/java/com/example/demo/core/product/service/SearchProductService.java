@@ -21,11 +21,9 @@ public class SearchProductService {
         this.productCustomRepository = productCustomRepository;
     }
 
-    public List<FindProductResult> search(SearchProductParam param) {
+    public FindProductResult search(SearchProductParam param) {
         Page<Product> products = productCustomRepository.search(param);
 
-        return products.stream()
-            .map(FindProductResult::from)
-            .collect(Collectors.toList());
+        return FindProductResult.from(products);
     }
 }
