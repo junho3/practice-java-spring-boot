@@ -4,7 +4,6 @@ import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.core.product.result.FindProductResult;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -75,7 +74,7 @@ public class FindProductResponse {
     public static FindProductResponse from(FindProductResult product) {
         return new FindProductResponse(
             product.getProducts().stream().map(Product::from).collect(Collectors.toSet()),
-            product.getPageNumber(),
+            product.getPageNumber() + 1,
             product.getPageSize(),
             product.getTotalCount()
         );
