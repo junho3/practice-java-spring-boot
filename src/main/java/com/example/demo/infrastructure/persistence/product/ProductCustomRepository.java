@@ -2,10 +2,9 @@ package com.example.demo.infrastructure.persistence.product;
 
 import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.param.SearchProductParam;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface ProductCustomRepository {
 
-    List<Product> search(SearchProductParam param);
+    Page<Product> search(SearchProductParam param);
 }

@@ -1,8 +1,10 @@
 package com.example.demo.core.product.service;
 
+import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.param.SearchProductParam;
 import com.example.demo.core.product.result.FindProductResult;
 import com.example.demo.infrastructure.persistence.product.ProductCustomRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,8 +22,9 @@ public class SearchProductService {
     }
 
     public List<FindProductResult> search(SearchProductParam param) {
-        return productCustomRepository.search(param)
-            .stream()
+        Page<Product> products = productCustomRepository.search(param);
+
+        return products.stream()
             .map(FindProductResult::from)
             .collect(Collectors.toList());
     }

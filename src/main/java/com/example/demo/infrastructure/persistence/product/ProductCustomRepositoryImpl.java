@@ -5,10 +5,11 @@ import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.domain.QProduct;
 import com.example.demo.core.product.param.SearchProductParam;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public class ProductCustomRepositoryImpl implements ProductCustomRepository {
@@ -20,10 +21,10 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
     }
 
     @Override
-    public List<Product> search(SearchProductParam param) {
+    public Page<Product> search(SearchProductParam param) {
         final QProduct product = QProduct.product;
 
-        return queryFactory
+        JPQLQuery<Product> query = queryFactory
             .selectFrom(product)
             .where(
                 eqProductStatus(product, param.getProductStatus()),
@@ -31,7 +32,10 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
                 ltProductAmount(product, param.getToProductAmount()),
                 containProductName(product, param.getProductName())
             )
-            .fetch();
+            .offset(param.getPageable().getOffset())
+            .limit(param.getPageable().getPageSize());
+
+        return new PageImpl<>(query.fetch(), param.getPageable(), query.fetchCount());
     }
 
     private BooleanExpression containProductName(QProduct product, String productName) {
