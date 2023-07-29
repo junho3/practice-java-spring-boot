@@ -6,9 +6,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -36,4 +39,8 @@ public class Product extends AuditEntity {
 
     @Column(name = "product_amount", nullable = false)
     private long productAmount;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_id", referencedColumnName = "stock_id")
+    private Stock stock;
 }
