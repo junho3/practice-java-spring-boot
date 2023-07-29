@@ -2,13 +2,10 @@ package com.example.demo.web.v1.product.request;
 
 import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.core.product.param.SearchProductParam;
-import jakarta.validation.constraints.Positive;
+import com.example.demo.web.PageRequest;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class SearchProductRequest {
+public class SearchProductRequest extends PageRequest {
 
     private String productName;
 
@@ -20,12 +17,6 @@ public class SearchProductRequest {
 
     private ProductStatus productStatus;
 
-    @Positive
-    private Integer pageNumber;
-
-    @Positive
-    private Integer pageSize;
-
     public SearchProductRequest(
         String productName,
         Long fromProductAmount,
@@ -34,12 +25,11 @@ public class SearchProductRequest {
         Integer pageNumber,
         Integer pageSize
     ) {
+        super(pageNumber, pageSize);
         this.productName = productName;
         this.fromProductAmount = fromProductAmount;
         this.toProductAmount = toProductAmount;
         this.productStatus = productStatus;
-        this.pageNumber = pageNumber;
-        this.pageSize = pageSize;
     }
 
     public SearchProductParam toParam() {
@@ -48,8 +38,8 @@ public class SearchProductRequest {
             fromProductAmount,
             toProductAmount,
             productStatus,
-            pageNumber == null ? 0 : pageNumber - 1,
-            pageSize == null ? 10 : pageSize
+            getPageNumber(),
+            getPageSize()
         );
     }
 }
