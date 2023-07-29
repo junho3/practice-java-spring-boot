@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  */
 public class GivenWhenThen<T> {
 
-	private T fixture;
+	private final T fixture;
 
 	private GivenWhenThen(T fixture) {
 		this.fixture = fixture;
