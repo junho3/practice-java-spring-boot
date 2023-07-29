@@ -2,9 +2,13 @@ package com.example.demo.web.v1.product.response;
 
 import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.core.product.result.FindProductResult;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+
+import static com.example.demo.common.constants.DateFormatConstants.ISO_8601;
+import static com.example.demo.common.constants.DateFormatConstants.TIMEZONE;
 
 @Getter
 public class FindProductResponse {
@@ -17,8 +21,10 @@ public class FindProductResponse {
 
     private final long productAmount;
 
+    @JsonFormat(pattern = ISO_8601, timezone = TIMEZONE)
     private final LocalDateTime createdAt;
 
+    @JsonFormat(pattern = ISO_8601, timezone = TIMEZONE)
     private final LocalDateTime updatedAt;
 
     public FindProductResponse(
