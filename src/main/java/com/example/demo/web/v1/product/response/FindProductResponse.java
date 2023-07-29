@@ -2,6 +2,7 @@ package com.example.demo.web.v1.product.response;
 
 import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.core.product.result.FindProductResult;
+import com.example.demo.web.PageResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
@@ -13,18 +14,13 @@ import static com.example.demo.common.constants.DateFormatConstants.ISO_8601;
 import static com.example.demo.common.constants.DateFormatConstants.TIMEZONE;
 
 @Getter
-public class FindProductResponse {
+public class FindProductResponse extends PageResponse {
 
     private final Set<Product> products;
-    private final long pageNumber;
-    private final long pageSize;
-    private final long totalCount;
 
     public FindProductResponse(Set<Product> products, long pageNumber, long pageSize, long totalCount) {
+        super(pageNumber, pageSize, totalCount);
         this.products = products;
-        this.pageNumber = pageNumber;
-        this.pageSize = pageSize;
-        this.totalCount = totalCount;
     }
 
     @Getter
@@ -74,7 +70,7 @@ public class FindProductResponse {
     public static FindProductResponse from(FindProductResult product) {
         return new FindProductResponse(
             product.getProducts().stream().map(Product::from).collect(Collectors.toSet()),
-            product.getPageNumber() + 1,
+            product.getPageNumber(),
             product.getPageSize(),
             product.getTotalCount()
         );
