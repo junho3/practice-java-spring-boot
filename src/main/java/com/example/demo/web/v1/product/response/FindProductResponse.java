@@ -17,11 +17,15 @@ import static com.example.demo.common.constants.DateFormatConstants.TIMEZONE;
 public class FindProductResponse {
 
     private final Set<Product> products;
-    private final Pageable pageable;
+    private final long pageNumber;
+    private final long pageSize;
+    private final long totalCount;
 
-    public FindProductResponse(Set<Product> products, Pageable pageable) {
+    public FindProductResponse(Set<Product> products, long pageNumber, long pageSize, long totalCount) {
         this.products = products;
-        this.pageable = pageable;
+        this.pageNumber = pageNumber;
+        this.pageSize = pageSize;
+        this.totalCount = totalCount;
     }
 
     @Getter
@@ -71,7 +75,9 @@ public class FindProductResponse {
     public static FindProductResponse from(FindProductResult product) {
         return new FindProductResponse(
             product.getProducts().stream().map(Product::from).collect(Collectors.toSet()),
-            product.getPageable()
+            product.getPageNumber(),
+            product.getPageSize(),
+            product.getTotalCount()
         );
     }
 }

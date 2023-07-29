@@ -3,7 +3,6 @@ package com.example.demo.core.product.result;
 import com.example.demo.common.enums.product.ProductStatus;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -13,12 +12,15 @@ import java.util.stream.Collectors;
 public class FindProductResult {
 
     private final Set<Product> products;
+    private final long pageNumber;
+    private final long pageSize;
+    private final long totalCount;
 
-    private final Pageable pageable;
-
-    public FindProductResult(Set<Product> products, Pageable pageable) {
+    public FindProductResult(Set<Product> products, long pageNumber, long pageSize, long totalCount) {
         this.products = products;
-        this.pageable = pageable;
+        this.pageNumber = pageNumber;
+        this.pageSize = pageSize;
+        this.totalCount = totalCount;
     }
 
     @Getter
@@ -48,22 +50,23 @@ public class FindProductResult {
         }
 
         public static Product from(com.example.demo.core.product.domain.Product product) {
-                return new Product(
-                    product.getProductCode(),
-                    product.getProductName(),
-                    product.getProductStatus(),
-                    product.getProductAmount(),
-                    product.getCreatedAt(),
-                    product.getUpdatedAt()
-                );
-            }
+            return new Product(
+                product.getProductCode(),
+                product.getProductName(),
+                product.getProductStatus(),
+                product.getProductAmount(),
+                product.getCreatedAt(),
+                product.getUpdatedAt()
+            );
         }
-
+    }
 
     public static FindProductResult from(Page<com.example.demo.core.product.domain.Product> products) {
         return new FindProductResult(
             products.getContent().stream().map(Product::from).collect(Collectors.toSet()),
-            products.getPageable()
+            products.getPageable().getPageNumber(),
+            products.getPageable().getPageSize(),
+            products.getTotalElements()
         );
     }
 }
