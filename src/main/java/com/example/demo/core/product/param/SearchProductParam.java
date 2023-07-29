@@ -2,6 +2,7 @@ package com.example.demo.core.product.param;
 
 import com.example.demo.common.enums.product.ProductStatus;
 import lombok.Getter;
+import org.springframework.data.domain.PageRequest;
 
 @Getter
 public class SearchProductParam {
@@ -14,6 +15,8 @@ public class SearchProductParam {
 
     private final ProductStatus productStatus;
 
+    private final PageRequest pageable;
+
     public SearchProductParam(
         String productName,
         Long fromProductAmount,
@@ -24,5 +27,6 @@ public class SearchProductParam {
         this.fromProductAmount = fromProductAmount;
         this.toProductAmount = toProductAmount;
         this.productStatus = productStatus;
+        this.pageable = PageRequest.of(0, 10);
     }
 }
