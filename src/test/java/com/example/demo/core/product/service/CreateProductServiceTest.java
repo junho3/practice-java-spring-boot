@@ -1,6 +1,8 @@
 package com.example.demo.core.product.service;
 
 import com.example.demo.annotation.IntegrationTest;
+import com.example.demo.common.exceptions.BusinessErrorCode;
+import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.CreateProductParam;
@@ -87,11 +89,13 @@ class CreateProductServiceTest {
             }
 
             @Test
-            @DisplayName("DataIntegrityViolationException을 던진다.")
+            @DisplayName("BusinessException을 던진다.")
             void it() {
-                assertThrows(DataIntegrityViolationException.class, () -> {
+                BusinessException exception = assertThrows(BusinessException.class, () -> {
                     createProductService.create(param);
                 });
+
+                assertEquals(BusinessErrorCode.DUPLICATED_PRODUCT_CODE, exception.getBusinessErrorCode());
             }
         }
     }

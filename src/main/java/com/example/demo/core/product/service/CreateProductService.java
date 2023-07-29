@@ -1,5 +1,7 @@
 package com.example.demo.core.product.service;
 
+import com.example.demo.common.exceptions.BusinessErrorCode;
+import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.CreateProductParam;
@@ -21,8 +23,18 @@ public class CreateProductService {
     }
 
     public void create(CreateProductParam param) {
-        Stock stock = stockRepository.save(param.toStockEntity());
+        validateDuplicatedProduct(param.getProductCode());
 
-        Product product = productRepository.save(param.toProductEntity(stock));
+        Stock stock = stockRepository.save(param.toStockEntity());
+        productRepository.save(param.toProductEntity(stock));
+    }
+
+    private void validateDuplicatedProduct(String productCode) {
+        Product product = productRepository.findByProductCode(productCode)
+            .orElse(null);
+
+        if (product != null) {
+            throw new BusinessException(BusinessErrorCode.DUPLICATED_PRODUCT_CODE);
+        }
     }
 }
