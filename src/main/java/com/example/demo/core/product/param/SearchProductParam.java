@@ -8,9 +8,9 @@ public class SearchProductParam {
 
     private final String productName;
 
-    private final long fromProductAmount;
+    private final Long fromProductAmount;
 
-    private final long toProductAmount;
+    private final Long toProductAmount;
 
     private final ProductStatus productStatus;
 
