@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @DataJpaTest
 @TestEnvironment
-public @interface RepositoryTest {
+public @interface RepositoryJpaTest {
 }
