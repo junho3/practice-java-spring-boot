@@ -11,7 +11,7 @@ public class SearchProductParam {
 
     private final Long minProductAmount;
 
-    private final Long toProductAmount;
+    private final Long maxProductAmount;
 
     private final ProductStatus productStatus;
 
@@ -20,14 +20,14 @@ public class SearchProductParam {
     public SearchProductParam(
         String productName,
         Long minProductAmount,
-        Long toProductAmount,
+        Long maxProductAmount,
         ProductStatus productStatus,
         int pageNumber,
         int pageSize
     ) {
         this.productName = productName;
         this.minProductAmount = minProductAmount;
-        this.toProductAmount = toProductAmount;
+        this.maxProductAmount = maxProductAmount;
         this.productStatus = productStatus;
         this.pageable = PageRequest.of(pageNumber, pageSize);
     }

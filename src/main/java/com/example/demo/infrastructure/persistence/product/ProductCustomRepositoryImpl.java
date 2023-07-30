@@ -29,7 +29,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
             .where(
                 eqProductStatus(product, param.getProductStatus()),
                 gtProductAmount(product, param.getMinProductAmount()),
-                ltProductAmount(product, param.getToProductAmount()),
+                ltProductAmount(product, param.getMaxProductAmount()),
                 containProductName(product, param.getProductName())
             )
             .offset(param.getPageable().getOffset())
@@ -54,9 +54,9 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
         return null;
     }
 
-    private BooleanExpression ltProductAmount(QProduct product, Long toProductAmount) {
-        if (toProductAmount != null) {
-            return product.productAmount.lt(toProductAmount);
+    private BooleanExpression ltProductAmount(QProduct product, Long maxProductAmount) {
+        if (maxProductAmount != null) {
+            return product.productAmount.lt(maxProductAmount);
         }
 
         return null;
