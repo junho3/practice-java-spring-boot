@@ -9,7 +9,7 @@ public class SearchProductParam {
 
     private final String productName;
 
-    private final Long fromProductAmount;
+    private final Long minProductAmount;
 
     private final Long toProductAmount;
 
@@ -19,14 +19,14 @@ public class SearchProductParam {
 
     public SearchProductParam(
         String productName,
-        Long fromProductAmount,
+        Long minProductAmount,
         Long toProductAmount,
         ProductStatus productStatus,
         int pageNumber,
         int pageSize
     ) {
         this.productName = productName;
-        this.fromProductAmount = fromProductAmount;
+        this.minProductAmount = minProductAmount;
         this.toProductAmount = toProductAmount;
         this.productStatus = productStatus;
         this.pageable = PageRequest.of(pageNumber, pageSize);

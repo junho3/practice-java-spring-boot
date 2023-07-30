@@ -28,7 +28,7 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
             .selectFrom(product)
             .where(
                 eqProductStatus(product, param.getProductStatus()),
-                gtProductAmount(product, param.getFromProductAmount()),
+                gtProductAmount(product, param.getMinProductAmount()),
                 ltProductAmount(product, param.getToProductAmount()),
                 containProductName(product, param.getProductName())
             )
@@ -46,9 +46,9 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
         return null;
     }
 
-    private BooleanExpression gtProductAmount(QProduct product, Long fromProductAmount) {
-        if (fromProductAmount != null) {
-            return product.productAmount.gt(fromProductAmount);
+    private BooleanExpression gtProductAmount(QProduct product, Long minProductAmount) {
+        if (minProductAmount != null) {
+            return product.productAmount.gt(minProductAmount);
         }
 
         return null;
