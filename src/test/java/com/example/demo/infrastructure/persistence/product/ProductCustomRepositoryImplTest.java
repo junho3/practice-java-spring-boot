@@ -62,7 +62,7 @@ class ProductCustomRepositoryImplTest extends TestDataInsertSupport {
         }
 
         @Nested
-        @DisplayName("검색 조건이 없으면,")
+        @DisplayName("검색 조건이 없으면")
         class Context_notFoundData {
 
             final SearchProductParam param = new SearchProductParam(null, null, null, null, 0, 10);
