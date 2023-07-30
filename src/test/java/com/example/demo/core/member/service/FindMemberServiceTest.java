@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
+@DisplayName("FindMemberServiceTest")
 class FindMemberServiceTest {
 
     @Autowired
