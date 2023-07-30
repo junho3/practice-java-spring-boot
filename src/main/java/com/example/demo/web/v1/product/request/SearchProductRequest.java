@@ -10,33 +10,33 @@ public class SearchProductRequest extends PageRequest {
     private final String productName;
 
     @PositiveOrZero
-    private final Long fromProductAmount;
+    private final Long minProductAmount;
 
     @PositiveOrZero
-    private final Long toProductAmount;
+    private final Long maxProductAmount;
 
     private final ProductStatus productStatus;
 
     public SearchProductRequest(
         String productName,
-        Long fromProductAmount,
-        Long toProductAmount,
+        Long minProductAmount,
+        Long maxProductAmount,
         ProductStatus productStatus,
         Integer pageNumber,
         Integer pageSize
     ) {
         super(pageNumber, pageSize);
         this.productName = productName;
-        this.fromProductAmount = fromProductAmount;
-        this.toProductAmount = toProductAmount;
+        this.minProductAmount = minProductAmount;
+        this.maxProductAmount = maxProductAmount;
         this.productStatus = productStatus;
     }
 
     public SearchProductParam toParam() {
         return new SearchProductParam(
             productName.trim(),
-            fromProductAmount,
-            toProductAmount,
+            minProductAmount,
+            maxProductAmount,
             productStatus,
             getPageNumber(),
             getPageSize()

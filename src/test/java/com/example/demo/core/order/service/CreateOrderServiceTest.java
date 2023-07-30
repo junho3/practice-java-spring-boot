@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 @IntegrationTest
+@DisplayName("CreateOrderService")
 class CreateOrderServiceTest {
 
     @Autowired

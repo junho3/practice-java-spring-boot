@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @IntegrationTest
+@DisplayName("CreateMemberService")
 class CreateMemberServiceTest {
 
     @Autowired
