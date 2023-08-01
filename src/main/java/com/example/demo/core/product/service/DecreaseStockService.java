@@ -25,6 +25,8 @@ public class DecreaseStockService {
     }
 
     public void decrease(DecreaseStockParam param) {
+        // TODO 판매중인 상품인지 유효성 검사 필요
+
         param.getStocks()
             .stream()
             .sorted(Comparator.comparing(DecreaseStockParam.Stock::getProductCode))
