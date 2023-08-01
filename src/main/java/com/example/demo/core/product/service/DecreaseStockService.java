@@ -29,6 +29,8 @@ public class DecreaseStockService {
             .forEach(item -> stockRepository.findByProductCodeForUpdate(item.getProductCode())
                 .orElseThrow()
                 .decrease(item.getQuantity())
+
+                // TODO 재고가 0개라면 판매 종료 상태로 변경해야함
             );
     }
 }
