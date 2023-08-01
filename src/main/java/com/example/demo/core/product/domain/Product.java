@@ -57,4 +57,8 @@ public class Product extends AuditEntity {
         this.productAmount = productAmount;
         this.stock = stock;
     }
+
+    public void setSoldOut() {
+        this.productStatus = ProductStatus.SOLD_OUT;
+    }
 }
