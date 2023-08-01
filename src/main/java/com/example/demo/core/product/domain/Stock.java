@@ -1,5 +1,7 @@
 package com.example.demo.core.product.domain;
 
+import com.example.demo.common.exceptions.BusinessErrorCode;
+import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.config.persistence.AuditEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,5 +32,13 @@ public class Stock extends AuditEntity {
     public Stock(String productCode, long quantity) {
         this.productCode = productCode;
         this.quantity = quantity;
+    }
+
+    public void decrease(long quantity) {
+        if (this.quantity - quantity < 0) {
+            throw new BusinessException(BusinessErrorCode.INVALID_STOCK_QUANTITY);
+        }
+
+        this.quantity = this.quantity - quantity;
     }
 }
