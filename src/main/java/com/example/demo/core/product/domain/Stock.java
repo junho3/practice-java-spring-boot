@@ -34,11 +34,13 @@ public class Stock extends AuditEntity {
         this.quantity = quantity;
     }
 
-    public void decrease(long quantity) {
+    public Stock decrease(long quantity) {
         if (this.quantity - quantity < 0) {
             throw new BusinessException(BusinessErrorCode.INVALID_STOCK_QUANTITY);
         }
 
         this.quantity = this.quantity - quantity;
+
+        return this;
     }
 }
