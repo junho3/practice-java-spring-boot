@@ -2,13 +2,13 @@ package com.example.demo.core.product.service;
 
 import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.DecreaseStockParam;
+import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import com.example.demo.infrastructure.persistence.product.StockRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -17,8 +17,11 @@ public class DecreaseStockService {
 
     private final StockRepository stockRepository;
 
-    public DecreaseStockService(StockRepository stockRepository) {
+    private final ProductRepository productRepository;
+
+    public DecreaseStockService(StockRepository stockRepository, ProductRepository productRepository) {
         this.stockRepository = stockRepository;
+        this.productRepository = productRepository;
     }
 
     public void decrease(DecreaseStockParam param) {
@@ -26,11 +29,21 @@ public class DecreaseStockService {
             .stream()
             .sorted(Comparator.comparing(DecreaseStockParam.Stock::getProductCode))
             .collect(Collectors.toCollection(LinkedHashSet::new))
-            .forEach(item -> stockRepository.findByProductCodeForUpdate(item.getProductCode())
-                .orElseThrow()
-                .decrease(item.getQuantity())
+            .forEach(item -> {
+                    Stock decreasedStock = stockRepository.findByProductCodeForUpdate(item.getProductCode())
+                        .orElseThrow()
+                        .decrease(item.getQuantity());
 
-                // TODO 재고가 0개라면 판매 종료 상태로 변경해야함
+                    if (decreasedStock.isEmptyQuantity()) {
+                        setSoldOut(item.getProductCode());
+                    }
+                }
             );
+    }
+
+    private void setSoldOut(String productCode) {
+        productRepository.findByProductCode(productCode)
+            .orElseThrow()
+            .setSoldOut();
     }
 }
