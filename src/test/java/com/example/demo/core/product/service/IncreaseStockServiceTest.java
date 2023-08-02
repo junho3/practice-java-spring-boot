@@ -6,8 +6,8 @@ import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.domain.QStock;
 import com.example.demo.core.product.domain.Stock;
-import com.example.demo.core.product.param.DecreaseStockParam;
 import com.example.demo.core.product.param.IncreaseStockParam;
+import com.example.demo.core.product.result.FindStockResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -20,7 +20,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
 @DisplayName("IncreaseStockService")
@@ -51,15 +53,16 @@ class IncreaseStockServiceTest extends TestDataInsertSupport {
                 }
 
                 @Test
-                @DisplayName("재고가 10개가 된다.")
+                @DisplayName("재고를 10개로 증가시키고, 재고정보를 리턴한다.")
                 void it() {
-                    increaseStockService.increase(param);
+                    List<FindStockResult> stocks = increaseStockService.increase(param);
 
                     Stock result = jpaQueryFactory.selectFrom(QStock.stock)
                         .where(QStock.stock.productCode.eq("A202307300140"))
                         .fetchFirst();
 
                     assertEquals(10, result.getQuantity());
+                    assertEquals(1, stocks.size());
                 }
             }
 
