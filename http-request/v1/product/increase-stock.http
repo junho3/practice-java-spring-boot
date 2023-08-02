@@ -1,0 +1,21 @@
+### 재고 증가
+POST http://localhost:8080/v1/product/stock/increase
+Accept: application/json
+Content-Type: application/json
+
+{
+  "stocks": [{
+    "productCode": "A1000000",
+    "quantity": 10
+  }, {
+    "productCode": "B1000000",
+    "quantity": 5
+  }]
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.body.success === true, "Api failed")
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}

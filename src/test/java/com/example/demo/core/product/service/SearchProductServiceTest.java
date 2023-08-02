@@ -2,7 +2,6 @@ package com.example.demo.core.product.service;
 
 import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;
-import com.example.demo.annotation.RepositoryTest;
 import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.domain.Stock;
@@ -13,12 +12,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-
-import java.util.List;
 
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @IntegrationTest
 @DisplayName("SearchProductService")

@@ -30,6 +30,8 @@ public abstract class TestDataInsertSupport {
             entityManager.clear();
         } catch (Exception e) {
             entityTransaction.rollback();
+        } finally {
+            entityManager.close();
         }
 
         return entity;
@@ -51,6 +53,9 @@ public abstract class TestDataInsertSupport {
                 entityTransaction.rollback();
             }
         }
+
+        entityManager.close();
+
         return entities;
     }
 }
