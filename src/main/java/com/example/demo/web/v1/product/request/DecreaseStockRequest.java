@@ -1,19 +1,20 @@
 package com.example.demo.web.v1.product.request;
 
 import com.example.demo.core.product.param.DecreaseStockParam;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DecreaseStockRequest {
 
-    private final Set<Stock> stocks;
-
-    public DecreaseStockRequest(Set<Stock> stocks) {
-        this.stocks = stocks;
-    }
+    @NotEmpty
+    private Set<Stock> stocks;
 
     @Getter
     public static class Stock {
