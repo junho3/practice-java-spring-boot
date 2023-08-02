@@ -2,13 +2,16 @@ package com.example.demo.core.product.service;
 
 import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
+import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.IncreaseStockParam;
+import com.example.demo.core.product.result.IncreaseStockResult;
 import com.example.demo.infrastructure.persistence.product.StockRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Transactional
@@ -21,16 +24,20 @@ public class IncreaseStockService {
         this.stockRepository = stockRepository;
     }
 
-    public void increase(IncreaseStockParam param) {
-        param.getStocks()
+    public List<IncreaseStockResult> increase(IncreaseStockParam param) {
+        return param.getStocks()
             .stream()
             .sorted(Comparator.comparing(IncreaseStockParam.Stock::getProductCode))
             .collect(Collectors.toCollection(LinkedHashSet::new))
-            .forEach(item -> {
-                    stockRepository.findByProductCodeForUpdate(item.getProductCode())
+            .stream()
+            .map(item -> {
+                    Stock increasedStock = stockRepository.findByProductCodeForUpdate(item.getProductCode())
                         .orElseThrow(() -> new BusinessException(BusinessErrorCode.NOT_FOUND_STOCK))
                         .increase(item.getQuantity());
+
+                    return IncreaseStockResult.from(increasedStock);
                 }
-            );
+            )
+            .collect(Collectors.toList());
     }
 }
