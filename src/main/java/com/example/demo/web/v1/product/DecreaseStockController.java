@@ -15,7 +15,7 @@ public class DecreaseStockController {
         this.decreaseStockService = decreaseStockService;
     }
 
-    @PostMapping("/v1/product/decrease")
+    @PostMapping("/v1/product/stock/decrease")
     public ApiResponse<Void> decrease(DecreaseStockRequest request) {
         decreaseStockService.decrease(request.toParam());
 
