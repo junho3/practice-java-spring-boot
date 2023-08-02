@@ -44,8 +44,10 @@ public class Stock extends AuditEntity {
         return this;
     }
 
-    public void increase(long quantity) {
+    public Stock increase(long quantity) {
         this.quantity = this.quantity + quantity;
+
+        return this;
     }
 
     public boolean isEmptyQuantity() {
