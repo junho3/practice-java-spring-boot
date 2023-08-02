@@ -44,7 +44,7 @@ public class Stock extends AuditEntity {
         return this;
     }
 
-    public Boolean isEmptyQuantity() {
+    public boolean isEmptyQuantity() {
         return this.quantity == 0;
     }
 }
