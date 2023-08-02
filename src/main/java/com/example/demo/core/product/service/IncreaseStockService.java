@@ -4,7 +4,7 @@ import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.IncreaseStockParam;
-import com.example.demo.core.product.result.IncreaseStockResult;
+import com.example.demo.core.product.result.FindStockResult;
 import com.example.demo.infrastructure.persistence.product.StockRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +24,7 @@ public class IncreaseStockService {
         this.stockRepository = stockRepository;
     }
 
-    public List<IncreaseStockResult> increase(IncreaseStockParam param) {
+    public List<FindStockResult> increase(IncreaseStockParam param) {
         return param.getStocks()
             .stream()
             .sorted(Comparator.comparing(IncreaseStockParam.Stock::getProductCode))
@@ -35,7 +35,7 @@ public class IncreaseStockService {
                         .orElseThrow(() -> new BusinessException(BusinessErrorCode.NOT_FOUND_STOCK))
                         .increase(item.getQuantity());
 
-                    return IncreaseStockResult.from(increasedStock);
+                    return FindStockResult.from(increasedStock);
                 }
             )
             .collect(Collectors.toList());
