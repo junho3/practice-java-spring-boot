@@ -1,4 +1,4 @@
-### 주문 생성
+### 상품 생성
 POST http://localhost:8080/v1/product
 Accept: application/json
 Content-Type: application/json
