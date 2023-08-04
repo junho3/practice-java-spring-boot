@@ -31,7 +31,7 @@ class SearchProductServiceTest extends TestDataInsertSupport {
 
         @BeforeEach
         void setUp() {
-            final Stock stock = new Stock("A202307300134", 10_000);
+            final Stock stock = new Stock("A202307300134", 10_000, 0);
             save(stock);
             save(new Product("A202307300134", PRODUCT_NAME, ProductStatus.SELLING, maxProductAmount, stock));
         }

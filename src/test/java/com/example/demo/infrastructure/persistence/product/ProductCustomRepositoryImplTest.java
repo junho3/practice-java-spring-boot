@@ -45,10 +45,10 @@ class ProductCustomRepositoryImplTest extends TestDataInsertSupport {
         @BeforeEach
         void setUp() {
             final List<Stock> stocks = List.of(
-                new Stock("A202307300134", 10_000),
-                new Stock("A202307300135", 1000),
-                new Stock("A202307300136", 100),
-                new Stock("A202307300137", 10)
+                new Stock("A202307300134", 10_000, 0),
+                new Stock("A202307300135", 1000, 0),
+                new Stock("A202307300136", 100, 0),
+                new Stock("A202307300137", 10, 0)
             );
             saveAll(stocks);
 

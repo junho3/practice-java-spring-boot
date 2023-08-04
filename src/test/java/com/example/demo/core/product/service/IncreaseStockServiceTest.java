@@ -49,7 +49,7 @@ class IncreaseStockServiceTest extends TestDataInsertSupport {
 
                 @BeforeEach
                 void setUp() {
-                    save(new Stock("A202307300140", 0));
+                    save(new Stock("A202307300140", 0, 0));
                 }
 
                 @Test
@@ -102,8 +102,8 @@ class IncreaseStockServiceTest extends TestDataInsertSupport {
             @BeforeEach
             void setUp() {
                 final List<Stock> stocks = List.of(
-                    new Stock("A202307300142", 0),
-                    new Stock("A202307300143", 0)
+                    new Stock("A202307300142", 0, 0),
+                    new Stock("A202307300143", 0, 0)
                 );
 
                 saveAll(stocks);
