@@ -44,6 +44,6 @@ public class DecreaseStockService {
     private void setSoldOut(String productCode) {
         productRepository.findByProductCode(productCode)
             .orElseThrow()
-            .setSoldOut();
+            .changeSoldOut();
     }
 }

@@ -1,6 +1,8 @@
 package com.example.demo.core.product.domain;
 
 import com.example.demo.common.enums.product.ProductStatus;
+import com.example.demo.common.exceptions.BusinessErrorCode;
+import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.config.persistence.AuditEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -58,7 +60,11 @@ public class Product extends AuditEntity {
         this.stock = stock;
     }
 
-    public void setSoldOut() {
+    public void changeSoldOut() {
+        if (this.productStatus == ProductStatus.END) {
+            throw new BusinessException(BusinessErrorCode.NOT_POSSIBLE_CHANGE_END_TO_SOLD_OUT);
+        }
+
         this.productStatus = ProductStatus.SOLD_OUT;
     }
 }

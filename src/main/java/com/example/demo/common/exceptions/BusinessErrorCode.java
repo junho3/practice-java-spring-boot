@@ -18,6 +18,7 @@ public enum BusinessErrorCode {
     INVALID_STOCK_QUANTITY("T002", "재고가 충분하지 않습니다."),
     NOT_FOUND_STOCK("T003", "재고 정보가 존재하지 않습니다."),
     NOT_FOUND_PRODUCT("T004", "상품 정보가 존재하지 않습니다."),
+    NOT_POSSIBLE_CHANGE_END_TO_SOLD_OUT("T005", "판매종료 상품을 품절상태로 변경할 수 없습니다."),
 
     //External
     EXTERNAL_API_ERROR("E001", "API 호출 중 오류가 발생했습니다."),

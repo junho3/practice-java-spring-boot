@@ -19,6 +19,6 @@ public class SoldOutProductService {
     public void soldOut(String productCode) {
         productRepository.findByProductCode(productCode)
             .orElseThrow(() -> new BusinessException(BusinessErrorCode.NOT_FOUND_PRODUCT))
-            .setSoldOut();
+            .changeSoldOut();
     }
 }
