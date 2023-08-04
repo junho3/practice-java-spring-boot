@@ -32,12 +32,17 @@ public class Stock extends AuditEntity {
     @Column(name = "min_limit_quantity", nullable = false)
     private long minLimitQuantity;
 
-    public Stock(String productCode, long quantity) {
+    public Stock(String productCode, long quantity, long minLimitQuantity) {
         this.productCode = productCode;
         this.quantity = quantity;
+        this.minLimitQuantity = minLimitQuantity;
     }
 
     public Stock decrease(long quantity) {
+        if (this.quantity - quantity < this.minLimitQuantity) {
+            throw new BusinessException(BusinessErrorCode.INVALID_STOCK_QUANTITY);
+        }
+
         if (this.quantity - quantity < 0) {
             throw new BusinessException(BusinessErrorCode.INVALID_STOCK_QUANTITY);
         }
