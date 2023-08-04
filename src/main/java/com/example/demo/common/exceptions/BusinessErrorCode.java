@@ -16,7 +16,8 @@ public enum BusinessErrorCode {
     //Business
     DUPLICATED_PRODUCT_CODE("T001", "중복된 상품 코드가 존재합니다."),
     INVALID_STOCK_QUANTITY("T002", "재고가 충분하지 않습니다."),
-    NOT_FOUND_STOCK("T003", "재고 정보가 존재하지 않습니다"),
+    NOT_FOUND_STOCK("T003", "재고 정보가 존재하지 않습니다."),
+    NOT_FOUND_PRODUCT("T004", "상품 정보가 존재하지 않습니다."),
 
     //External
     EXTERNAL_API_ERROR("E001", "API 호출 중 오류가 발생했습니다."),
