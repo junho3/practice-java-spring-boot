@@ -7,7 +7,8 @@ Content-Type: application/json
   "productCode": "A1000000",
   "productName": "수박",
   "productAmount": 10000,
-  "quantity": 100
+  "quantity": 100,
+  "minLimitQuantity": 0
 }
 
 > {%
