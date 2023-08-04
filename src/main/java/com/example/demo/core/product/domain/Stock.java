@@ -29,6 +29,9 @@ public class Stock extends AuditEntity {
     @Column(name = "quantity", nullable = false)
     private long quantity;
 
+    @Column(name = "min_limit_quantity", nullable = false)
+    private long minLimitQuantity;
+
     public Stock(String productCode, long quantity) {
         this.productCode = productCode;
         this.quantity = quantity;
