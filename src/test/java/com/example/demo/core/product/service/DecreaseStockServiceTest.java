@@ -62,13 +62,6 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     );
 
                     saveAll(stocks);
-
-                    final List<Product> products = List.of(
-                        new Product("A202307300130", "사과", ProductStatus.SELLING, 10, stocks.get(0)),
-                        new Product("A202307300131", "참외", ProductStatus.SELLING, 10, stocks.get(1))
-                    );
-
-                    saveAll(products);
                 }
 
                 @Test
@@ -105,13 +98,6 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     );
 
                     saveAll(stocks);
-
-                    final List<Product> products = List.of(
-                        new Product("A202307300132", "사과", ProductStatus.SELLING, 10, stocks.get(0)),
-                        new Product("A202307300133", "참외", ProductStatus.SELLING, 10, stocks.get(1))
-                    );
-
-                    saveAll(products);
                 }
 
                 @Test
@@ -152,13 +138,6 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     );
 
                     saveAll(stocks);
-
-                    final List<Product> products = List.of(
-                        new Product("A202307300140", "사과", ProductStatus.SELLING, 10, stocks.get(0)),
-                        new Product("A202307300141", "참외", ProductStatus.SELLING, 10, stocks.get(1))
-                    );
-
-                    saveAll(products);
                 }
 
                 @Test
@@ -206,13 +185,6 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     );
 
                     saveAll(stocks);
-
-                    final List<Product> products = List.of(
-                        new Product("A202307300134", "사과", ProductStatus.SELLING, 10, stocks.get(0)),
-                        new Product("A202307300135", "참외", ProductStatus.SELLING, 10, stocks.get(1))
-                    );
-
-                    saveAll(products);
                 }
 
                 @Test
@@ -263,13 +235,6 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     );
 
                     saveAll(stocks);
-
-                    final List<Product> products = List.of(
-                        new Product("A202307300136", "사과", ProductStatus.SELLING, 10, stocks.get(0)),
-                        new Product("A202307300137", "참외", ProductStatus.SELLING, 10, stocks.get(1))
-                    );
-
-                    saveAll(products);
                 }
 
                 @Test
