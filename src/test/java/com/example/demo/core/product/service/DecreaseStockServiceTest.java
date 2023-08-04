@@ -132,6 +132,53 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     );
                 }
             }
+
+            @Nested
+            @DisplayName("최소 제한 재고량이 7인 경우")
+            class Context_minLimitQuantity {
+
+                final DecreaseStockParam param = new DecreaseStockParam(
+                    Set.of(
+                        new DecreaseStockParam.Stock("A202307300140", 5),
+                        new DecreaseStockParam.Stock("A202307300141", 5)
+                    )
+                );
+
+                @BeforeEach
+                void setUp() {
+                    final List<Stock> stocks = List.of(
+                        new Stock("A202307300140", 10, 7),
+                        new Stock("A202307300141", 10, 7)
+                    );
+
+                    saveAll(stocks);
+
+                    final List<Product> products = List.of(
+                        new Product("A202307300140", "사과", ProductStatus.SELLING, 10, stocks.get(0)),
+                        new Product("A202307300141", "참외", ProductStatus.SELLING, 10, stocks.get(1))
+                    );
+
+                    saveAll(products);
+                }
+
+                @Test
+                @DisplayName("BusinessException을 던지고, 차감한 재고를 롤백한다.")
+                void it() {
+                    BusinessException exception = assertThrows(BusinessException.class, () -> {
+                        decreaseStockService.decrease(param);
+                    });
+
+                    List<Stock> results = jpaQueryFactory.selectFrom(QStock.stock)
+                        .where(QStock.stock.productCode.in(List.of("A202307300140", "A202307300141")))
+                        .fetch();
+
+                    assertAll(
+                        () -> assertEquals(BusinessErrorCode.INVALID_STOCK_QUANTITY, exception.getBusinessErrorCode()),
+                        () -> assertEquals(10, results.get(0).getQuantity()),
+                        () -> assertEquals(10, results.get(1).getQuantity())
+                    );
+                }
+            }
         }
 
         @Nested
