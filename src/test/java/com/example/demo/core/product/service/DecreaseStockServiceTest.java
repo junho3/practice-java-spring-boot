@@ -10,6 +10,9 @@ import com.example.demo.core.product.domain.QProduct;
 import com.example.demo.core.product.domain.QStock;
 import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.DecreaseStockParam;
+import com.example.demo.infrastructure.persistence.product.ProductRepository;
+import com.example.demo.infrastructure.persistence.product.StockRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -34,6 +37,18 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
 
     @Autowired
     DecreaseStockService decreaseStockService;
+
+    @Autowired
+    StockRepository stockRepository;
+
+    @Autowired
+    ProductRepository productRepository;
+
+    @AfterEach
+    void tearDown() {
+        productRepository.deleteAll();
+        stockRepository.deleteAll();
+    }
 
     @Nested
     @DisplayName("decrease 메소드는")

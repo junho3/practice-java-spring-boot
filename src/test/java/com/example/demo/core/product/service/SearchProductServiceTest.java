@@ -7,6 +7,9 @@ import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.SearchProductParam;
 import com.example.demo.core.product.result.FindProductResult;
+import com.example.demo.infrastructure.persistence.product.ProductRepository;
+import com.example.demo.infrastructure.persistence.product.StockRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -22,6 +25,18 @@ class SearchProductServiceTest extends TestDataInsertSupport {
 
     @Autowired
     private SearchProductService searchProductService;
+
+    @Autowired
+    StockRepository stockRepository;
+
+    @Autowired
+    ProductRepository productRepository;
+
+    @AfterEach
+    void tearDown() {
+        productRepository.deleteAll();
+        stockRepository.deleteAll();
+    }
 
     @Nested
     @DisplayName("search 메소드는")
