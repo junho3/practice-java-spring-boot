@@ -61,7 +61,7 @@ public class Stock extends AuditEntity {
     }
 
     public boolean isLimitQuantity() {
-        if (this.quantity == this.minLimitQuantity) {
+        if (this.quantity <= this.minLimitQuantity) {
             return true;
         }
 
