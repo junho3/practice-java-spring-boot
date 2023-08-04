@@ -6,6 +6,9 @@ import com.example.demo.core.product.domain.QStock;
 import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.DecreaseStockParam;
 import com.example.demo.core.product.param.IncreaseStockParam;
+import com.example.demo.infrastructure.persistence.product.ProductRepository;
+import com.example.demo.infrastructure.persistence.product.StockRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -30,6 +33,18 @@ class IncreaseStockServiceWithDecreaseTest extends TestDataInsertSupport {
 
     @Autowired
     DecreaseStockService decreaseStockService;
+
+    @Autowired
+    StockRepository stockRepository;
+
+    @Autowired
+    ProductRepository productRepository;
+
+    @AfterEach
+    void tearDown() {
+        productRepository.deleteAll();
+        stockRepository.deleteAll();
+    }
 
     @Nested
     @DisplayName("increase 메소드는")
@@ -58,8 +73,8 @@ class IncreaseStockServiceWithDecreaseTest extends TestDataInsertSupport {
             @BeforeEach
             void setUp() {
                 final List<Stock> stocks = List.of(
-                    new Stock("A202307300150", 0),
-                    new Stock("A202307300151", 0)
+                    new Stock("A202307300150", 0, 0),
+                    new Stock("A202307300151", 0, 0)
                 );
 
                 saveAll(stocks);

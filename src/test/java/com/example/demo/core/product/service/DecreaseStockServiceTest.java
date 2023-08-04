@@ -10,6 +10,9 @@ import com.example.demo.core.product.domain.QProduct;
 import com.example.demo.core.product.domain.QStock;
 import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.DecreaseStockParam;
+import com.example.demo.infrastructure.persistence.product.ProductRepository;
+import com.example.demo.infrastructure.persistence.product.StockRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -35,6 +38,18 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
     @Autowired
     DecreaseStockService decreaseStockService;
 
+    @Autowired
+    StockRepository stockRepository;
+
+    @Autowired
+    ProductRepository productRepository;
+
+    @AfterEach
+    void tearDown() {
+        productRepository.deleteAll();
+        stockRepository.deleteAll();
+    }
+
     @Nested
     @DisplayName("decrease 메소드는")
     class Describe_decrease {
@@ -57,18 +72,11 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @BeforeEach
                 void setUp() {
                     final List<Stock> stocks = List.of(
-                        new Stock("A202307300130", 10),
-                        new Stock("A202307300131", 10)
+                        new Stock("A202307300130", 10, 0),
+                        new Stock("A202307300131", 10, 0)
                     );
 
                     saveAll(stocks);
-
-                    final List<Product> products = List.of(
-                        new Product("A202307300130", "사과", ProductStatus.SELLING, 10, stocks.get(0)),
-                        new Product("A202307300131", "참외", ProductStatus.SELLING, 10, stocks.get(1))
-                    );
-
-                    saveAll(products);
                 }
 
                 @Test
@@ -100,18 +108,11 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @BeforeEach
                 void setUp() {
                     final List<Stock> stocks = List.of(
-                        new Stock("A202307300132", 10),
-                        new Stock("A202307300133", 0)
+                        new Stock("A202307300132", 10, 0),
+                        new Stock("A202307300133", 0, 0)
                     );
 
                     saveAll(stocks);
-
-                    final List<Product> products = List.of(
-                        new Product("A202307300132", "사과", ProductStatus.SELLING, 10, stocks.get(0)),
-                        new Product("A202307300133", "참외", ProductStatus.SELLING, 10, stocks.get(1))
-                    );
-
-                    saveAll(products);
                 }
 
                 @Test
@@ -129,6 +130,46 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                         () -> assertEquals(BusinessErrorCode.INVALID_STOCK_QUANTITY, exception.getBusinessErrorCode()),
                         () -> assertEquals(10, results.get(0).getQuantity()),
                         () -> assertEquals(0, results.get(1).getQuantity())
+                    );
+                }
+            }
+
+            @Nested
+            @DisplayName("최소 제한 재고량이 7인 경우")
+            class Context_minLimitQuantity {
+
+                final DecreaseStockParam param = new DecreaseStockParam(
+                    Set.of(
+                        new DecreaseStockParam.Stock("A202307300140", 5),
+                        new DecreaseStockParam.Stock("A202307300141", 5)
+                    )
+                );
+
+                @BeforeEach
+                void setUp() {
+                    final List<Stock> stocks = List.of(
+                        new Stock("A202307300140", 10, 7),
+                        new Stock("A202307300141", 10, 7)
+                    );
+
+                    saveAll(stocks);
+                }
+
+                @Test
+                @DisplayName("BusinessException을 던지고, 차감한 재고를 롤백한다.")
+                void it() {
+                    BusinessException exception = assertThrows(BusinessException.class, () -> {
+                        decreaseStockService.decrease(param);
+                    });
+
+                    List<Stock> results = jpaQueryFactory.selectFrom(QStock.stock)
+                        .where(QStock.stock.productCode.in(List.of("A202307300140", "A202307300141")))
+                        .fetch();
+
+                    assertAll(
+                        () -> assertEquals(BusinessErrorCode.INVALID_STOCK_QUANTITY, exception.getBusinessErrorCode()),
+                        () -> assertEquals(10, results.get(0).getQuantity()),
+                        () -> assertEquals(10, results.get(1).getQuantity())
                     );
                 }
             }
@@ -154,18 +195,11 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @BeforeEach
                 void setUp() {
                     final List<Stock> stocks = List.of(
-                        new Stock("A202307300134", 100),
-                        new Stock("A202307300135", 100)
+                        new Stock("A202307300134", 100, 0),
+                        new Stock("A202307300135", 100, 0)
                     );
 
                     saveAll(stocks);
-
-                    final List<Product> products = List.of(
-                        new Product("A202307300134", "사과", ProductStatus.SELLING, 10, stocks.get(0)),
-                        new Product("A202307300135", "참외", ProductStatus.SELLING, 10, stocks.get(1))
-                    );
-
-                    saveAll(products);
                 }
 
                 @Test
@@ -211,18 +245,11 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @BeforeEach
                 void setUp() {
                     final List<Stock> stocks = List.of(
-                        new Stock("A202307300136", 49),
-                        new Stock("A202307300137", 49)
+                        new Stock("A202307300136", 49, 0),
+                        new Stock("A202307300137", 49, 0)
                     );
 
                     saveAll(stocks);
-
-                    final List<Product> products = List.of(
-                        new Product("A202307300136", "사과", ProductStatus.SELLING, 10, stocks.get(0)),
-                        new Product("A202307300137", "참외", ProductStatus.SELLING, 10, stocks.get(1))
-                    );
-
-                    saveAll(products);
                 }
 
                 @Test
@@ -268,8 +295,8 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @BeforeEach
                 void setUp() {
                     final List<Stock> stocks = List.of(
-                        new Stock("A202307300138", 50),
-                        new Stock("A202307300139", 51)
+                        new Stock("A202307300138", 50, 0),
+                        new Stock("A202307300139", 51, 0)
                     );
 
                     saveAll(stocks);
@@ -311,6 +338,69 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     assertAll(
                         () -> assertEquals(0, results.get(0).getQuantity()),
                         () -> assertEquals(1, results.get(1).getQuantity()),
+                        () -> assertEquals(SOLD_OUT, products.get(0).getProductStatus()),
+                        () -> assertEquals(SELLING, products.get(1).getProductStatus())
+                    );
+                }
+            }
+
+            @Nested
+            @DisplayName("최소 제한 재고수량이 되었을 경우")
+            class Context_minLimitQuantity {
+
+                final DecreaseStockParam param = new DecreaseStockParam(
+                    Set.of(
+                        new DecreaseStockParam.Stock("A202307300142", 5),
+                        new DecreaseStockParam.Stock("A202307300143", 5)
+                    )
+                );
+
+                @BeforeEach
+                void setUp() {
+                    final List<Stock> stocks = List.of(
+                        new Stock("A202307300142", 100, 50),
+                        new Stock("A202307300143", 100, 49)
+                    );
+
+                    saveAll(stocks);
+
+                    final List<Product> products = List.of(
+                        new Product("A202307300142", "수박", ProductStatus.SELLING, 10, stocks.get(0)),
+                        new Product("A202307300143", "멜론", ProductStatus.SELLING, 10, stocks.get(1))
+                    );
+
+                    saveAll(products);
+                }
+
+                @Test
+                @DisplayName("정상적으로 50개씩 재고를 차감하고, 상품 상태를 SoldOut으로 변경한다.")
+                void it() throws InterruptedException {
+                    ExecutorService executorService = Executors.newFixedThreadPool(5);
+                    CountDownLatch latch = new CountDownLatch(threadCount);
+
+                    for (int i = 0; i < threadCount; i++) {
+                        executorService.submit(() -> {
+                                try {
+                                    decreaseStockService.decrease(param);
+                                } finally {
+                                    latch.countDown();
+                                }
+                            }
+                        );
+                    }
+
+                    latch.await();
+
+                    List<Stock> results = jpaQueryFactory.selectFrom(QStock.stock)
+                        .where(QStock.stock.productCode.in(List.of("A202307300142", "A202307300143")))
+                        .fetch();
+
+                    List<Product> products = jpaQueryFactory.selectFrom(QProduct.product)
+                        .where(QProduct.product.productCode.in(List.of("A202307300142", "A202307300143"))).fetch();
+
+                    assertAll(
+                        () -> assertEquals(50, results.get(0).getQuantity()),
+                        () -> assertEquals(50, results.get(1).getQuantity()),
                         () -> assertEquals(SOLD_OUT, products.get(0).getProductStatus()),
                         () -> assertEquals(SELLING, products.get(1).getProductStatus())
                     );

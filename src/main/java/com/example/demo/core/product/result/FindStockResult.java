@@ -8,16 +8,19 @@ public class FindStockResult {
 
     private final String productCode;
     private final long quantity;
+    private final long minLimitQuantity;
 
-    public FindStockResult(String productCode, long quantity) {
+    public FindStockResult(String productCode, long quantity, long minLimitQuantity) {
         this.productCode = productCode;
         this.quantity = quantity;
+        this.minLimitQuantity = minLimitQuantity;
     }
 
     public static FindStockResult from(Stock stock) {
         return new FindStockResult(
             stock.getProductCode(),
-            stock.getQuantity()
+            stock.getQuantity(),
+            stock.getMinLimitQuantity()
         );
     }
 }

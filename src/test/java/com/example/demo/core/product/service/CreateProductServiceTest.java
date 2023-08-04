@@ -52,7 +52,8 @@ class CreateProductServiceTest {
             productCode,
             productName,
             1_000,
-            quantity
+            quantity,
+            0
         );
 
         @AfterEach
