@@ -57,8 +57,8 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @BeforeEach
                 void setUp() {
                     final List<Stock> stocks = List.of(
-                        new Stock("A202307300130", 10),
-                        new Stock("A202307300131", 10)
+                        new Stock("A202307300130", 10, 0),
+                        new Stock("A202307300131", 10, 0)
                     );
 
                     saveAll(stocks);
@@ -100,8 +100,8 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @BeforeEach
                 void setUp() {
                     final List<Stock> stocks = List.of(
-                        new Stock("A202307300132", 10),
-                        new Stock("A202307300133", 0)
+                        new Stock("A202307300132", 10, 0),
+                        new Stock("A202307300133", 0, 0)
                     );
 
                     saveAll(stocks);
@@ -154,8 +154,8 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @BeforeEach
                 void setUp() {
                     final List<Stock> stocks = List.of(
-                        new Stock("A202307300134", 100),
-                        new Stock("A202307300135", 100)
+                        new Stock("A202307300134", 100, 0),
+                        new Stock("A202307300135", 100, 0)
                     );
 
                     saveAll(stocks);
@@ -211,8 +211,8 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @BeforeEach
                 void setUp() {
                     final List<Stock> stocks = List.of(
-                        new Stock("A202307300136", 49),
-                        new Stock("A202307300137", 49)
+                        new Stock("A202307300136", 49, 0),
+                        new Stock("A202307300137", 49, 0)
                     );
 
                     saveAll(stocks);
@@ -268,8 +268,8 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @BeforeEach
                 void setUp() {
                     final List<Stock> stocks = List.of(
-                        new Stock("A202307300138", 50),
-                        new Stock("A202307300139", 51)
+                        new Stock("A202307300138", 50, 0),
+                        new Stock("A202307300139", 51, 0)
                     );
 
                     saveAll(stocks);
