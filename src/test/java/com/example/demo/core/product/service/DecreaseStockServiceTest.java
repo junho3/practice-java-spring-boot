@@ -328,6 +328,69 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     );
                 }
             }
+
+            @Nested
+            @DisplayName("최소 제한 재고수량이 되었을 경우")
+            class Context_minLimitQuantity {
+
+                final DecreaseStockParam param = new DecreaseStockParam(
+                    Set.of(
+                        new DecreaseStockParam.Stock("A202307300142", 5),
+                        new DecreaseStockParam.Stock("A202307300143", 5)
+                    )
+                );
+
+                @BeforeEach
+                void setUp() {
+                    final List<Stock> stocks = List.of(
+                        new Stock("A202307300142", 100, 50),
+                        new Stock("A202307300143", 100, 49)
+                    );
+
+                    saveAll(stocks);
+
+                    final List<Product> products = List.of(
+                        new Product("A202307300142", "수박", ProductStatus.SELLING, 10, stocks.get(0)),
+                        new Product("A202307300143", "멜론", ProductStatus.SELLING, 10, stocks.get(1))
+                    );
+
+                    saveAll(products);
+                }
+
+                @Test
+                @DisplayName("정상적으로 50개씩 재고를 차감하고, 상품 상태를 SoldOut으로 변경한다.")
+                void it() throws InterruptedException {
+                    ExecutorService executorService = Executors.newFixedThreadPool(5);
+                    CountDownLatch latch = new CountDownLatch(threadCount);
+
+                    for (int i = 0; i < threadCount; i++) {
+                        executorService.submit(() -> {
+                                try {
+                                    decreaseStockService.decrease(param);
+                                } finally {
+                                    latch.countDown();
+                                }
+                            }
+                        );
+                    }
+
+                    latch.await();
+
+                    List<Stock> results = jpaQueryFactory.selectFrom(QStock.stock)
+                        .where(QStock.stock.productCode.in(List.of("A202307300142", "A202307300143")))
+                        .fetch();
+
+                    List<Product> products = jpaQueryFactory.selectFrom(QProduct.product)
+                        .where(QProduct.product.productCode.in(List.of("A202307300142", "A202307300143"))).fetch();
+
+                    assertAll(
+                        () -> assertEquals(50, results.get(0).getQuantity()),
+                        () -> assertEquals(50, results.get(1).getQuantity()),
+                        () -> assertEquals(SOLD_OUT, products.get(0).getProductStatus()),
+                        () -> assertEquals(SELLING, products.get(1).getProductStatus())
+                    );
+                }
+            }
         }
     }
 }
