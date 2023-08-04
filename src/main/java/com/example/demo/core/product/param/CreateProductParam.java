@@ -9,22 +9,27 @@ import lombok.Getter;
 public class CreateProductParam {
 
     private final String productCode;
-
     private final String productName;
-
     private final long productAmount;
-
     private final long quantity;
+    private final long minLimitQuantity;
 
-    public CreateProductParam(String productCode, String productName, long productAmount, long quantity) {
+    public CreateProductParam(
+        String productCode,
+        String productName,
+        long productAmount,
+        long quantity,
+        long minLimitQuantity
+    ) {
         this.productCode = productCode;
         this.productName = productName;
         this.productAmount = productAmount;
         this.quantity = quantity;
+        this.minLimitQuantity = minLimitQuantity;
     }
 
     public Stock toStockEntity() {
-        return new Stock(productCode, quantity);
+        return new Stock(productCode, quantity, minLimitQuantity);
     }
 
     public Product toProductEntity(Stock stock) {
