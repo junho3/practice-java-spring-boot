@@ -42,7 +42,7 @@ public class DecreaseStockService {
                         .orElseThrow()
                         .decrease(item.getQuantity());
 
-                    if (decreasedStock.isEmptyQuantity()) {
+                    if (decreasedStock.isLimitQuantity()) {
                         setSoldOut(item.getProductCode());
                     }
                 }

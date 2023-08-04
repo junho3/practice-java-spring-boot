@@ -60,7 +60,11 @@ public class Stock extends AuditEntity {
         return this;
     }
 
-    public boolean isEmptyQuantity() {
+    public boolean isLimitQuantity() {
+        if (this.quantity == this.minLimitQuantity) {
+            return true;
+        }
+
         return this.quantity == 0;
     }
 }
