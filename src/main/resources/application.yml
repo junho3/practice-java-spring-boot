@@ -10,7 +10,6 @@ spring:
     username: sa
     password:
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: create
     properties:
