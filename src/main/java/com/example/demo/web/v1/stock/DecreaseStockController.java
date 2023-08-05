@@ -1,8 +1,8 @@
-package com.example.demo.web.v1.product;
+package com.example.demo.web.v1.stock;
 
-import com.example.demo.core.product.service.DecreaseStockService;
+import com.example.demo.core.stock.service.DecreaseStockService;
 import com.example.demo.web.ApiResponse;
-import com.example.demo.web.v1.product.request.DecreaseStockRequest;
+import com.example.demo.web.v1.stock.request.DecreaseStockRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +17,7 @@ public class DecreaseStockController {
         this.decreaseStockService = decreaseStockService;
     }
 
-    @PostMapping("/v1/product/stock/decrease")
+    @PostMapping("/v1/stocks/decrease")
     public ApiResponse<Void> decrease(@RequestBody @Valid DecreaseStockRequest request) {
         decreaseStockService.decrease(request.toParam());
 

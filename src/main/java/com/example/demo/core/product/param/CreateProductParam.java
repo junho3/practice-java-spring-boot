@@ -2,7 +2,7 @@ package com.example.demo.core.product.param;
 
 import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.core.product.domain.Product;
-import com.example.demo.core.product.domain.Stock;
+import com.example.demo.core.stock.domain.Stock;
 import lombok.Getter;
 
 @Getter

@@ -1,14 +1,14 @@
-package com.example.demo.core.product.service;
+package com.example.demo.core.stock.service;
 
 import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
-import com.example.demo.core.product.domain.QStock;
-import com.example.demo.core.product.domain.Stock;
-import com.example.demo.core.product.param.IncreaseStockParam;
-import com.example.demo.core.product.result.FindStockResult;
-import com.example.demo.infrastructure.persistence.product.StockRepository;
+import com.example.demo.core.stock.domain.QStock;
+import com.example.demo.core.stock.domain.Stock;
+import com.example.demo.core.stock.param.IncreaseStockParam;
+import com.example.demo.core.stock.result.FindStockResult;
+import com.example.demo.infrastructure.persistence.stock.StockRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

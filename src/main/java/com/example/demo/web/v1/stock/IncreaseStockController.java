@@ -1,16 +1,15 @@
-package com.example.demo.web.v1.product;
+package com.example.demo.web.v1.stock;
 
-import com.example.demo.core.product.service.IncreaseStockService;
+import com.example.demo.core.stock.service.IncreaseStockService;
 import com.example.demo.web.ApiResponse;
-import com.example.demo.web.v1.product.request.IncreaseStockRequest;
-import com.example.demo.web.v1.product.response.FindStockResponse;
+import com.example.demo.web.v1.stock.request.IncreaseStockRequest;
+import com.example.demo.web.v1.stock.response.FindStockResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 public class IncreaseStockController {
@@ -21,7 +20,7 @@ public class IncreaseStockController {
         this.increaseStockService = increaseStockService;
     }
 
-    @PostMapping("/v1/product/stock/increase")
+    @PostMapping("/v1/stocks/increase")
     public ApiResponse<List<FindStockResponse>> increase(@RequestBody @Valid IncreaseStockRequest request) {
         List<FindStockResponse> response = increaseStockService.increase(request.toParam())
             .stream()

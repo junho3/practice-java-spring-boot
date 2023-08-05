@@ -1,23 +1,23 @@
-package com.example.demo.web.v1.product.response;
+package com.example.demo.core.stock.result;
 
-import com.example.demo.core.product.result.FindStockResult;
+import com.example.demo.core.stock.domain.Stock;
 import lombok.Getter;
 
 @Getter
-public class FindStockResponse {
+public class FindStockResult {
 
     private final String productCode;
     private final long quantity;
     private final long minLimitQuantity;
 
-    public FindStockResponse(String productCode, long quantity, long minLimitQuantity) {
+    public FindStockResult(String productCode, long quantity, long minLimitQuantity) {
         this.productCode = productCode;
         this.quantity = quantity;
         this.minLimitQuantity = minLimitQuantity;
     }
 
-    public static FindStockResponse from(FindStockResult stock) {
-        return new FindStockResponse(
+    public static FindStockResult from(Stock stock) {
+        return new FindStockResult(
             stock.getProductCode(),
             stock.getQuantity(),
             stock.getMinLimitQuantity()

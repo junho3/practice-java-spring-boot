@@ -1,6 +1,6 @@
-package com.example.demo.web.v1.product.request;
+package com.example.demo.web.v1.stock.request;
 
-import com.example.demo.core.product.param.DecreaseStockParam;
+import com.example.demo.core.stock.param.IncreaseStockParam;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class DecreaseStockRequest {
+public class IncreaseStockRequest {
 
     @NotEmpty
     private Set<Stock> stocks;
@@ -27,13 +27,13 @@ public class DecreaseStockRequest {
             this.quantity = quantity;
         }
 
-        public DecreaseStockParam.Stock toParam() {
-            return new DecreaseStockParam.Stock(productCode, quantity);
+        public IncreaseStockParam.Stock toParam() {
+            return new IncreaseStockParam.Stock(productCode, quantity);
         }
     }
 
-    public DecreaseStockParam toParam() {
-        return new DecreaseStockParam(
+    public IncreaseStockParam toParam() {
+        return new IncreaseStockParam(
             stocks.stream().map(Stock::toParam).collect(Collectors.toSet())
         );
     }

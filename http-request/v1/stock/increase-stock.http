@@ -1,5 +1,5 @@
 ### 재고 증가
-POST http://localhost:8080/v1/product/stock/increase
+POST http://localhost:8080/v1/stocks/increase
 Accept: application/json
 Content-Type: application/json
 
