@@ -1,6 +1,6 @@
 package com.example.demo.web.v1.product.request;
 
-import com.example.demo.core.product.param.DecreaseStockParam;
+import com.example.demo.core.stock.param.DecreaseStockParam;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.Getter;

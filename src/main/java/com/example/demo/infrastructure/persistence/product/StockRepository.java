@@ -1,6 +1,6 @@
 package com.example.demo.infrastructure.persistence.product;
 
-import com.example.demo.core.product.domain.Stock;
+import com.example.demo.core.stock.domain.Stock;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;

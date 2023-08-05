@@ -1,6 +1,6 @@
 package com.example.demo.web.v1.product.response;
 
-import com.example.demo.core.product.result.FindStockResult;
+import com.example.demo.core.stock.result.FindStockResult;
 import lombok.Getter;
 
 @Getter

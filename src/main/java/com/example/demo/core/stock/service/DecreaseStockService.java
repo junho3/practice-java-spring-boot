@@ -1,7 +1,8 @@
-package com.example.demo.core.product.service;
+package com.example.demo.core.stock.service;
 
-import com.example.demo.core.product.domain.Stock;
-import com.example.demo.core.product.param.DecreaseStockParam;
+import com.example.demo.core.stock.domain.Stock;
+import com.example.demo.core.product.service.SoldOutProductService;
+import com.example.demo.core.stock.param.DecreaseStockParam;
 import com.example.demo.infrastructure.persistence.product.StockRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

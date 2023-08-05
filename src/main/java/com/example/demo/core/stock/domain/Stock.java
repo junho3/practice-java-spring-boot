@@ -1,4 +1,4 @@
-package com.example.demo.core.product.domain;
+package com.example.demo.core.stock.domain;
 
 import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;

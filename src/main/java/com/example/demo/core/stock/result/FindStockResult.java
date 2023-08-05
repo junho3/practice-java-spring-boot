@@ -1,6 +1,6 @@
-package com.example.demo.core.product.result;
+package com.example.demo.core.stock.result;
 
-import com.example.demo.core.product.domain.Stock;
+import com.example.demo.core.stock.domain.Stock;
 import lombok.Getter;
 
 @Getter

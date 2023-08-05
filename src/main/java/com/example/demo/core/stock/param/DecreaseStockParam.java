@@ -1,15 +1,15 @@
-package com.example.demo.core.product.param;
+package com.example.demo.core.stock.param;
 
 import lombok.Getter;
 
 import java.util.Set;
 
 @Getter
-public class IncreaseStockParam {
+public class DecreaseStockParam {
 
     private final Set<Stock> stocks;
 
-    public IncreaseStockParam(Set<Stock> stocks) {
+    public DecreaseStockParam(Set<Stock> stocks) {
         this.stocks = stocks;
     }
 

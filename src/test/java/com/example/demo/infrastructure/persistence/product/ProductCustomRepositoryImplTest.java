@@ -4,7 +4,7 @@ import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.RepositoryTest;
 import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.core.product.domain.Product;
-import com.example.demo.core.product.domain.Stock;
+import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.product.param.SearchProductParam;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-import static com.example.demo.ProductFixtures.PRODUCT_CODE;
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

@@ -4,7 +4,7 @@ import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.core.product.domain.Product;
-import com.example.demo.core.product.domain.Stock;
+import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.product.param.SearchProductParam;
 import com.example.demo.core.product.result.SearchProductResult;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;

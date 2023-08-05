@@ -1,6 +1,6 @@
 package com.example.demo.web.v1.product;
 
-import com.example.demo.core.product.service.DecreaseStockService;
+import com.example.demo.core.stock.service.DecreaseStockService;
 import com.example.demo.web.ApiResponse;
 import com.example.demo.web.v1.product.request.DecreaseStockRequest;
 import jakarta.validation.Valid;
