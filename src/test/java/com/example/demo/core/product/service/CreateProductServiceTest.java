@@ -7,7 +7,7 @@ import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.product.param.CreateProductParam;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
-import com.example.demo.infrastructure.persistence.product.StockRepository;
+import com.example.demo.infrastructure.persistence.stock.StockRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

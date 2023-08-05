@@ -10,7 +10,7 @@ import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.stock.param.DecreaseStockParam;
 import com.example.demo.core.product.result.FindProductResult;
 import com.example.demo.core.stock.service.DecreaseStockService;
-import com.example.demo.infrastructure.persistence.product.StockRepository;
+import com.example.demo.infrastructure.persistence.stock.StockRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

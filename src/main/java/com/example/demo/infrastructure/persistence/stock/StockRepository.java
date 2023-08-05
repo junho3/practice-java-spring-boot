@@ -1,4 +1,4 @@
-package com.example.demo.infrastructure.persistence.product;
+package com.example.demo.infrastructure.persistence.stock;
 
 import com.example.demo.core.stock.domain.Stock;
 import jakarta.persistence.LockModeType;
