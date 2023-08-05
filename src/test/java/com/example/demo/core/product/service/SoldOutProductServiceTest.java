@@ -7,6 +7,7 @@ import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.domain.Stock;
+import com.example.demo.core.product.result.FindProductResult;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ import static com.example.demo.ProductFixtures.PRODUCT_CODE;
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
 import static com.example.demo.common.enums.product.ProductStatus.SOLD_OUT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @IntegrationTest
@@ -75,10 +77,11 @@ class SoldOutProductServiceTest extends TestDataInsertSupport {
                 @Test
                 @DisplayName("SOLD_OUT 상태로 변경한다.")
                 void it () {
-                    soldOutProductService.soldOut(productCode);
+                    FindProductResult result = soldOutProductService.soldOut(productCode);
 
                     Product product = productRepository.findByProductCode(productCode).get();
 
+                    assertInstanceOf(FindProductResult.class, result);
                     assertEquals(SOLD_OUT, product.getProductStatus());
                 }
             }
