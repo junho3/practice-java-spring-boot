@@ -9,14 +9,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
-public class FindProductResult {
+public class SearchProductResult {
 
     private final Set<Product> products;
     private final long pageNumber;
     private final long pageSize;
     private final long totalCount;
 
-    public FindProductResult(Set<Product> products, long pageNumber, long pageSize, long totalCount) {
+    public SearchProductResult(Set<Product> products, long pageNumber, long pageSize, long totalCount) {
         this.products = products;
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
@@ -61,8 +61,8 @@ public class FindProductResult {
         }
     }
 
-    public static FindProductResult from(Page<com.example.demo.core.product.domain.Product> products) {
-        return new FindProductResult(
+    public static SearchProductResult from(Page<com.example.demo.core.product.domain.Product> products) {
+        return new SearchProductResult(
             products.getContent().stream().map(Product::from).collect(Collectors.toSet()),
             products.getPageable().getPageNumber(),
             products.getPageable().getPageSize(),

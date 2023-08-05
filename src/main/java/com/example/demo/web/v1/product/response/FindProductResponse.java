@@ -1,7 +1,7 @@
 package com.example.demo.web.v1.product.response;
 
 import com.example.demo.common.enums.product.ProductStatus;
-import com.example.demo.core.product.result.FindProductResult;
+import com.example.demo.core.product.result.SearchProductResult;
 import com.example.demo.web.PageResponse;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
@@ -55,7 +55,7 @@ public class FindProductResponse extends PageResponse {
             this.updatedAt = updatedAt;
         }
 
-        public static Product from(FindProductResult.Product product) {
+        public static Product from(SearchProductResult.Product product) {
             return new Product(
                 product.getProductCode(),
                 product.getProductName(),
@@ -67,7 +67,7 @@ public class FindProductResponse extends PageResponse {
         }
     }
 
-    public static FindProductResponse from(FindProductResult product) {
+    public static FindProductResponse from(SearchProductResult product) {
         return new FindProductResponse(
             product.getProducts().stream().map(Product::from).collect(Collectors.toSet()),
             product.getPageNumber(),
