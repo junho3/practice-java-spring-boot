@@ -8,7 +8,6 @@ import com.example.demo.core.stock.domain.QStock;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.stock.param.IncreaseStockParam;
 import com.example.demo.core.stock.result.FindStockResult;
-import com.example.demo.core.stock.service.IncreaseStockService;
 import com.example.demo.infrastructure.persistence.stock.StockRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
