@@ -1,4 +1,10 @@
 spring:
+  config:
+    activate:
+      on-profile: test
+  sql:
+    init:
+      mode: never
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:practice-java-spring-boot;MODE=MySQL
@@ -6,13 +12,14 @@ spring:
     password:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     properties:
       hibernate:
         format-sql: true
         show-sql: true
     open-in-view: false
     database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: false
 
 logging:
   level:
