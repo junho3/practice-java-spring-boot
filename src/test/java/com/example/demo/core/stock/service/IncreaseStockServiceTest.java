@@ -1,4 +1,4 @@
-package com.example.demo.core.product.service;
+package com.example.demo.core.stock.service;
 
 import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;

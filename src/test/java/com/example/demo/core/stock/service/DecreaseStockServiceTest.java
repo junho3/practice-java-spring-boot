@@ -1,10 +1,11 @@
-package com.example.demo.core.product.service;
+package com.example.demo.core.stock.service;
 
 import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
+import com.example.demo.core.product.service.SoldOutProductService;
 import com.example.demo.core.stock.domain.QStock;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.stock.param.DecreaseStockParam;
