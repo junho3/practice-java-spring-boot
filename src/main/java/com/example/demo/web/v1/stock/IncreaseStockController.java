@@ -20,7 +20,7 @@ public class IncreaseStockController {
         this.increaseStockService = increaseStockService;
     }
 
-    @PostMapping("/v1/product/stock/increase")
+    @PostMapping("/v1/stock/increase")
     public ApiResponse<List<FindStockResponse>> increase(@RequestBody @Valid IncreaseStockRequest request) {
         List<FindStockResponse> response = increaseStockService.increase(request.toParam())
             .stream()
