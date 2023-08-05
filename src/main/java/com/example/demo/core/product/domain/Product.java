@@ -60,11 +60,13 @@ public class Product extends AuditEntity {
         this.stock = stock;
     }
 
-    public void changeSoldOut() {
+    public Product changeSoldOut() {
         if (this.productStatus == ProductStatus.END) {
             throw new BusinessException(BusinessErrorCode.NOT_POSSIBLE_CHANGE_END_TO_SOLD_OUT);
         }
 
         this.productStatus = ProductStatus.SOLD_OUT;
+
+        return this;
     }
 }
