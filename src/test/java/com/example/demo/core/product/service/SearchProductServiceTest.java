@@ -58,7 +58,7 @@ class SearchProductServiceTest extends TestDataInsertSupport {
             final SearchProductParam param = new SearchProductParam(null, null, null, null, 0, 10);
 
             @Test
-            @DisplayName("FindProductResult 타입으로 리턴한다.")
+            @DisplayName("SearchProductResult 타입으로 리턴한다.")
             void it() {
                 SearchProductResult result = searchProductService.search(param);
 
