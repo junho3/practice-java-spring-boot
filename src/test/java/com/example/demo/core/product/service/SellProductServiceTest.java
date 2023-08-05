@@ -106,7 +106,6 @@ class SellProductServiceTest extends TestDataInsertSupport {
                     save(new Product(productCode, PRODUCT_NAME, SOLD_OUT, 100, stock));
                 }
 
-
                 @Test
                 @DisplayName("BusinessException을 던진다.")
                 void it() {
@@ -133,7 +132,6 @@ class SellProductServiceTest extends TestDataInsertSupport {
                     save(stock);
                     save(new Product(productCode, PRODUCT_NAME, SOLD_OUT, 100, stock));
                 }
-
 
                 @Test
                 @DisplayName("SELLING 상태로 변경한다.")
