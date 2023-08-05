@@ -1,0 +1,11 @@
+### 상품 상태를 판매상태로 변경
+PUT http://localhost:8080/v1/products/A1000000/sell
+Accept: application/json
+Content-Type: application/json
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.body.success === true, "Api failed")
+  client.assert(response.status === 200, "Response status is not 200");
+});
+%}
