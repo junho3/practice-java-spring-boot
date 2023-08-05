@@ -1,5 +1,5 @@
 ### 재고 차감
-POST http://localhost:8080/v1/product/stock/decrease
+POST http://localhost:8080/v1/stock/decrease
 Accept: application/json
 Content-Type: application/json
 
