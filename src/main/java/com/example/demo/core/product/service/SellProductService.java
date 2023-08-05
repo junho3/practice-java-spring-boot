@@ -18,7 +18,7 @@ public class SellProductService {
         this.productRepository = productRepository;
     }
 
-    public FindProductResult selling(String productCode) {
+    public FindProductResult sell(String productCode) {
         Product product = productRepository.findByProductCode(productCode)
             .orElseThrow(() -> new BusinessException(BusinessErrorCode.NOT_FOUND_PRODUCT))
             .changeSelling();
