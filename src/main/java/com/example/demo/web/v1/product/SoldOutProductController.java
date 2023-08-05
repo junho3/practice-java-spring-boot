@@ -18,7 +18,7 @@ public class SoldOutProductController {
         this.soldOutProductService = soldOutProductService;
     }
 
-    @PutMapping("/v1/product/{productCode}/sold-out")
+    @PutMapping("/v1/products/{productCode}/sold-out")
     public ApiResponse<FindProductResponse> soldOut(@PathVariable("productCode") @NotBlank String productCode) {
         FindProductResult result = soldOutProductService.soldOut(productCode);
 

@@ -1,5 +1,5 @@
 ### 상품 검색
-GET http://localhost:8080/v1/product?pageNumber=1&pageSize=10&productName=사과&productStatus=READY
+GET http://localhost:8080/v1/products?pageNumber=1&pageSize=10&productName=사과&productStatus=READY
 Accept: application/json
 Content-Type: application/json
 

@@ -19,7 +19,7 @@ public class SearchProductController {
         this.searchProductService = searchProductService;
     }
 
-    @GetMapping("/v1/product")
+    @GetMapping("/v1/products")
     public ApiResponse<SearchProductResponse> search(@ModelAttribute @Valid SearchProductRequest request) {
         SearchProductResult result = searchProductService.search(request.toParam());
 

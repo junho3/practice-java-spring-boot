@@ -1,5 +1,5 @@
 ### 상품 상태를 품절상태로 변경
-PUT http://localhost:8080/v1/product/A1000000/sold-out
+PUT http://localhost:8080/v1/products/A1000000/sold-out
 Accept: application/json
 Content-Type: application/json
 

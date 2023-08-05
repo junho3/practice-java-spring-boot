@@ -1,5 +1,5 @@
 ### 상품 생성
-POST http://localhost:8080/v1/product
+POST http://localhost:8080/v1/products
 Accept: application/json
 Content-Type: application/json
 

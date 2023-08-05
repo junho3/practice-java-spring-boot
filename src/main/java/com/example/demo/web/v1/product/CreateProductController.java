@@ -17,7 +17,7 @@ public class CreateProductController {
         this.createProductService = createProductService;
     }
 
-    @PostMapping("/v1/product")
+    @PostMapping("/v1/products")
     public ApiResponse<Void> create(@RequestBody @Valid CreateProductRequest request) {
         createProductService.create(request.toParam());
 
