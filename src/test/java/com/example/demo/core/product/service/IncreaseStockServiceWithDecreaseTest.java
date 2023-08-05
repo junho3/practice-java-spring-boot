@@ -2,7 +2,7 @@ package com.example.demo.core.product.service;
 
 import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;
-import com.example.demo.core.product.domain.QStock;
+import com.example.demo.core.stock.domain.QStock;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.stock.param.DecreaseStockParam;
 import com.example.demo.core.stock.param.IncreaseStockParam;

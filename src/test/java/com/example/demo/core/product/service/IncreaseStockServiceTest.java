@@ -4,7 +4,7 @@ import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
-import com.example.demo.core.product.domain.QStock;
+import com.example.demo.core.stock.domain.QStock;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.stock.param.IncreaseStockParam;
 import com.example.demo.core.stock.result.FindStockResult;

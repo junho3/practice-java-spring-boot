@@ -5,7 +5,7 @@ import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
-import com.example.demo.core.product.domain.QStock;
+import com.example.demo.core.stock.domain.QStock;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.stock.param.DecreaseStockParam;
 import com.example.demo.core.product.result.FindProductResult;
