@@ -14,11 +14,11 @@ import static com.example.demo.common.constants.DateFormatConstants.ISO_8601;
 import static com.example.demo.common.constants.DateFormatConstants.TIMEZONE;
 
 @Getter
-public class FindProductResponse extends PageResponse {
+public class SearchProductResponse extends PageResponse {
 
     private final Set<Product> products;
 
-    public FindProductResponse(Set<Product> products, long pageNumber, long pageSize, long totalCount) {
+    public SearchProductResponse(Set<Product> products, long pageNumber, long pageSize, long totalCount) {
         super(pageNumber, pageSize, totalCount);
         this.products = products;
     }
@@ -67,8 +67,8 @@ public class FindProductResponse extends PageResponse {
         }
     }
 
-    public static FindProductResponse from(SearchProductResult product) {
-        return new FindProductResponse(
+    public static SearchProductResponse from(SearchProductResult product) {
+        return new SearchProductResponse(
             product.getProducts().stream().map(Product::from).collect(Collectors.toSet()),
             product.getPageNumber(),
             product.getPageSize(),
