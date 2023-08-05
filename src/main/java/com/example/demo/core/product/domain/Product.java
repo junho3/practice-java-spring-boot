@@ -72,14 +72,14 @@ public class Product extends AuditEntity {
     }
 
     public Product changeSelling() {
+        if (stock.getQuantity() <= 0) {
+            throw new BusinessException(BusinessErrorCode.NOT_POSSIBLE_CHANGE_SELLING_AS_STOCK_QUANTITY_EMPTY);
+        }
+
         if (stock.getQuantity() <= stock.getMinLimitQuantity() ) {
             throw new BusinessException(
                 BusinessErrorCode.NOT_POSSIBLE_CHANGE_SELLING_AS_STOCK_QUANTITY_LESS_THAN_MIN_LIMIT_STOCK_QUANTITY
             );
-        }
-
-        if (stock.getQuantity() <= 0) {
-            throw new BusinessException(BusinessErrorCode.NOT_POSSIBLE_CHANGE_SELLING_AS_STOCK_QUANTITY_EMPTY);
         }
 
         this.productStatus = ProductStatus.SELLING;
