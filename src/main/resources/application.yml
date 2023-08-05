@@ -10,7 +10,6 @@ spring:
     username: sa
     password:
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: create
     properties:
@@ -21,9 +20,12 @@ spring:
         order_updates: true
         jdbc:
           batch_size: 1000
-      open-in-view: false
-      database-platform: org.hibernate.dialect.H2Dialect
+    open-in-view: false
+    database-platform: org.hibernate.dialect.H2Dialect
+    defer-datasource-initialization: true
     h2:
       console:
         enabled: true
-
+  sql:
+    init:
+      mode: always
