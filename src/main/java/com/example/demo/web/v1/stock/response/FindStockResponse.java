@@ -1,4 +1,4 @@
-package com.example.demo.web.v1.product.response;
+package com.example.demo.web.v1.stock.response;
 
 import com.example.demo.core.stock.result.FindStockResult;
 import lombok.Getter;

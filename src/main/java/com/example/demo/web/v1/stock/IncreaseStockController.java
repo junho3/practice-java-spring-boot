@@ -1,9 +1,9 @@
-package com.example.demo.web.v1.product;
+package com.example.demo.web.v1.stock;
 
 import com.example.demo.core.stock.service.IncreaseStockService;
 import com.example.demo.web.ApiResponse;
-import com.example.demo.web.v1.product.request.IncreaseStockRequest;
-import com.example.demo.web.v1.product.response.FindStockResponse;
+import com.example.demo.web.v1.stock.request.IncreaseStockRequest;
+import com.example.demo.web.v1.stock.response.FindStockResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
