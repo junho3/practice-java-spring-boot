@@ -2,7 +2,6 @@ package com.example.demo.core.product.service;
 
 import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.DecreaseStockParam;
-import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import com.example.demo.infrastructure.persistence.product.StockRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,11 +16,11 @@ public class DecreaseStockService {
 
     private final StockRepository stockRepository;
 
-    private final ProductRepository productRepository;
+    private final SoldOutProductService soldOutProductService;
 
-    public DecreaseStockService(StockRepository stockRepository, ProductRepository productRepository) {
+    public DecreaseStockService(StockRepository stockRepository, SoldOutProductService soldOutProductService) {
         this.stockRepository = stockRepository;
-        this.productRepository = productRepository;
+        this.soldOutProductService = soldOutProductService;
     }
 
     public void decrease(DecreaseStockParam param) {
@@ -35,15 +34,9 @@ public class DecreaseStockService {
                         .decrease(item.getQuantity());
 
                     if (decreasedStock.isLimitQuantity()) {
-                        setSoldOut(item.getProductCode());
+                        soldOutProductService.soldOut(item.getProductCode());
                     }
                 }
             );
-    }
-
-    private void setSoldOut(String productCode) {
-        productRepository.findByProductCode(productCode)
-            .orElseThrow()
-            .setSoldOut();
     }
 }

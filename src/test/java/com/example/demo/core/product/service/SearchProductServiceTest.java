@@ -6,7 +6,7 @@ import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.SearchProductParam;
-import com.example.demo.core.product.result.FindProductResult;
+import com.example.demo.core.product.result.SearchProductResult;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import com.example.demo.infrastructure.persistence.product.StockRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -58,11 +58,11 @@ class SearchProductServiceTest extends TestDataInsertSupport {
             final SearchProductParam param = new SearchProductParam(null, null, null, null, 0, 10);
 
             @Test
-            @DisplayName("FindProductResult 타입으로 리턴한다.")
+            @DisplayName("SearchProductResult 타입으로 리턴한다.")
             void it() {
-                FindProductResult result = searchProductService.search(param);
+                SearchProductResult result = searchProductService.search(param);
 
-                assertInstanceOf(FindProductResult.class, result);
+                assertInstanceOf(SearchProductResult.class, result);
             }
         }
     }

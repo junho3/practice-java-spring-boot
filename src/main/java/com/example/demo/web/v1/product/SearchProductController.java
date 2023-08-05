@@ -1,10 +1,10 @@
 package com.example.demo.web.v1.product;
 
-import com.example.demo.core.product.result.FindProductResult;
+import com.example.demo.core.product.result.SearchProductResult;
 import com.example.demo.core.product.service.SearchProductService;
 import com.example.demo.web.ApiResponse;
 import com.example.demo.web.v1.product.request.SearchProductRequest;
-import com.example.demo.web.v1.product.response.FindProductResponse;
+import com.example.demo.web.v1.product.response.SearchProductResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,9 +20,9 @@ public class SearchProductController {
     }
 
     @GetMapping("/v1/product")
-    public ApiResponse<FindProductResponse> search(@ModelAttribute @Valid SearchProductRequest request) {
-        FindProductResult result = searchProductService.search(request.toParam());
+    public ApiResponse<SearchProductResponse> search(@ModelAttribute @Valid SearchProductRequest request) {
+        SearchProductResult result = searchProductService.search(request.toParam());
 
-        return ApiResponse.success(FindProductResponse.from(result));
+        return ApiResponse.success(SearchProductResponse.from(result));
     }
 }

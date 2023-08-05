@@ -5,12 +5,10 @@ import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
-import com.example.demo.core.product.domain.Product;
-import com.example.demo.core.product.domain.QProduct;
 import com.example.demo.core.product.domain.QStock;
 import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.DecreaseStockParam;
-import com.example.demo.infrastructure.persistence.product.ProductRepository;
+import com.example.demo.core.product.result.FindProductResult;
 import com.example.demo.infrastructure.persistence.product.StockRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,35 +16,38 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.example.demo.common.enums.product.ProductStatus.SELLING;
-import static com.example.demo.common.enums.product.ProductStatus.SOLD_OUT;
+import static com.example.demo.ProductFixtures.PRODUCT_NAME;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @IntegrationTest
 @DisplayName("DecreaseStockService")
 class DecreaseStockServiceTest extends TestDataInsertSupport {
 
     @Autowired
-    DecreaseStockService decreaseStockService;
-
-    @Autowired
     StockRepository stockRepository;
 
+    @MockBean
+    SoldOutProductService soldOutProductService;
+
     @Autowired
-    ProductRepository productRepository;
+    DecreaseStockService decreaseStockService;
 
     @AfterEach
     void tearDown() {
-        productRepository.deleteAll();
         stockRepository.deleteAll();
     }
 
@@ -72,15 +73,25 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @BeforeEach
                 void setUp() {
                     final List<Stock> stocks = List.of(
-                        new Stock("A202307300130", 10, 0),
+                        new Stock("A202307300130", 5, 0),
                         new Stock("A202307300131", 10, 0)
                     );
-
                     saveAll(stocks);
+
+                    when(soldOutProductService.soldOut("A202307300130")).thenReturn(
+                        new FindProductResult(
+                            "A202307300130",
+                            PRODUCT_NAME,
+                            ProductStatus.SOLD_OUT,
+                            100,
+                            LocalDateTime.now(),
+                            LocalDateTime.now()
+                        )
+                    );
                 }
 
                 @Test
-                @DisplayName("정상적으로 재고를 차감한다.")
+                @DisplayName("정상적으로 재고를 차감하고, 재고가 모두 소진된 상품은 SoldOut()을 호출한다.")
                 void it() {
                     decreaseStockService.decrease(param);
 
@@ -89,8 +100,10 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                         .fetch();
 
                     assertAll(
-                        () -> assertEquals(5, results.get(0).getQuantity()),
-                        () -> assertEquals(5, results.get(1).getQuantity())
+                        () -> assertEquals(0, results.get(0).getQuantity()),
+                        () -> assertEquals(5, results.get(1).getQuantity()),
+                        () -> verify(soldOutProductService, times(1)).soldOut("A202307300130"),
+                        () -> verify(soldOutProductService, times(0)).soldOut("A202307300131")
                     );
                 }
             }
@@ -111,7 +124,6 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                         new Stock("A202307300132", 10, 0),
                         new Stock("A202307300133", 0, 0)
                     );
-
                     saveAll(stocks);
                 }
 
@@ -151,7 +163,6 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                         new Stock("A202307300140", 10, 7),
                         new Stock("A202307300141", 10, 7)
                     );
-
                     saveAll(stocks);
                 }
 
@@ -198,7 +209,6 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                         new Stock("A202307300134", 100, 0),
                         new Stock("A202307300135", 100, 0)
                     );
-
                     saveAll(stocks);
                 }
 
@@ -248,7 +258,6 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                         new Stock("A202307300136", 49, 0),
                         new Stock("A202307300137", 49, 0)
                     );
-
                     saveAll(stocks);
                 }
 
@@ -298,19 +307,22 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                         new Stock("A202307300138", 50, 0),
                         new Stock("A202307300139", 51, 0)
                     );
-
                     saveAll(stocks);
 
-                    final List<Product> products = List.of(
-                        new Product("A202307300138", "사과", ProductStatus.SELLING, 10, stocks.get(0)),
-                        new Product("A202307300139", "참외", ProductStatus.SELLING, 10, stocks.get(1))
+                    when(soldOutProductService.soldOut("A202307300138")).thenReturn(
+                        new FindProductResult(
+                            "A202307300138",
+                            PRODUCT_NAME,
+                            ProductStatus.SOLD_OUT,
+                            100,
+                            LocalDateTime.now(),
+                            LocalDateTime.now()
+                        )
                     );
-
-                    saveAll(products);
                 }
 
                 @Test
-                @DisplayName("정상적으로 50개씩 재고를 차감하고, 상품 상태를 SoldOut으로 변경한다.")
+                @DisplayName("정상적으로 50개씩 재고를 차감하고, 재고가 모두 소진된 상품은 SoldOut()을 호출한다.")
                 void it() throws InterruptedException {
                     ExecutorService executorService = Executors.newFixedThreadPool(5);
                     CountDownLatch latch = new CountDownLatch(threadCount);
@@ -332,14 +344,11 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                         .where(QStock.stock.productCode.in(List.of("A202307300138", "A202307300139")))
                         .fetch();
 
-                    List<Product> products = jpaQueryFactory.selectFrom(QProduct.product)
-                        .where(QProduct.product.productCode.in(List.of("A202307300138", "A202307300139"))).fetch();
-
                     assertAll(
                         () -> assertEquals(0, results.get(0).getQuantity()),
                         () -> assertEquals(1, results.get(1).getQuantity()),
-                        () -> assertEquals(SOLD_OUT, products.get(0).getProductStatus()),
-                        () -> assertEquals(SELLING, products.get(1).getProductStatus())
+                        () -> verify(soldOutProductService, times(1)).soldOut("A202307300138"),
+                        () -> verify(soldOutProductService, times(0)).soldOut("A202307300139")
                     );
                 }
             }
@@ -361,19 +370,22 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                         new Stock("A202307300142", 100, 50),
                         new Stock("A202307300143", 100, 49)
                     );
-
                     saveAll(stocks);
 
-                    final List<Product> products = List.of(
-                        new Product("A202307300142", "수박", ProductStatus.SELLING, 10, stocks.get(0)),
-                        new Product("A202307300143", "멜론", ProductStatus.SELLING, 10, stocks.get(1))
+                    when(soldOutProductService.soldOut("A202307300142")).thenReturn(
+                        new FindProductResult(
+                            "A202307300142",
+                            PRODUCT_NAME,
+                            ProductStatus.SOLD_OUT,
+                            100,
+                            LocalDateTime.now(),
+                            LocalDateTime.now()
+                        )
                     );
-
-                    saveAll(products);
                 }
 
                 @Test
-                @DisplayName("정상적으로 50개씩 재고를 차감하고, 상품 상태를 SoldOut으로 변경한다.")
+                @DisplayName("정상적으로 50개씩 재고를 차감하고, 최소 제한 재고수량인 상품은 SoldOut()을 호출한다.")
                 void it() throws InterruptedException {
                     ExecutorService executorService = Executors.newFixedThreadPool(5);
                     CountDownLatch latch = new CountDownLatch(threadCount);
@@ -395,14 +407,11 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                         .where(QStock.stock.productCode.in(List.of("A202307300142", "A202307300143")))
                         .fetch();
 
-                    List<Product> products = jpaQueryFactory.selectFrom(QProduct.product)
-                        .where(QProduct.product.productCode.in(List.of("A202307300142", "A202307300143"))).fetch();
-
                     assertAll(
                         () -> assertEquals(50, results.get(0).getQuantity()),
                         () -> assertEquals(50, results.get(1).getQuantity()),
-                        () -> assertEquals(SOLD_OUT, products.get(0).getProductStatus()),
-                        () -> assertEquals(SELLING, products.get(1).getProductStatus())
+                        () -> verify(soldOutProductService, times(1)).soldOut("A202307300142"),
+                        () -> verify(soldOutProductService, times(0)).soldOut("A202307300143")
                     );
                 }
             }

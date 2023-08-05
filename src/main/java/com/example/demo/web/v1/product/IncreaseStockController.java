@@ -26,7 +26,7 @@ public class IncreaseStockController {
         List<FindStockResponse> response = increaseStockService.increase(request.toParam())
             .stream()
             .map(FindStockResponse::from)
-            .collect(Collectors.toList());
+            .toList();
 
         return ApiResponse.success(response);
     }
