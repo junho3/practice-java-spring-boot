@@ -2,11 +2,13 @@ package com.example.demo.core.product.service;
 
 import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;
+import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.domain.QStock;
 import com.example.demo.core.product.domain.Stock;
 import com.example.demo.core.product.param.DecreaseStockParam;
+import com.example.demo.core.product.result.FindProductResult;
 import com.example.demo.infrastructure.persistence.product.StockRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,18 +18,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static com.example.demo.ProductFixtures.PRODUCT_NAME;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @IntegrationTest
 @DisplayName("DecreaseStockService")
@@ -74,7 +78,16 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     );
                     saveAll(stocks);
 
-                    doNothing().when(soldOutProductService).soldOut("A202307300130");
+                    when(soldOutProductService.soldOut("A202307300130")).thenReturn(
+                        new FindProductResult(
+                            "A202307300130",
+                            PRODUCT_NAME,
+                            ProductStatus.SOLD_OUT,
+                            100,
+                            LocalDateTime.now(),
+                            LocalDateTime.now()
+                        )
+                    );
                 }
 
                 @Test
@@ -296,7 +309,16 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     );
                     saveAll(stocks);
 
-                    doNothing().when(soldOutProductService).soldOut("A202307300138");
+                    when(soldOutProductService.soldOut("A202307300138")).thenReturn(
+                        new FindProductResult(
+                            "A202307300138",
+                            PRODUCT_NAME,
+                            ProductStatus.SOLD_OUT,
+                            100,
+                            LocalDateTime.now(),
+                            LocalDateTime.now()
+                        )
+                    );
                 }
 
                 @Test
@@ -350,7 +372,16 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     );
                     saveAll(stocks);
 
-                    doNothing().when(soldOutProductService).soldOut("A202307300142");
+                    when(soldOutProductService.soldOut("A202307300142")).thenReturn(
+                        new FindProductResult(
+                            "A202307300142",
+                            PRODUCT_NAME,
+                            ProductStatus.SOLD_OUT,
+                            100,
+                            LocalDateTime.now(),
+                            LocalDateTime.now()
+                        )
+                    );
                 }
 
                 @Test
