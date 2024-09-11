@@ -1,6 +1,6 @@
 package com.example.demo.core.cart.port.in;
 
-public interface CreateCartUseCase {
+public interface CreateCartWithLogicUseCase {
 
     void create(CreateCartCommand command);
 }
