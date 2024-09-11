@@ -40,10 +40,33 @@ class CreateCartItemWithLogicServiceTest {
         .build();
 
     @Test
-    @DisplayName("create()는 카트 조회 후 카트를 저장한다.")
-    void create_when_find_cart_save_cart() {
-        final CreateCartCommand command = fixtureMonkey.giveMeOne(CreateCartCommand.class);
-        final List<CartItem> cartItems = fixtureMonkey.giveMeBuilder(CartItem.class).sampleList(1);
+    @DisplayName("create()는 카트 조회 후 ProductId가 같으면 수량을 업데이트 한다.")
+    void create_when_same_productId_update_quantity() {
+        final CreateCartCommand command = fixtureMonkey.giveMeBuilder(CreateCartCommand.class)
+            .set("cartItemVOs.productId", 1L)
+            .sample();
+        final List<CartItem> cartItems = fixtureMonkey.giveMeBuilder(CartItem.class)
+            .set("productId", 1L)
+            .sampleList(1);
+
+        given(findCartItemPort.findAll(command.userId())).willReturn(cartItems);
+        doNothing().when(createCartItemPort).create(any());
+
+        createCartItemWithLogicService.create(command);
+
+        verify(findCartItemPort, times(1)).findAll(command.userId());
+        verify(createCartItemPort, atLeastOnce()).create(any());
+    }
+
+    @Test
+    @DisplayName("create()는 카트 조회 후 ProductId가 다르면 새로운 카트를 저장한다.")
+    void create_when_different_productId_save_new_cart() {
+        final CreateCartCommand command = fixtureMonkey.giveMeBuilder(CreateCartCommand.class)
+            .set("cartItemVOs.productId", 1L)
+            .sample();
+        final List<CartItem> cartItems = fixtureMonkey.giveMeBuilder(CartItem.class)
+            .set("productId", 2L)
+            .sampleList(1);
 
         given(findCartItemPort.findAll(command.userId())).willReturn(cartItems);
         doNothing().when(createCartItemPort).create(any());
