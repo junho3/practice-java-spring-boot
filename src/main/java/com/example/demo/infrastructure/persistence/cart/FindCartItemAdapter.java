@@ -18,14 +18,15 @@ public class FindCartItemAdapter implements FindCartItemPort {
     @Override
     public List<CartItem> findAll(final Long userId) {
         return cartItemRepository.findAllByUserId(userId).stream()
-            .map(entity -> new CartItem(
-                entity.getCartItemId(),
-                entity.getUserId(),
-                entity.getProductId(),
-                entity.getQuantity(),
-                entity.getCodeA(),
-                entity.getCodeB(),
-                entity.getCreatedAt()))
+            .map(entity -> CartItem.builder()
+                .cartItemId(entity.getCartItemId())
+                .userId(entity.getUserId())
+                .productId(entity.getProductId())
+                .quantity(entity.getQuantity())
+                .codeA(entity.getCodeA())
+                .codeB(entity.getCodeB())
+                .createdAt(entity.getCreatedAt())
+                .build())
             .toList();
     }
 }
