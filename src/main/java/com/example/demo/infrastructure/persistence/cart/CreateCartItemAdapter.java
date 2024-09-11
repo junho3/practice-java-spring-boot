@@ -20,12 +20,12 @@ public class CreateCartItemAdapter implements CreateCartItemPort {
     @Override
     public void create(final CartItem cartItem) {
         cartItemRepository.save(new CartItemEntity(
-            cartItem.cartItemId(),
-            cartItem.userId(),
-            cartItem.productId(),
-            cartItem.quantity(),
-            cartItem.codeA(),
-            cartItem.codeB()));
+            cartItem.getCartItemId(),
+            cartItem.getUserId(),
+            cartItem.getProductId(),
+            cartItem.getQuantity(),
+            cartItem.getCodeA(),
+            cartItem.getCodeB()));
     }
 
     @Override
