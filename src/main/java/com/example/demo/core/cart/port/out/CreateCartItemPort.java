@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CreateCartItemPort {
 
-    void create(List<CartItem> cartItems);
+    void create(CartItem cartItem);
 
-    void createOrUpdate(List<NewCartItem> newCartItems, Long userId);
+    void createOrUpdates(List<NewCartItem> newCartItems, Long userId);
 }
