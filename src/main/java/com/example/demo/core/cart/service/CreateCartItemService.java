@@ -1,12 +1,9 @@
 package com.example.demo.core.cart.service;
 
-import com.example.demo.core.cart.domain.CartItem;
 import com.example.demo.core.cart.domain.NewCartItem;
-import com.example.demo.core.cart.port.in.CartItemVO;
 import com.example.demo.core.cart.port.in.CreateCartCommand;
 import com.example.demo.core.cart.port.in.CreateCartUseCase;
 import com.example.demo.core.cart.port.out.CreateCartItemPort;
-import com.example.demo.core.cart.port.out.FindCartItemPort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
