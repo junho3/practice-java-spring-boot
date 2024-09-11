@@ -35,29 +35,14 @@ public class CreateCartItemWithLogicService implements CreateCartWithLogicUseCas
     private void createOrUpdate(final List<CartItemVO> cartItemVOs, final List<CartItem> cartItems, final Long userId) {
         cartItemVOs.forEach(cartItemVO -> {
             final Optional<CartItem> cartItem = cartItems.stream()
-                .filter(it -> it.productId().equals(cartItemVO.productId()))
+                .filter(it -> it.getProductId().equals(cartItemVO.productId()))
                 .findFirst();
 
             if (cartItem.isPresent()) {
-                createCartItemPort.create(new CartItem(
-                    cartItem.get().cartItemId(),
-                    cartItem.get().userId(),
-                    cartItem.get().productId(),
-                    cartItem.get().quantity() + cartItemVO.quantity(),
-                    cartItem.get().codeA(),
-                    cartItem.get().codeB(),
-                    cartItem.get().createdAt()
-                ));
+                cartItem.get().increaseQuantity(cartItemVO.quantity());
+                createCartItemPort.create(cartItem.get());
             } else {
-                createCartItemPort.create(new CartItem(
-                    null,
-                    userId,
-                    cartItemVO.productId(),
-                    cartItemVO.quantity(),
-                    cartItemVO.codeA(),
-                    null,
-                    null
-                ));
+                createCartItemPort.create(CartItem.newCart(cartItemVO, userId));
             }
         });
     }
