@@ -15,16 +15,9 @@ spring:
       ddl-auto: create
     properties:
       hibernate:
-        format-sql: true
-        show-sql: true
-    open-in-view: false
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: false
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type: TRACE
-    org.springframework.orm.jpa: DEBUG
-    org.springframework.transaction: DEBUG
-    org.springframework.jdbc: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE

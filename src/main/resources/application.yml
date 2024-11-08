@@ -10,11 +10,11 @@ spring:
     username: sa
     password:
   jpa:
+    show-sql: true
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
-        show_sql: true
         format_sql: true
         order_inserts: true
         order_updates: true
