@@ -4,10 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum ProductType {
-    FOOD, ELECTRONIC;
+    FOOD;
 
     public static class Values {
         public static final String FOOD = "FOOD";
-        public static final String ELECTRONIC = "ELECTRONIC";
     }
 }
