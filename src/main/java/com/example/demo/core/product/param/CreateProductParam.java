@@ -1,9 +1,12 @@
 package com.example.demo.core.product.param;
 
 import com.example.demo.common.enums.product.ProductStatus;
+import com.example.demo.core.product.domain.FoodProduct;
 import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.stock.domain.Stock;
 import lombok.Getter;
+
+import java.time.LocalDate;
 
 @Getter
 public class CreateProductParam {
@@ -33,12 +36,13 @@ public class CreateProductParam {
     }
 
     public Product toProductEntity(Stock stock) {
-        return new Product(
+        return new FoodProduct(
             productCode,
             productName,
             ProductStatus.READY,
             productAmount,
-            stock
+            stock,
+            LocalDate.now()
         );
     }
 }
