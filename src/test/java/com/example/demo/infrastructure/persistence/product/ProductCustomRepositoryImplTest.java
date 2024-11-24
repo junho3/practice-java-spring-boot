@@ -3,7 +3,6 @@ package com.example.demo.infrastructure.persistence.product;
 import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.RepositoryTest;
 import com.example.demo.common.enums.product.ProductStatus;
-import com.example.demo.core.product.domain.FoodProduct;
 import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.product.param.SearchProductParam;
@@ -15,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
@@ -54,10 +52,10 @@ class ProductCustomRepositoryImplTest extends TestDataInsertSupport {
             saveAll(stocks);
 
             final List<Product> products = List.of(
-                new FoodProduct("A202307300134", PRODUCT_NAME, ProductStatus.SELLING, maxProductAmount, stocks.get(0), LocalDate.now()),
-                new FoodProduct("A202307300135", "깐풍기", ProductStatus.READY, minProductAmount, stocks.get(1), LocalDate.now()),
-                new FoodProduct("A202307300136", "선풍기", ProductStatus.SELLING, 3000, stocks.get(2), LocalDate.now()),
-                new FoodProduct("A202307300137", "냉장고", ProductStatus.SELLING, 50_000, stocks.get(3), LocalDate.now())
+                new Product("A202307300134", PRODUCT_NAME, ProductStatus.SELLING, maxProductAmount, stocks.get(0)),
+                new Product("A202307300135", "깐풍기", ProductStatus.READY, minProductAmount, stocks.get(1)),
+                new Product("A202307300136", "선풍기", ProductStatus.SELLING, 3000, stocks.get(2)),
+                new Product("A202307300137", "냉장고", ProductStatus.SELLING, 50_000, stocks.get(3))
             );
             saveAll(products);
         }

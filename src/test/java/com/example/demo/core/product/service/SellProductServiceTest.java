@@ -4,7 +4,6 @@ import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
-import com.example.demo.core.product.domain.FoodProduct;
 import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.result.FindProductResult;
 import com.example.demo.core.stock.domain.Stock;
@@ -16,8 +15,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDate;
 
 import static com.example.demo.ProductFixtures.PRODUCT_CODE;
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
@@ -79,7 +76,7 @@ class SellProductServiceTest extends TestDataInsertSupport {
                 void setUp () {
                     final Stock stock = new Stock(productCode, 0, 0);
                     save(stock);
-                    save(new FoodProduct(productCode, PRODUCT_NAME, SOLD_OUT, 100, stock, LocalDate.now()));
+                    save(new Product(productCode, PRODUCT_NAME, SOLD_OUT, 100, stock));
                 }
 
                 @Test
@@ -106,7 +103,7 @@ class SellProductServiceTest extends TestDataInsertSupport {
                 void setUp () {
                     final Stock stock = new Stock(productCode, 10, 10);
                     save(stock);
-                    save(new FoodProduct(productCode, PRODUCT_NAME, SOLD_OUT, 100, stock, LocalDate.now()));
+                    save(new Product(productCode, PRODUCT_NAME, SOLD_OUT, 100, stock));
                 }
 
                 @Test
@@ -133,7 +130,7 @@ class SellProductServiceTest extends TestDataInsertSupport {
                 void setUp () {
                     final Stock stock = new Stock(productCode, 100, 10);
                     save(stock);
-                    save(new FoodProduct(productCode, PRODUCT_NAME, SOLD_OUT, 100, stock, LocalDate.now()));
+                    save(new Product(productCode, PRODUCT_NAME, SOLD_OUT, 100, stock));
                 }
 
                 @Test
