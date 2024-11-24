@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class ElectronicProduct extends Product {
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "volt_type")
+    @Column(name = "volt_type", nullable = false)
     private VoltType voltType;
 
     public ElectronicProduct(final String productCode,
