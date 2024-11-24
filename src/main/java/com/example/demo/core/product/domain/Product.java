@@ -6,6 +6,7 @@ import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.config.persistence.AuditEntity;
 import com.example.demo.core.stock.domain.Stock;
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -13,6 +14,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -21,10 +24,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "product")
-public class Product extends AuditEntity {
+@DiscriminatorColumn(name = "product_type")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public abstract class Product extends AuditEntity {
     @Id
     @Column(name = "product_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,13 +52,11 @@ public class Product extends AuditEntity {
     @JoinColumn(name = "stock_id", referencedColumnName = "stock_id", nullable = false, updatable = false)
     private Stock stock;
 
-    public Product(
-        String productCode,
-        String productName,
-        ProductStatus productStatus,
-        long productAmount,
-        Stock stock
-    ) {
+    public Product(final String productCode,
+                   final String productName,
+                   final ProductStatus productStatus,
+                   final long productAmount,
+                   final Stock stock) {
         this.productCode = productCode;
         this.productName = productName;
         this.productStatus = productStatus;
