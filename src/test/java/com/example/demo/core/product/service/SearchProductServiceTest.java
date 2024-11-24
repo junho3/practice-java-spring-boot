@@ -3,7 +3,7 @@ package com.example.demo.core.product.service;
 import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.enums.product.ProductStatus;
-import com.example.demo.core.product.domain.Product;
+import com.example.demo.core.product.domain.FoodProduct;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.product.param.SearchProductParam;
 import com.example.demo.core.product.result.SearchProductResult;
@@ -15,6 +15,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDate;
 
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -48,7 +50,7 @@ class SearchProductServiceTest extends TestDataInsertSupport {
         void setUp() {
             final Stock stock = new Stock("A202307300134", 10_000, 0);
             save(stock);
-            save(new Product("A202307300134", PRODUCT_NAME, ProductStatus.SELLING, maxProductAmount, stock));
+            save(new FoodProduct("A202307300134", PRODUCT_NAME, ProductStatus.SELLING, maxProductAmount, stock, LocalDate.now()));
         }
 
         @Nested
