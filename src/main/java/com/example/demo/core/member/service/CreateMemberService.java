@@ -1,20 +1,21 @@
 package com.example.demo.core.member.service;
 
 import com.example.demo.core.member.domain.Member;
+import com.example.demo.core.member.event.CreateMemberEvent;
 import com.example.demo.core.member.param.CreateMemberParam;
 import com.example.demo.core.member.result.FindMemberResult;
 import com.example.demo.infrastructure.persistence.member.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class CreateMemberService {
 
     private final MemberRepository memberRepository;
-
-    public CreateMemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public FindMemberResult create(CreateMemberParam param) {
@@ -24,6 +25,8 @@ public class CreateMemberService {
                 param.getMemberName()
             )
         );
+
+        applicationEventPublisher.publishEvent(CreateMemberEvent.from(member));
 
         return FindMemberResult.from(member);
     }
