@@ -29,3 +29,22 @@ spring:
   sql:
     init:
       mode: always
+  zipkin:
+    enabled: false
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+      propagation:
+        consume: b3
+        produce: b3_multi
+    enabled: true
+  metrics:
+    export:
+      tracing:
+        enabled: true
+
+logging:
+  pattern:
+    level: "%5p [%X{traceId},%X{spanId}] %m%n"
