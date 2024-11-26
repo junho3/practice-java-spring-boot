@@ -1,6 +1,7 @@
 package com.example.demo.core.member.event;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
@@ -9,8 +10,10 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Component
 public class MemberEventListener {
 
+    @Async("domainEventAsyncExecutor")
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void sendEmail(final CreateMemberEvent event) {
         log.info("{} email 발송!!!", event.memberId());
+        throw new IllegalArgumentException("EXCEPTION 발생");
     }
 }
