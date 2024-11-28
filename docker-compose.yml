@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   zipkin:
     image: openzipkin/zipkin
@@ -11,7 +11,8 @@ services:
       - MYSQL_PASS=zipkin
       - MYSQL_HOST=mysql
   mysql:
-    image: mysql:5.7
+    image: mysql:8.0
+    restart: always
     platform: linux/amd64
     volumes:
       - ./initdb.d:/docker-entrypoint-initdb.d
