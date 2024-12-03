@@ -2,8 +2,9 @@ package com.example.demo.core.order.domain;
 
 import com.example.demo.config.persistence.AuditEntity;
 import jakarta.persistence.Column;
+import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +28,7 @@ public class OrderProduct extends AuditEntity {
     private Long orderProductId;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Order order;
 
     @Column(name = "product_code", updatable = false, nullable = false)

@@ -6,11 +6,13 @@ import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.config.persistence.AuditEntity;
 import com.example.demo.core.stock.domain.Stock;
 import jakarta.persistence.Column;
+import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -49,7 +51,13 @@ public abstract class Product extends AuditEntity {
     private long productAmount;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stock_id", referencedColumnName = "stock_id", nullable = false, updatable = false)
+    @JoinColumn(
+        name = "stock_id",
+        referencedColumnName = "stock_id",
+        nullable = false,
+        updatable = false,
+        foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT)
+    )
     private Stock stock;
 
     public Product(final String productCode,
