@@ -6,9 +6,9 @@ services:
       - "9411:9411"
     environment:
       - STORAGE_TYPE=mysql
-      - MYSQL_DB=zipkin
-      - MYSQL_USER=zipkin
-      - MYSQL_PASS=zipkin
+      - MYSQL_DB=practice
+      - MYSQL_USER=practice
+      - MYSQL_PASS=practice
       - MYSQL_HOST=mysql
   mysql:
     image: mysql:8.4.2
@@ -17,9 +17,9 @@ services:
     volumes:
       - ./initdb.d:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_DATABASE: zipkin
-      MYSQL_USER: zipkin
-      MYSQL_PASSWORD: zipkin
+      MYSQL_DATABASE: practice
+      MYSQL_USER: practice
+      MYSQL_PASSWORD: practice
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "3306:3306"
