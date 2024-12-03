@@ -2,14 +2,17 @@ spring:
   config:
     activate:
       on-profile: test
-  sql:
-    init:
-      mode: never
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:practice-java-spring-boot;MODE=MySQL
-    username: sa
-    password:
+    writer:
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:mem:practice?MODE=MySQL
+      username: sa
+      password:
+    reader:
+      driver-class-name: org.h2.Driver
+      jdbc-url: jdbc:h2:mem:practice?MODE=MySQL
+      username: sa
+      password:
   jpa:
     hibernate:
       ddl-auto: create
@@ -17,6 +20,12 @@ spring:
       hibernate:
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: false
+    h2:
+      console:
+        enabled: true
+  sql:
+    init:
+      mode: never
 
 logging:
   level:
