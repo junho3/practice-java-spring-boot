@@ -5,30 +5,33 @@ server:
 spring:
   application.name: practice-java-spring-boot
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp://localhost/~/practice-java-spring-boot
-    username: sa
-    password:
+    writer:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/practice
+      username: root
+      password: root
+    reader:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/practice
+      username: root
+      password: root
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: create
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
         order_inserts: true
         order_updates: true
         jdbc:
           batch_size: 1000
     open-in-view: false
-    database-platform: org.hibernate.dialect.H2Dialect
-    defer-datasource-initialization: true
-    h2:
-      console:
-        enabled: true
-  sql:
-    init:
-      mode: always
+#    defer-datasource-initialization: true
+#  sql:
+#    init:
+#      mode: always
   zipkin:
     enabled: true
     base-url: http://localhost:9411
