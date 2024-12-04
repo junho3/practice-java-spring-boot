@@ -14,10 +14,6 @@ spring:
       username: sa
       password:
   jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
     database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: false
     h2:
