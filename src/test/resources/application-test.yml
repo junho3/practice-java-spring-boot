@@ -5,12 +5,12 @@ spring:
   datasource:
     writer:
       driver-class-name: org.h2.Driver
-      jdbc-url: jdbc:h2:mem:practice?MODE=MySQL
+      jdbc-url: jdbc:h2:mem:practice;MODE=MySQL
       username: sa
       password:
     reader:
       driver-class-name: org.h2.Driver
-      jdbc-url: jdbc:h2:mem:practice?MODE=MySQL
+      jdbc-url: jdbc:h2:mem:practice;MODE=MySQL
       username: sa
       password:
   jpa:
