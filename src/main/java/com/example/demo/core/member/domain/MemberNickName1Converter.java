@@ -1,4 +1,4 @@
-package com.example.demo.infrastructure.persistence.member;
+package com.example.demo.core.member.domain;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
