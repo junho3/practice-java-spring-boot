@@ -1,4 +1,4 @@
-package com.example.demo.infrastructure.persistence.member;
+package com.example.demo.core.member.domain;
 
 import lombok.Getter;
 

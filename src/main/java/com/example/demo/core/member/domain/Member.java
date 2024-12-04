@@ -1,8 +1,6 @@
 package com.example.demo.core.member.domain;
 
 import com.example.demo.config.persistence.AuditEntity;
-import com.example.demo.infrastructure.persistence.member.MemberNickName1;
-import com.example.demo.infrastructure.persistence.member.MemberNickName2;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
