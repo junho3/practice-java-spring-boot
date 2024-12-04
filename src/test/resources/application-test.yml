@@ -14,7 +14,6 @@ spring:
       username: sa
       password:
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     defer-datasource-initialization: false
     h2:
       console:
