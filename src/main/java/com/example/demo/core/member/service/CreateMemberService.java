@@ -25,12 +25,8 @@ public class CreateMemberService {
         // micrometer traceId, spanId 확인을 위한 임시 로그
         log.info("Start processing request");
 
-        final Member member = memberRepository.save(
-            new Member(
-                param.getMemberId(),
-                param.getMemberName()
-            )
-        );
+        final Member member = memberRepository
+            .save(new Member(param.memberId(), param.memberName(), param.email()));
 
         applicationEventPublisher.publishEvent(CreateMemberEvent.from(member));
 
