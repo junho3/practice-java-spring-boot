@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.example.demo.MemberFixtures.EMAIL;
 import static com.example.demo.MemberFixtures.MEMBER_ID;
 import static com.example.demo.MemberFixtures.MEMBER_NAME;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -38,6 +39,7 @@ class FindMemberServiceTest {
 
         final String memberId = MEMBER_ID;
         final String memberName = MEMBER_NAME;
+        final String email = EMAIL;
 
         @Nested
         @DisplayName("Member 데이터가 존재하지 않으면")
@@ -58,9 +60,7 @@ class FindMemberServiceTest {
 
             @BeforeEach
             void before() {
-                memberRepository.save(
-                    new Member(memberId, memberName)
-                );
+                memberRepository.save(new Member(memberId, memberName, email));
             }
 
             @Test

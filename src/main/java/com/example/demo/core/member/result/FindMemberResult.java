@@ -9,17 +9,20 @@ import java.time.LocalDateTime;
 public class FindMemberResult {
 
     private final long memberNo;
-
     private final String memberId;
-
     private final String memberName;
-
+    private final String email;
     private final LocalDateTime createdAt;
 
-    public FindMemberResult(long memberNo, String memberId, String memberName, LocalDateTime createdAt) {
+    public FindMemberResult(long memberNo,
+                            String memberId,
+                            String memberName,
+                            String email,
+                            LocalDateTime createdAt) {
         this.memberNo = memberNo;
         this.memberId = memberId;
         this.memberName = memberName;
+        this.email = email;
         this.createdAt = createdAt;
     }
 
@@ -28,7 +31,7 @@ public class FindMemberResult {
             member.getMemberNo(),
             member.getMemberId(),
             member.getMemberName(),
-            member.getCreatedAt()
-        );
+            member.getEmail(),
+            member.getCreatedAt());
     }
 }

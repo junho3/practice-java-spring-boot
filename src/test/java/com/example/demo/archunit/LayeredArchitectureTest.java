@@ -13,8 +13,9 @@ public class LayeredArchitectureTest {
     static final ArchRule layer_dependencies_are_respected = layeredArchitecture().consideringAllDependencies()
         .layer("Controllers").definedBy("com.example.demo.web.v1..")
         .layer("Services").definedBy("com.example.demo.core..service..")
+        .layer("Events").definedBy("com.example.demo.core..event..")
         .layer("Persistence").definedBy("com.example.demo.infrastructure.persistence..")
         .whereLayer("Controllers").mayNotBeAccessedByAnyLayer()
-        .whereLayer("Services").mayOnlyBeAccessedByLayers("Controllers")
+        .whereLayer("Services").mayOnlyBeAccessedByLayers("Controllers", "Events")
         .whereLayer("Persistence").mayOnlyBeAccessedByLayers("Services");
 }

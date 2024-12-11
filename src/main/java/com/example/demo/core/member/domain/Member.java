@@ -35,12 +35,15 @@ public class Member extends AuditEntity {
     @Column(name = "member_nickname_2", columnDefinition = "VARCHAR(64)")
     private MemberNickName2 memberNickName2;
 
-    public Member(
-        String memberId,
-        String memberName
-    ) {
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    public Member(String memberId,
+                  String memberName,
+                  String email) {
         this.memberId = memberId;
         this.memberName = memberName;
+        this.email = email;
         this.memberNickName1 = new MemberNickName1(memberName);
         this.memberNickName2 = new MemberNickName2(memberName);
     }
