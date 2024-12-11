@@ -35,6 +35,9 @@ public class Member extends AuditEntity {
     @Column(name = "member_nickname_2", columnDefinition = "VARCHAR(64)")
     private MemberNickName2 memberNickName2;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
     public Member(
         String memberId,
         String memberName
