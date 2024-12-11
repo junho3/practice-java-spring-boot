@@ -1,6 +1,6 @@
 package com.example.demo.core.member.event;
 
-import com.example.demo.annotation.TestEnvironment;
+import com.example.demo.annotation.EventListenerTest;
 import com.example.demo.core.member.param.SendMemberEmailParam;
 import com.example.demo.core.member.service.SendMemberEmailService;
 import com.navercorp.fixturemonkey.FixtureMonkey;
@@ -9,20 +9,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.test.context.event.RecordApplicationEvents;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@TestEnvironment
-@RecordApplicationEvents
+@EventListenerTest(classes = { ApplicationEventPublisher.class, MemberEventListener.class })
 @DisplayName("MemberEventListener")
-@SpringBootTest(classes = {ApplicationEventPublisher.class, MemberEventListener.class})
 class MemberEventListenerTest {
 
     @Autowired
