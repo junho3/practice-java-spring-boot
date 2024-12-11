@@ -32,7 +32,6 @@ class CreateMemberServiceTest {
         .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
         .build();
 
-
     @AfterEach
     void tearDown() {
         memberRepository.deleteAll();
