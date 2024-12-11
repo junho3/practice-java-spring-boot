@@ -4,12 +4,14 @@ import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.core.member.param.CreateMemberParam;
 import com.example.demo.core.member.result.FindMemberResult;
 import com.example.demo.infrastructure.persistence.member.MemberRepository;
+import com.navercorp.fixturemonkey.FixtureMonkey;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.example.demo.MemberFixtures.EMAIL;
 import static com.example.demo.MemberFixtures.MEMBER_ID;
 import static com.example.demo.MemberFixtures.MEMBER_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,23 +35,27 @@ class CreateMemberServiceTest {
     @Nested
     @DisplayName("create 메소드는")
     class Describe_create {
+
         @Nested
         @DisplayName("CreateMemberParam이 주어지면")
         class Context {
 
-            private final String memberId = MEMBER_ID;
-            private final String memberName = MEMBER_NAME;
-
-            final CreateMemberParam param = new CreateMemberParam(memberId, memberName);
+            private final CreateMemberParam param = FixtureMonkey.create()
+                .giveMeBuilder(CreateMemberParam.class)
+                .set("memberId", MEMBER_ID)
+                .set("memberName", MEMBER_NAME)
+                .set("email", EMAIL)
+                .sample();
 
             @Test
             @DisplayName("Member를 생성한다.")
             void it() {
-                FindMemberResult result = createMemberService.create(param);
+                final FindMemberResult actual = createMemberService.create(param);
 
-                assertNotNull(result);
-                assertEquals(result.getMemberId(), memberId);
-                assertEquals(result.getMemberName(), memberName);
+                assertNotNull(actual);
+                assertEquals(MEMBER_ID, actual.getMemberId());
+                assertEquals(MEMBER_NAME, actual.getMemberName());
+                assertEquals(EMAIL, actual.getEmail());
             }
         }
     }
