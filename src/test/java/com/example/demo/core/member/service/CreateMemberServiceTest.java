@@ -1,11 +1,10 @@
 package com.example.demo.core.member.service;
 
+import com.example.demo.TestFixtures;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.core.member.param.CreateMemberParam;
 import com.example.demo.core.member.result.FindMemberResult;
 import com.example.demo.infrastructure.persistence.member.MemberRepository;
-import com.navercorp.fixturemonkey.FixtureMonkey;
-import com.navercorp.fixturemonkey.api.introspector.ConstructorPropertiesArbitraryIntrospector;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -28,10 +27,6 @@ class CreateMemberServiceTest {
     @Autowired
     private CreateMemberService createMemberService;
 
-    private final FixtureMonkey fixtureMonkey = FixtureMonkey.builder()
-        .objectIntrospector(ConstructorPropertiesArbitraryIntrospector.INSTANCE)
-        .build();
-
     @AfterEach
     void tearDown() {
         memberRepository.deleteAll();
@@ -45,7 +40,7 @@ class CreateMemberServiceTest {
         @DisplayName("CreateMemberParam이 주어지면")
         class Context {
 
-            final CreateMemberParam param = fixtureMonkey.giveMeBuilder(CreateMemberParam.class)
+            final CreateMemberParam param = TestFixtures.get().giveMeBuilder(CreateMemberParam.class)
                 .set("memberId", MEMBER_ID)
                 .set("memberName", MEMBER_NAME)
                 .set("email", EMAIL)
