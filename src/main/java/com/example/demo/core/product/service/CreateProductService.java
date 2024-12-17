@@ -25,7 +25,7 @@ public class CreateProductService {
         validateDuplicatedProduct(param.getProductCode());
 
         Stock stock = stockRepository.save(param.toStockEntity());
-        productRepository.save(param.toProductEntity(stock));
+        Product product = productRepository.save(param.toProductEntity(stock));
 
         productKafkaPublisher.create();
     }
