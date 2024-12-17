@@ -12,7 +12,7 @@ public class ProductKafkaPublisher {
     @Value("${kafka.producer.topics.create-product}")
     private String createProductTopic;
 
-    private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaTemplate<String, Message> kafkaTemplate;
 
     public void create() {
         kafkaTemplate.send(createProductTopic, "say hello~");
