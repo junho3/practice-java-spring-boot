@@ -6,6 +6,7 @@ import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.product.param.CreateProductParam;
+import com.example.demo.infrastructure.kafka.product.ProductKafkaPublisher;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import com.example.demo.infrastructure.persistence.stock.StockRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -14,12 +15,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 
 import static com.example.demo.ProductFixtures.PRODUCT_CODE;
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@EmbeddedKafka(
+    brokerProperties = {
+        "listeners=PLAINTEXT://localhost:9092"
+    },
+    ports = { 9092 }
+)
 @IntegrationTest
 @DisplayName("CreateProductService")
 class CreateProductServiceTest {
@@ -32,6 +40,9 @@ class CreateProductServiceTest {
 
     @Autowired
     private StockRepository stockRepository;
+
+    @Autowired
+    private ProductKafkaPublisher productKafkaPublisher;
 
     @AfterEach
     void tearDown() {
