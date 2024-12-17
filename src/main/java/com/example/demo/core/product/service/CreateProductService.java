@@ -5,6 +5,7 @@ import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.param.CreateProductParam;
 import com.example.demo.core.stock.domain.Stock;
+import com.example.demo.infrastructure.kafka.product.CreateProductPayload;
 import com.example.demo.infrastructure.kafka.product.ProductKafkaPublisher;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import com.example.demo.infrastructure.persistence.stock.StockRepository;
@@ -27,7 +28,11 @@ public class CreateProductService {
         final Stock stock = stockRepository.save(param.toStockEntity());
         final Product product = productRepository.save(param.toProductEntity(stock));
 
-        productKafkaPublisher.create();
+        productKafkaPublisher.create(CreateProductPayload.builder()
+            .productCode(product.getProductCode())
+            .productName(product.getProductName())
+            .productAmount(product.getProductAmount())
+            .build());
     }
 
     private void validateDuplicatedProduct(String productCode) {
