@@ -46,6 +46,12 @@ management:
     tracing:
       endpoint: http://localhost:9411/api/v2/spans
 
+kafka:
+  producer:
+    bootstrap-servers: localhost:9092
+    topics:
+      create-product: "create-product"
+
 logging:
   pattern:
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"

@@ -3,30 +3,36 @@ package com.example.demo.core.product.service;
 import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.domain.Product;
-import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.product.param.CreateProductParam;
+import com.example.demo.core.stock.domain.Stock;
+import com.example.demo.infrastructure.kafka.product.CreateProductPayload;
+import com.example.demo.infrastructure.kafka.product.ProductKafkaPublisher;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import com.example.demo.infrastructure.persistence.stock.StockRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class CreateProductService {
 
     private final ProductRepository productRepository;
     private final StockRepository stockRepository;
+    private final ProductKafkaPublisher productKafkaPublisher;
 
-    public CreateProductService(ProductRepository productRepository, StockRepository stockRepository) {
-        this.productRepository = productRepository;
-        this.stockRepository = stockRepository;
-    }
-
-    public void create(CreateProductParam param) {
+    public void create(final CreateProductParam param) {
         validateDuplicatedProduct(param.getProductCode());
 
-        Stock stock = stockRepository.save(param.toStockEntity());
-        productRepository.save(param.toProductEntity(stock));
+        final Stock stock = stockRepository.save(param.toStockEntity());
+        final Product product = productRepository.save(param.toProductEntity(stock));
+
+        productKafkaPublisher.create(CreateProductPayload.builder()
+            .productCode(product.getProductCode())
+            .productName(product.getProductName())
+            .productAmount(product.getProductAmount())
+            .build());
     }
 
     private void validateDuplicatedProduct(String productCode) {
