@@ -49,6 +49,8 @@ management:
 kafka:
   producer:
     bootstrap-servers: localhost:9092
+    topics:
+      create-product: "create-product"
 
 logging:
   pattern:

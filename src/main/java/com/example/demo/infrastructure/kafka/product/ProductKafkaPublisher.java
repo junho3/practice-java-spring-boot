@@ -1,6 +1,7 @@
 package com.example.demo.infrastructure.kafka.product;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -8,9 +9,12 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProductKafkaPublisher {
 
+    @Value("${kafka.producer.topics.create-product}")
+    private String createProductTopic;
+
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void create() {
-        kafkaTemplate.send("topic", "say hello~");
+        kafkaTemplate.send(createProductTopic, "say hello~");
     }
 }
