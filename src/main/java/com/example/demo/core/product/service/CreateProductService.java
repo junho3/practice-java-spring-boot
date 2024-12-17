@@ -21,11 +21,11 @@ public class CreateProductService {
     private final StockRepository stockRepository;
     private final ProductKafkaPublisher productKafkaPublisher;
 
-    public void create(CreateProductParam param) {
+    public void create(final CreateProductParam param) {
         validateDuplicatedProduct(param.getProductCode());
 
-        Stock stock = stockRepository.save(param.toStockEntity());
-        Product product = productRepository.save(param.toProductEntity(stock));
+        final Stock stock = stockRepository.save(param.toStockEntity());
+        final Product product = productRepository.save(param.toProductEntity(stock));
 
         productKafkaPublisher.create();
     }
