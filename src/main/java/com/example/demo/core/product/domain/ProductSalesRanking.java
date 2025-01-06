@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 @Getter
 @Entity
 @Table(name = "product_sales_ranking")
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductSalesRanking extends AuditEntity {
     @Id
@@ -34,4 +36,14 @@ public class ProductSalesRanking extends AuditEntity {
 
     @Column(name = "sales_quantity", nullable = false)
     private long salesQuantity;
+
+    public ProductSalesRanking(final String productCode,
+                               final String productName,
+                               final LocalDate salesDate,
+                               final long salesQuantity) {
+        this.productCode = productCode;
+        this.productName = productName;
+        this.salesDate = salesDate;
+        this.salesQuantity = salesQuantity;
+    }
 }
