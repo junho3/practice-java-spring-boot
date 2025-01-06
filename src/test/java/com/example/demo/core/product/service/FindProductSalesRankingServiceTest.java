@@ -7,7 +7,6 @@ import com.example.demo.core.product.domain.ProductSalesRanking;
 import com.example.demo.core.product.result.FindProductSalesRankingResult;
 import com.example.demo.infrastructure.persistence.product.ProductSalesRankingRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
 @DisplayName("FindProductSalesRankingService")
@@ -51,6 +52,7 @@ class FindProductSalesRankingServiceTest extends TestDataInsertSupport {
         final List<FindProductSalesRankingResult> actual = findProductSalesRankingService
             .top10(LocalDate.of(2025, 1, 6));
 
-        Assertions.assertEquals(10, actual.size());
+        assertEquals(10, actual.size());
+        assertEquals(11, actual.getFirst().salesQuantity());
     }
 }
