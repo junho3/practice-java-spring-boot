@@ -16,12 +16,12 @@ import java.time.LocalDate;
 
 @Getter
 @Entity
-@Table(name = "product_sales_ranking")
+@Table(name = "product_sales")
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductSalesRanking extends AuditEntity {
+public class ProductSales extends AuditEntity {
     @Id
-    @Column(name = "product_sales_ranking_id")
+    @Column(name = "product_sales_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -37,10 +37,10 @@ public class ProductSalesRanking extends AuditEntity {
     @Column(name = "sales_quantity", nullable = false)
     private long salesQuantity;
 
-    public ProductSalesRanking(final String productCode,
-                               final String productName,
-                               final LocalDate salesDate,
-                               final long salesQuantity) {
+    public ProductSales(final String productCode,
+                        final String productName,
+                        final LocalDate salesDate,
+                        final long salesQuantity) {
         this.productCode = productCode;
         this.productName = productName;
         this.salesDate = salesDate;
