@@ -86,7 +86,7 @@ class FindProductSalesServiceTest extends TestDataInsertSupport {
 
             @Test
             @DisplayName("서킷이 열리고 fallback을 리턴한다.")
-            void then_return_fallback() {
+            void then_open_circuit_return_fallback() {
 
                 final FindProductSalesTop10Param param = new FindProductSalesTop10Param(LocalDate.of(2030, 1, 6));
                 for (int i = 0; i < 5; i++) {
