@@ -4,6 +4,7 @@ import com.example.demo.TestDataInsertSupport;
 import com.example.demo.TestFixtures;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.core.product.domain.ProductSales;
+import com.example.demo.core.product.param.FindProductSalesTop10Param;
 import com.example.demo.core.product.result.FindProductSalesResult;
 import com.example.demo.infrastructure.persistence.product.ProductSalesRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -49,7 +50,9 @@ class FindProductSalesServiceTest extends TestDataInsertSupport {
     @Test
     @DisplayName("top10()은 판매날짜 조건으로 판매량이 가장 높은 상품 10개를 리턴한다.")
     void top10_when_given_salesDate_then_return_highest_saleQuantity_product() {
-        final List<FindProductSalesResult> actual = findProductSalesService.top10(LocalDate.of(2025, 1, 6));
+        final FindProductSalesTop10Param param = new FindProductSalesTop10Param(LocalDate.of(2025, 1, 6));
+
+        final List<FindProductSalesResult> actual = findProductSalesService.top10(param);
 
         assertEquals(10, actual.size());
         assertEquals(11, actual.getFirst().salesQuantity());
