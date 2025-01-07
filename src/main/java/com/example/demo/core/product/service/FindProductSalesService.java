@@ -32,8 +32,8 @@ public class FindProductSalesService {
             .toList();
     }
 
-    private List<FindProductSalesResult> fallback(final LocalDate salesDate, final Exception e) {
-        log.warn("JUNHO Fallback");
-        return List.of(new FindProductSalesResult("XXXX", "기본상품", LocalDate.now(), 10));
+    private List<FindProductSalesResult> fallback(final FindProductSalesTop10Param param, final Exception e) {
+        log.warn("product-sales-top10 fallback!!");
+        return List.of(new FindProductSalesResult("XXXX", "기본상품", param.salesDate(), 10));
     }
 }
