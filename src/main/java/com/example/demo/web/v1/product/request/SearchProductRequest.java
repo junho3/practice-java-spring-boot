@@ -17,14 +17,12 @@ public class SearchProductRequest extends PageRequest {
 
     private final ProductStatus productStatus;
 
-    public SearchProductRequest(
-        String productName,
-        Long minProductAmount,
-        Long maxProductAmount,
-        ProductStatus productStatus,
-        Integer pageNumber,
-        Integer pageSize
-    ) {
+    public SearchProductRequest(String productName,
+                                Long minProductAmount,
+                                Long maxProductAmount,
+                                ProductStatus productStatus,
+                                Integer pageNumber,
+                                Integer pageSize) {
         super(pageNumber, pageSize);
         this.productName = productName;
         this.minProductAmount = minProductAmount;
@@ -34,12 +32,11 @@ public class SearchProductRequest extends PageRequest {
 
     public SearchProductParam toParam() {
         return new SearchProductParam(
-            productName.trim(),
+            productName == null ? productName : productName.trim(),
             minProductAmount,
             maxProductAmount,
             productStatus,
             getPageNumber(),
-            getPageSize()
-        );
+            getPageSize());
     }
 }

@@ -21,21 +21,21 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
     }
 
     @Override
-    public Page<Product> search(SearchProductParam param) {
+    public Page<Product> search(final SearchProductParam param) {
         final QProduct product = QProduct.product;
 
-        JPQLQuery<Product> query = queryFactory
+        final JPQLQuery<Product> query = queryFactory
             .selectFrom(product)
             .where(
-                eqProductStatus(product, param.getProductStatus()),
-                goeProductAmount(product, param.getMinProductAmount()),
-                loeProductAmount(product, param.getMaxProductAmount()),
-                containProductName(product, param.getProductName())
+                eqProductStatus(product, param.productStatus()),
+                goeProductAmount(product, param.minProductAmount()),
+                loeProductAmount(product, param.maxProductAmount()),
+                containProductName(product, param.productName())
             )
-            .offset(param.getPageable().getOffset())
-            .limit(param.getPageable().getPageSize());
+            .offset(param.pageable().getOffset())
+            .limit(param.pageable().getPageSize());
 
-        return new PageImpl<>(query.fetch(), param.getPageable(), query.fetchCount());
+        return new PageImpl<>(query.fetch(), param.pageable(), query.fetchCount());
     }
 
     private BooleanExpression containProductName(QProduct product, String productName) {

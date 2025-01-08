@@ -5,18 +5,17 @@ import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Getter
 public class SearchProductResult {
 
-    private final Set<Product> products;
+    private final List<Product> products;
     private final long pageNumber;
     private final long pageSize;
     private final long totalCount;
 
-    public SearchProductResult(Set<Product> products, long pageNumber, long pageSize, long totalCount) {
+    public SearchProductResult(List<Product> products, long pageNumber, long pageSize, long totalCount) {
         this.products = products;
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
@@ -63,7 +62,7 @@ public class SearchProductResult {
 
     public static SearchProductResult from(Page<com.example.demo.core.product.domain.Product> products) {
         return new SearchProductResult(
-            products.getContent().stream().map(Product::from).collect(Collectors.toSet()),
+            products.getContent().stream().map(Product::from).toList(),
             products.getPageable().getPageNumber(),
             products.getPageable().getPageSize(),
             products.getTotalElements()

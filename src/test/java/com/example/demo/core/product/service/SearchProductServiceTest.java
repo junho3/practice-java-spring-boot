@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @IntegrationTest
@@ -29,10 +30,10 @@ class SearchProductServiceTest extends TestDataInsertSupport {
     private SearchProductService searchProductService;
 
     @Autowired
-    StockRepository stockRepository;
+    private StockRepository stockRepository;
 
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @AfterEach
     void tearDown() {
@@ -54,17 +55,18 @@ class SearchProductServiceTest extends TestDataInsertSupport {
         }
 
         @Nested
-        @DisplayName("검색 조건에 맞는 데이터를 조회하여")
-        class Context_notFoundData {
+        @DisplayName("검색 조건에 맞는 데이터가 존재한다면")
+        class Context_found_data {
 
             final SearchProductParam param = new SearchProductParam(null, null, null, null, 0, 10);
 
             @Test
-            @DisplayName("SearchProductResult 타입으로 리턴한다.")
+            @DisplayName("데이터를 리턴한다.")
             void it() {
-                SearchProductResult result = searchProductService.search(param);
+                final SearchProductResult actual = searchProductService.search(param);
 
-                assertInstanceOf(SearchProductResult.class, result);
+                assertInstanceOf(SearchProductResult.class, actual);
+                assertEquals(1, actual.getProducts().size());
             }
         }
     }

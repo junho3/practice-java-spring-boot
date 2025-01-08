@@ -1,7 +1,6 @@
 package com.example.demo.web.v1.product;
 
 import com.example.demo.core.product.param.FindProductSalesTop10Param;
-import com.example.demo.core.product.result.FindProductSalesResult;
 import com.example.demo.core.product.service.FindProductSalesService;
 import com.example.demo.web.ApiResponse;
 import com.example.demo.web.v1.product.response.FindProductSalesResponse;
