@@ -21,10 +21,10 @@ public class ProductCustomRepositoryImpl implements ProductCustomRepository {
     }
 
     @Override
-    public Page<Product> search(SearchProductParam param) {
+    public Page<Product> search(final SearchProductParam param) {
         final QProduct product = QProduct.product;
 
-        JPQLQuery<Product> query = queryFactory
+        final JPQLQuery<Product> query = queryFactory
             .selectFrom(product)
             .where(
                 eqProductStatus(product, param.productStatus()),
