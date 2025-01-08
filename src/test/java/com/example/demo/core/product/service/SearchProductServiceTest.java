@@ -29,10 +29,10 @@ class SearchProductServiceTest extends TestDataInsertSupport {
     private SearchProductService searchProductService;
 
     @Autowired
-    StockRepository stockRepository;
+    private StockRepository stockRepository;
 
     @Autowired
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @AfterEach
     void tearDown() {
