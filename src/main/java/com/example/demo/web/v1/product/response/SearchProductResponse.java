@@ -23,7 +23,7 @@ public class SearchProductResponse extends PageResponse {
     }
 
     @Getter
-    private static class Product {
+    public static class Product {
         private final String productCode;
 
         private final String productName;
