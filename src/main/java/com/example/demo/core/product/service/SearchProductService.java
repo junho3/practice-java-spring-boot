@@ -23,7 +23,7 @@ public class SearchProductService {
         return SearchProductResult.from(products);
     }
 
-    @Cacheable(value = "products", key = "#param.pageable")
+    @Cacheable(value = "products", key = "#param")
     public SearchProductResult searchWithCache(final SearchProductParam param) {
         final Page<Product> products = productCustomRepository.search(param);
 
