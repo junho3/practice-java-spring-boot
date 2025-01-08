@@ -7,8 +7,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 import static com.example.demo.common.constants.DateFormatConstants.ISO_8601;
 import static com.example.demo.common.constants.DateFormatConstants.TIMEZONE;
@@ -16,9 +15,9 @@ import static com.example.demo.common.constants.DateFormatConstants.TIMEZONE;
 @Getter
 public class SearchProductResponse extends PageResponse {
 
-    private final Set<Product> products;
+    private final List<Product> products;
 
-    public SearchProductResponse(Set<Product> products, long pageNumber, long pageSize, long totalCount) {
+    public SearchProductResponse(List<Product> products, long pageNumber, long pageSize, long totalCount) {
         super(pageNumber, pageSize, totalCount);
         this.products = products;
     }
@@ -39,14 +38,12 @@ public class SearchProductResponse extends PageResponse {
         @JsonFormat(pattern = ISO_8601, timezone = TIMEZONE)
         private final LocalDateTime updatedAt;
 
-        private Product(
-            String productCode,
-            String productName,
-            ProductStatus productStatus,
-            long productAmount,
-            LocalDateTime createdAt,
-            LocalDateTime updatedAt
-        ) {
+        private Product(String productCode,
+                        String productName,
+                        ProductStatus productStatus,
+                        long productAmount,
+                        LocalDateTime createdAt,
+                        LocalDateTime updatedAt) {
             this.productCode = productCode;
             this.productName = productName;
             this.productStatus = productStatus;
@@ -62,17 +59,15 @@ public class SearchProductResponse extends PageResponse {
                 product.getProductStatus(),
                 product.getProductAmount(),
                 product.getCreatedAt(),
-                product.getUpdatedAt()
-            );
+                product.getUpdatedAt());
         }
     }
 
     public static SearchProductResponse from(SearchProductResult product) {
         return new SearchProductResponse(
-            product.getProducts().stream().map(Product::from).collect(Collectors.toSet()),
+            product.getProducts().stream().map(Product::from).toList(),
             product.getPageNumber(),
             product.getPageSize(),
-            product.getTotalCount()
-        );
+            product.getTotalCount());
     }
 }
