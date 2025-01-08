@@ -17,8 +17,8 @@ public class SearchProductService {
 
     private final ProductCustomRepository productCustomRepository;
 
-    public SearchProductResult search(SearchProductParam param) {
-        Page<Product> products = productCustomRepository.search(param);
+    public SearchProductResult search(final SearchProductParam param) {
+        final Page<Product> products = productCustomRepository.search(param);
 
         return SearchProductResult.from(products);
     }
