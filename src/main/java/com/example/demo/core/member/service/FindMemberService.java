@@ -4,16 +4,14 @@ import com.example.demo.config.persistence.ReadTransactional;
 import com.example.demo.core.member.domain.Member;
 import com.example.demo.core.member.result.FindMemberResult;
 import com.example.demo.infrastructure.persistence.member.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class FindMemberService {
 
     private final MemberRepository memberRepository;
-
-    public FindMemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;
-    }
 
     @ReadTransactional
     public FindMemberResult findByMemberId(String memberId) {
