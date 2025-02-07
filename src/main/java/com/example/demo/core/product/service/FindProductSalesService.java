@@ -1,5 +1,6 @@
 package com.example.demo.core.product.service;
 
+import com.example.demo.config.persistence.ReadTransactional;
 import com.example.demo.core.product.param.FindProductSalesTop10Param;
 import com.example.demo.core.product.result.FindProductSalesResult;
 import com.example.demo.infrastructure.persistence.product.ProductSalesRepository;
@@ -7,14 +8,13 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
 @Service
-@Transactional(readOnly = true)
+@ReadTransactional
 @RequiredArgsConstructor
 public class FindProductSalesService {
 

@@ -1,10 +1,10 @@
 package com.example.demo.core.member.service;
 
+import com.example.demo.config.persistence.ReadTransactional;
 import com.example.demo.core.member.domain.Member;
 import com.example.demo.core.member.result.FindMemberResult;
 import com.example.demo.infrastructure.persistence.member.MemberRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class FindMemberService {
@@ -15,7 +15,7 @@ public class FindMemberService {
         this.memberRepository = memberRepository;
     }
 
-    @Transactional(readOnly = true)
+    @ReadTransactional
     public FindMemberResult findByMemberId(String memberId) {
         Member member = memberRepository.findByMemberId(memberId)
             .orElseThrow(IllegalArgumentException::new);
