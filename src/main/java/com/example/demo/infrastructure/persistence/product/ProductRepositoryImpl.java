@@ -12,11 +12,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ProductCustomRepositoryImpl implements ProductCustomRepository {
+public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 
-    public ProductCustomRepositoryImpl(JPAQueryFactory queryFactory) {
+    public ProductRepositoryImpl(JPAQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
     }
 
