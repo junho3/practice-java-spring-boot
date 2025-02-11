@@ -24,16 +24,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RepositoryTest
 @DisplayName("ProductCustomRepositoryImpl")
-class ProductCustomRepositoryImplTest extends TestDataInsertSupport {
+class ProductRepositoryImplTest extends TestDataInsertSupport {
 
-    private ProductCustomRepositoryImpl productCustomRepositoryImpl;
+    private ProductRepositoryImpl productRepositoryImpl;
 
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
 
     @BeforeEach
     void init() {
-        productCustomRepositoryImpl = new ProductCustomRepositoryImpl(jpaQueryFactory);
+        productRepositoryImpl = new ProductRepositoryImpl(jpaQueryFactory);
     }
 
     @Nested
@@ -71,7 +71,7 @@ class ProductCustomRepositoryImplTest extends TestDataInsertSupport {
             @Test
             @DisplayName("모든 데이터 4개를 리턴한다.")
             void it() {
-                Page<Product> result = productCustomRepositoryImpl.search(param);
+                Page<Product> result = productRepositoryImpl.search(param);
 
                 assertEquals(4, result.getContent().size());
             }
@@ -86,7 +86,7 @@ class ProductCustomRepositoryImplTest extends TestDataInsertSupport {
             @Test
             @DisplayName("'기'가 포함된 데이터 2개를 리턴한다.")
             void it() {
-                Page<Product> result = productCustomRepositoryImpl.search(param);
+                Page<Product> result = productRepositoryImpl.search(param);
 
                 assertEquals(2, result.getContent().size());
                 result.getContent().forEach(product -> assertTrue(product.getProductName().contains("기")));
@@ -102,7 +102,7 @@ class ProductCustomRepositoryImplTest extends TestDataInsertSupport {
             @Test
             @DisplayName("5000원보다 큰 데이터 3개를 리턴한다.")
             void it() {
-                Page<Product> result = productCustomRepositoryImpl.search(param);
+                Page<Product> result = productRepositoryImpl.search(param);
 
                 assertEquals(3, result.getContent().size());
                 result.getContent().forEach(product -> assertTrue(product.getProductAmount() >= 5000));
@@ -118,7 +118,7 @@ class ProductCustomRepositoryImplTest extends TestDataInsertSupport {
             @Test
             @DisplayName("10_000보다 작은 데이터 3개를 리턴한다.")
             void it() {
-                Page<Product> result = productCustomRepositoryImpl.search(param);
+                Page<Product> result = productRepositoryImpl.search(param);
 
                 assertEquals(3, result.getContent().size());
                 result.getContent().forEach(product -> assertTrue(product.getProductAmount() <= 10_000));
@@ -134,7 +134,7 @@ class ProductCustomRepositoryImplTest extends TestDataInsertSupport {
             @Test
             @DisplayName("상품 준비중인 데이터 1개를 리턴한다.")
             void it() {
-                Page<Product> result = productCustomRepositoryImpl.search(param);
+                Page<Product> result = productRepositoryImpl.search(param);
 
                 assertEquals(1, result.getContent().size());
                 result.getContent().forEach(product -> assertEquals(ProductStatus.READY, product.getProductStatus()));

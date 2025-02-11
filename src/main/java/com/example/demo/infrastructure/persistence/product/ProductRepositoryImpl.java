@@ -7,18 +7,14 @@ import com.example.demo.core.product.param.SearchProductParam;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public class ProductCustomRepositoryImpl implements ProductCustomRepository {
+@RequiredArgsConstructor
+public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
-
-    public ProductCustomRepositoryImpl(JPAQueryFactory queryFactory) {
-        this.queryFactory = queryFactory;
-    }
 
     @Override
     public Page<Product> search(final SearchProductParam param) {

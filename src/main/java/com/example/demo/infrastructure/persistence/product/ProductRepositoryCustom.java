@@ -4,7 +4,7 @@ import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.param.SearchProductParam;
 import org.springframework.data.domain.Page;
 
-public interface ProductCustomRepository {
+public interface ProductRepositoryCustom {
 
     Page<Product> search(SearchProductParam param);
 }
