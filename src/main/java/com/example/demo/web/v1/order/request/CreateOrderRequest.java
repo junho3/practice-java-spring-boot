@@ -10,16 +10,16 @@ import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public record CreateOrderRequest(@NotNull long memberNo,
+public record CreateOrderRequest(long memberNo,
                                  @Valid @NotEmpty Set<Product> products) {
 
     public record Product(@NotEmpty String productCode,
                           @NotEmpty String productName,
                           @Positive long quantity,
-                          @Positive BigDecimal productAmount) {
+                          @NotNull @Positive BigDecimal productAmount) {
 
         public CreateOrderParam.Product toParam() {
-            return new CreateOrderParam.Product(productCode, productName, quantity, productAmount.longValue());
+            return new CreateOrderParam.Product(productCode, productName, quantity, productAmount);
         }
     }
 
