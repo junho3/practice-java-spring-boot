@@ -40,7 +40,7 @@ public class OrderProduct extends AuditEntity {
     private String productName;
 
     @Column(name = "quantity", updatable = false, nullable = false)
-    private long quantity;
+    private int quantity;
 
     @Column(name = "product_amount", updatable = false, nullable = false)
     private BigDecimal productAmount;
@@ -48,7 +48,7 @@ public class OrderProduct extends AuditEntity {
     public OrderProduct(final Order order,
                         final String productCode,
                         final String productName,
-                        final long quantity,
+                        final int quantity,
                         final BigDecimal productAmount) {
         this.order = order;
         this.productCode = productCode;

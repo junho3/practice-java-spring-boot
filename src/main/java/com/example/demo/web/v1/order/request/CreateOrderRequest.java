@@ -15,7 +15,7 @@ public record CreateOrderRequest(long memberNo,
 
     public record Product(@NotEmpty String productCode,
                           @NotEmpty String productName,
-                          @Positive long quantity,
+                          @Positive int quantity,
                           @NotNull @Positive BigDecimal productAmount) {
 
         public CreateOrderParam.Product toParam() {
