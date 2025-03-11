@@ -4,7 +4,6 @@ import com.example.demo.config.persistence.AuditEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,6 +13,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -39,18 +39,16 @@ public class Order extends AuditEntity {
     private String orderName;
 
     @Column(name = "transaction_amount", nullable = false, updatable = false)
-    private long transactionAmount;
+    private BigDecimal transactionAmount;
 
     @OneToMany(fetch = LAZY, cascade = {CascadeType.PERSIST}, mappedBy = "order")
     private Set<OrderProduct> products = new LinkedHashSet<>();
 
-    public Order(
-        String orderNo,
-        long memberNo,
-        String orderName,
-        long transactionAmount,
-        Set<OrderProduct> products
-    ) {
+    public Order(String orderNo,
+                 long memberNo,
+                 String orderName,
+                 BigDecimal transactionAmount,
+                 Set<OrderProduct> products) {
         this.orderNo = orderNo;
         this.memberNo = memberNo;
         this.orderName = orderName;

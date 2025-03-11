@@ -15,6 +15,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 import static jakarta.persistence.FetchType.LAZY;
 
 @Getter
@@ -41,9 +43,9 @@ public class OrderProduct extends AuditEntity {
     private long quantity;
 
     @Column(name = "product_amount", updatable = false, nullable = false)
-    private long productAmount;
+    private BigDecimal productAmount;
 
-    public OrderProduct(String productCode, String productName, long quantity, long productAmount) {
+    public OrderProduct(String productCode, String productName, long quantity, BigDecimal productAmount) {
         this.productCode = productCode;
         this.productName = productName;
         this.quantity = quantity;
