@@ -47,12 +47,16 @@ public class Order extends AuditEntity {
     public Order(String orderNo,
                  long memberNo,
                  String orderName,
-                 BigDecimal transactionAmount,
-                 Set<OrderProduct> products) {
+                 BigDecimal transactionAmount) {
         this.orderNo = orderNo;
         this.memberNo = memberNo;
         this.orderName = orderName;
         this.transactionAmount = transactionAmount;
-        this.products = products;
+    }
+
+    public Order addProducts(final Set<OrderProduct> orderProducts) {
+        products.addAll(orderProducts);
+
+        return this;
     }
 }

@@ -2,29 +2,41 @@ package com.example.demo.core.order.service;
 
 import com.example.demo.common.utils.OrderNoGenerator;
 import com.example.demo.core.order.domain.Order;
+import com.example.demo.core.order.domain.OrderProduct;
 import com.example.demo.core.order.param.CreateOrderParam;
 import com.example.demo.core.order.result.CreateOrderResult;
 import com.example.demo.infrastructure.persistence.order.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
+@RequiredArgsConstructor
 public class CreateOrderService {
 
     private final OrderRepository orderRepository;
-
     private final OrderNoGenerator orderNoGenerator;
 
-    public CreateOrderService(OrderRepository orderRepository, OrderNoGenerator orderNoGenerator) {
-        this.orderRepository = orderRepository;
-        this.orderNoGenerator = orderNoGenerator;
-    }
-
     @Transactional
-    public CreateOrderResult create(CreateOrderParam param) {
-        String orderNo = orderNoGenerator.generate();
+    public CreateOrderResult create(final CreateOrderParam param) {
+        final String orderNo = orderNoGenerator.generate();
 
-        Order order = orderRepository.save(param.toEntity(orderNo));
+        final Order order = new Order(
+            orderNo,
+            param.memberNo(),
+            param.getOrderName(),
+            param.getTransactionAmount());
+
+        final Set<OrderProduct> orderProducts = param.products().stream()
+            .map(it -> new OrderProduct(order, it.productCode(), it.productName(), it.quantity(), it.productAmount()))
+            .collect(Collectors.toSet());
+
+        order.addProducts(orderProducts);
+
+        orderRepository.save(order);
 
         return CreateOrderResult.from(order);
     }
