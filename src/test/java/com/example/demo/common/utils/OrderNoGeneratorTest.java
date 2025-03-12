@@ -1,16 +1,15 @@
 package com.example.demo.common.utils;
 
 import com.example.demo.annotation.UnitTest;
+import com.example.demo.core.order.domain.OrderNo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.example.demo.MemberFixtures.MEMBER_ID;
-import static com.example.demo.MemberFixtures.MEMBER_NAME;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @UnitTest
+@DisplayName("OrderNoGenerator")
 class OrderNoGeneratorTest {
 
     private final OrderNoGenerator orderNoGenerator = new OrderNoGenerator();
@@ -28,10 +27,10 @@ class OrderNoGeneratorTest {
             @Test
             @DisplayName("랜덤 10자리 문자열을 리턴한다.")
             void it() {
-                String orderNo = orderNoGenerator.generate();
+                final OrderNo actual = orderNoGenerator.generate();
 
-                assertNotNull(orderNo);
-                assertEquals(orderNoLength, orderNo.length());
+                assertThat(actual).isNotNull();
+                assertThat(actual.getValue()).hasSize(orderNoLength);
             }
         }
     }
