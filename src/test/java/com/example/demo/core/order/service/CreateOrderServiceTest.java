@@ -4,6 +4,7 @@ import com.example.demo.TestFixtures;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.utils.OrderNoGenerator;
 import com.example.demo.core.order.domain.Order;
+import com.example.demo.core.order.domain.OrderNo;
 import com.example.demo.core.order.param.CreateOrderParam;
 import com.example.demo.core.order.result.CreateOrderResult;
 import com.example.demo.infrastructure.persistence.order.OrderRepository;
@@ -21,7 +22,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import java.math.BigDecimal;
 
 import static com.example.demo.OrderFixtures.ORDER_NO;
-import static com.navercorp.fixturemonkey.api.instantiator.Instantiator.constructor;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
@@ -52,7 +52,7 @@ class CreateOrderServiceTest {
     @Nested
     @DisplayName("create 메소드는")
     class Describe_create {
-        private final String orderNo = ORDER_NO;
+        private final OrderNo orderNo = ORDER_NO;
 
         final CreateOrderParam param = TestFixtures.get()
             .giveMeBuilder(CreateOrderParam.class)
@@ -89,23 +89,18 @@ class CreateOrderServiceTest {
             void setUp() {
                 final Order order = TestFixtures.get()
                     .giveMeBuilder(Order.class)
-                    .instantiate(
-                        constructor()
-                            .parameter(String.class)
-                            .parameter(long.class)
-                            .parameter(String.class)
-                            .parameter(BigDecimal.class)
-                    )
+                    .setNull("orderId")
                     .set("orderNo", orderNo)
-                    .setNotNull("orderName")
+                    .set("orderName", "XXXXX")
                     .set("transactionAmount", BigDecimal.ONE)
+                    .size("products", 0)
                     .sample();
 
                 orderRepository.saveAndFlush(order);
             }
 
             @Test
-            @DisplayName("DataIntegrityViolationException을 던진다.")
+            @DisplayName("DataIntegrityViolationException()을 던진다.")
             void it() {
                 assertThrows(DataIntegrityViolationException.class, () -> {
                     createOrderService.create(param);

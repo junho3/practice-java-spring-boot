@@ -2,6 +2,7 @@ package com.example.demo.core.order.service;
 
 import com.example.demo.common.utils.OrderNoGenerator;
 import com.example.demo.core.order.domain.Order;
+import com.example.demo.core.order.domain.OrderNo;
 import com.example.demo.core.order.domain.OrderProduct;
 import com.example.demo.core.order.param.CreateOrderParam;
 import com.example.demo.core.order.result.CreateOrderResult;
@@ -22,7 +23,7 @@ public class CreateOrderService {
 
     @Transactional
     public CreateOrderResult create(final CreateOrderParam param) {
-        final String orderNo = orderNoGenerator.generate();
+        final OrderNo orderNo = orderNoGenerator.generate();
 
         final Order order = new Order(
             orderNo,
