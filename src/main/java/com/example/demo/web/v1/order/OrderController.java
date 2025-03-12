@@ -9,17 +9,19 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/v1/orders")
 @RequiredArgsConstructor
-public class CreateOrderController {
+public class OrderController {
 
     private final CreateOrderService createOrderService;
 
-    @PostMapping("/v1/order")
-    public ApiResponse<CreateOrderResponse> create(@RequestBody @Valid CreateOrderRequest request) {
-        CreateOrderResult result = createOrderService.create(request.toParam());
+    @PostMapping
+    public ApiResponse<CreateOrderResponse> create(@Valid @RequestBody CreateOrderRequest request) {
+        final CreateOrderResult result = createOrderService.create(request.toParam());
 
         return ApiResponse.success(CreateOrderResponse.from(result));
     }

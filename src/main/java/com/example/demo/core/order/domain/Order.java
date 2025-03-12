@@ -3,6 +3,7 @@ package com.example.demo.core.order.domain;
 import com.example.demo.config.persistence.AuditEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,8 +30,8 @@ public class Order extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderId;
 
-    @Column(name = "order_no", nullable = false, updatable = false, unique = true)
-    private String orderNo;
+    @Embedded
+    private OrderNo orderNo;
 
     @Column(name = "member_no", nullable = false, updatable = false)
     private long memberNo;
@@ -44,7 +45,7 @@ public class Order extends AuditEntity {
     @OneToMany(fetch = LAZY, cascade = {CascadeType.PERSIST}, mappedBy = "order")
     private Set<OrderProduct> products = new LinkedHashSet<>();
 
-    public Order(String orderNo,
+    public Order(OrderNo orderNo,
                  long memberNo,
                  String orderName,
                  BigDecimal transactionAmount) {

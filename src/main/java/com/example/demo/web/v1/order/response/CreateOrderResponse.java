@@ -18,7 +18,7 @@ public record CreateOrderResponse(@NotNull String orderNo,
 
     public static CreateOrderResponse from(final CreateOrderResult result) {
         return new CreateOrderResponse(
-            result.orderNo(),
+            result.orderNo().getValue(),
             result.memberNo(),
             result.orderName(),
             result.transactionAmount(),

@@ -1,6 +1,7 @@
 package com.example.demo.core.order.result;
 
 import com.example.demo.core.order.domain.Order;
+import com.example.demo.core.order.domain.OrderNo;
 import com.example.demo.core.order.domain.OrderProduct;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -9,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record CreateOrderResult(@NotEmpty String orderNo,
+public record CreateOrderResult(@NotNull OrderNo orderNo,
                                 long memberNo,
                                 @NotEmpty String orderName,
                                 @NotNull BigDecimal transactionAmount,
