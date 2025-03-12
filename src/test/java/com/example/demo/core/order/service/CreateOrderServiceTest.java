@@ -91,7 +91,7 @@ class CreateOrderServiceTest {
                     .giveMeBuilder(Order.class)
                     .setNull("orderId")
                     .set("orderNo", orderNo)
-                    .set("orderName", "XXXXX")
+                    .setNotNull("orderName")
                     .set("transactionAmount", BigDecimal.ONE)
                     .size("products", 0)
                     .sample();
