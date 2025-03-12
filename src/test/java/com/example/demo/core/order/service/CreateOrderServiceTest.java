@@ -22,8 +22,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import java.math.BigDecimal;
 
 import static com.example.demo.OrderFixtures.ORDER_NO;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 @IntegrationTest
@@ -102,9 +102,8 @@ class CreateOrderServiceTest {
             @Test
             @DisplayName("DataIntegrityViolationException()을 던진다.")
             void it() {
-                assertThrows(DataIntegrityViolationException.class, () -> {
-                    createOrderService.create(param);
-                });
+                assertThatThrownBy(() -> createOrderService.create(param))
+                    .isExactlyInstanceOf(DataIntegrityViolationException.class);
             }
         }
     }
