@@ -20,9 +20,9 @@ public class TestFixtures {
             .enableLoggingFail(false)
             .objectIntrospector(new FailoverIntrospector(
                 List.of(
-                    ConstructorPropertiesArbitraryIntrospector.INSTANCE,
-                    BuilderArbitraryIntrospector.INSTANCE,
                     FieldReflectionArbitraryIntrospector.INSTANCE,
+                    BuilderArbitraryIntrospector.INSTANCE,
+                    ConstructorPropertiesArbitraryIntrospector.INSTANCE,
                     BeanArbitraryIntrospector.INSTANCE
                 )
             ))
