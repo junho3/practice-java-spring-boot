@@ -15,8 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -43,7 +43,7 @@ public class Order extends AuditEntity {
     private BigDecimal transactionAmount;
 
     @OneToMany(fetch = LAZY, cascade = {CascadeType.PERSIST}, mappedBy = "order")
-    private Set<OrderProduct> products = new LinkedHashSet<>();
+    private List<OrderProduct> products = new LinkedList<>();
 
     public Order(OrderNo orderNo,
                  long memberNo,
@@ -55,8 +55,11 @@ public class Order extends AuditEntity {
         this.transactionAmount = transactionAmount;
     }
 
-    public Order addProducts(final Set<OrderProduct> orderProducts) {
-        products.addAll(orderProducts);
+    public Order addProducts(final List<OrderProduct> orderProducts) {
+        orderProducts.forEach(orderProduct -> {
+            orderProduct.setOrder(this);
+            products.add(orderProduct);
+        });
 
         return this;
     }

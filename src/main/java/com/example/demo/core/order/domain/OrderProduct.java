@@ -14,6 +14,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
@@ -29,6 +30,7 @@ public class OrderProduct extends AuditEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderProductId;
 
+    @Setter
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "order_id", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Order order;
@@ -45,12 +47,10 @@ public class OrderProduct extends AuditEntity {
     @Column(name = "product_amount", updatable = false, nullable = false)
     private BigDecimal productAmount;
 
-    public OrderProduct(final Order order,
-                        final String productCode,
+    public OrderProduct(final String productCode,
                         final String productName,
                         final int quantity,
                         final BigDecimal productAmount) {
-        this.order = order;
         this.productCode = productCode;
         this.productName = productName;
         this.quantity = quantity;

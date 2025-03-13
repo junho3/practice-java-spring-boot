@@ -1,12 +1,12 @@
 package com.example.demo.core.order.service;
 
+import com.example.demo.OrderFixtures;
 import com.example.demo.TestFixtures;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.utils.OrderNoGenerator;
-import com.example.demo.core.order.domain.Order;
 import com.example.demo.core.order.domain.OrderNo;
 import com.example.demo.core.order.param.CreateOrderParam;
-import com.example.demo.core.order.result.CreateOrderResult;
+import com.example.demo.core.order.result.OrderAggregateResult;
 import com.example.demo.infrastructure.persistence.order.OrderRepository;
 import net.jqwik.api.Arbitraries;
 import org.junit.jupiter.api.AfterEach;
@@ -21,7 +21,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.math.BigDecimal;
 
-import static com.example.demo.OrderFixtures.ORDER_NO;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -52,7 +51,7 @@ class CreateOrderServiceTest {
     @Nested
     @DisplayName("create 메소드는")
     class Describe_create {
-        private final OrderNo orderNo = ORDER_NO;
+        private final OrderNo orderNo = OrderFixtures.generateOrderNo();
 
         final CreateOrderParam param = TestFixtures.get()
             .giveMeBuilder(CreateOrderParam.class)
@@ -74,7 +73,7 @@ class CreateOrderServiceTest {
             @Test
             @DisplayName("Order를 생성한다.")
             void it() {
-                final CreateOrderResult actual = createOrderService.create(param);
+                final OrderAggregateResult actual = createOrderService.create(param);
 
                 assertThat(actual.orderNo()).isEqualTo(orderNo);
                 assertThat(actual.products()).hasSize(param.products().size());
@@ -87,16 +86,7 @@ class CreateOrderServiceTest {
 
             @BeforeEach
             void setUp() {
-                final Order order = TestFixtures.get()
-                    .giveMeBuilder(Order.class)
-                    .setNull("orderId")
-                    .set("orderNo", orderNo)
-                    .setNotNull("orderName")
-                    .set("transactionAmount", BigDecimal.ONE)
-                    .size("products", 0)
-                    .sample();
-
-                orderRepository.saveAndFlush(order);
+                orderRepository.saveAndFlush(OrderFixtures.generateOrderAggregate(orderNo));
             }
 
             @Test

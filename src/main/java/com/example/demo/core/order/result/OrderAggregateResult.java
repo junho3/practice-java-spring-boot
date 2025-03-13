@@ -10,12 +10,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record CreateOrderResult(@NotNull OrderNo orderNo,
-                                long memberNo,
-                                @NotEmpty String orderName,
-                                @NotNull BigDecimal transactionAmount,
-                                @NotNull LocalDateTime createdAt,
-                                @NotNull List<Product> products) {
+public record OrderAggregateResult(@NotNull OrderNo orderNo,
+                                   long memberNo,
+                                   @NotEmpty String orderName,
+                                   @NotNull BigDecimal transactionAmount,
+                                   @NotNull LocalDateTime createdAt,
+                                   @NotNull List<Product> products) {
 
     public record Product(@NotEmpty String productCode,
                           @NotEmpty String productName,
@@ -23,7 +23,7 @@ public record CreateOrderResult(@NotNull OrderNo orderNo,
                           @NotNull BigDecimal productAmount) {
 
         public static Product from(final OrderProduct orderProduct) {
-            return new CreateOrderResult.Product(
+            return new OrderAggregateResult.Product(
                 orderProduct.getProductCode(),
                 orderProduct.getProductName(),
                 orderProduct.getQuantity(),
@@ -32,8 +32,8 @@ public record CreateOrderResult(@NotNull OrderNo orderNo,
         }
     }
 
-    public static CreateOrderResult from(final Order order) {
-        return new CreateOrderResult(
+    public static OrderAggregateResult from(final Order order) {
+        return new OrderAggregateResult(
             order.getOrderNo(),
             order.getMemberNo(),
             order.getOrderName(),

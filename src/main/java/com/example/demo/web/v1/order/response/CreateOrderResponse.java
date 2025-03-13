@@ -1,6 +1,6 @@
 package com.example.demo.web.v1.order.response;
 
-import com.example.demo.core.order.result.CreateOrderResult;
+import com.example.demo.core.order.result.OrderAggregateResult;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 
@@ -16,7 +16,7 @@ public record CreateOrderResponse(@NotNull String orderNo,
                                   @NotNull BigDecimal transactionAmount,
                                   @NotNull @JsonFormat(pattern = ISO_8601, timezone = TIMEZONE) LocalDateTime createdAt) {
 
-    public static CreateOrderResponse from(final CreateOrderResult result) {
+    public static CreateOrderResponse from(final OrderAggregateResult result) {
         return new CreateOrderResponse(
             result.orderNo().getValue(),
             result.memberNo(),
