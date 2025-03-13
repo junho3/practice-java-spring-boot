@@ -1,6 +1,6 @@
 package com.example.demo.web.v1.order;
 
-import com.example.demo.core.order.result.CreateOrderResult;
+import com.example.demo.core.order.result.OrderAggregateResult;
 import com.example.demo.core.order.service.CreateOrderService;
 import com.example.demo.web.ApiResponse;
 import com.example.demo.web.v1.order.request.CreateOrderRequest;
@@ -21,7 +21,7 @@ public class OrderController {
 
     @PostMapping
     public ApiResponse<CreateOrderResponse> create(@Valid @RequestBody CreateOrderRequest request) {
-        final CreateOrderResult result = createOrderService.create(request.toParam());
+        final OrderAggregateResult result = createOrderService.create(request.toParam());
 
         return ApiResponse.success(CreateOrderResponse.from(result));
     }

@@ -6,7 +6,7 @@ import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.utils.OrderNoGenerator;
 import com.example.demo.core.order.domain.OrderNo;
 import com.example.demo.core.order.param.CreateOrderParam;
-import com.example.demo.core.order.result.CreateOrderResult;
+import com.example.demo.core.order.result.OrderAggregateResult;
 import com.example.demo.infrastructure.persistence.order.OrderRepository;
 import net.jqwik.api.Arbitraries;
 import org.junit.jupiter.api.AfterEach;
@@ -73,7 +73,7 @@ class CreateOrderServiceTest {
             @Test
             @DisplayName("Order를 생성한다.")
             void it() {
-                final CreateOrderResult actual = createOrderService.create(param);
+                final OrderAggregateResult actual = createOrderService.create(param);
 
                 assertThat(actual.orderNo()).isEqualTo(orderNo);
                 assertThat(actual.products()).hasSize(param.products().size());
