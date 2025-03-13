@@ -11,8 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -31,9 +30,9 @@ public class CreateOrderService {
             param.getOrderName(),
             param.getTransactionAmount());
 
-        final Set<OrderProduct> orderProducts = param.products().stream()
-            .map(it -> new OrderProduct(order, it.productCode(), it.productName(), it.quantity(), it.productAmount()))
-            .collect(Collectors.toSet());
+        final List<OrderProduct> orderProducts = param.products().stream()
+            .map(it -> new OrderProduct(it.productCode(), it.productName(), it.quantity(), it.productAmount()))
+            .toList();
 
         order.addProducts(orderProducts);
 
