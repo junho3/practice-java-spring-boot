@@ -4,12 +4,16 @@ import com.example.etc.serialization.sucess.Success1;
 import com.example.etc.serialization.sucess.Success2;
 import com.example.etc.serialization.sucess.Success3;
 import com.example.etc.serialization.sucess.Success4;
+import com.example.etc.serialization.sucess.Success5;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junitpioneer.jupiter.StdIo;
+import org.junitpioneer.jupiter.StdOut;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 public class SerializationSuccessTest {
@@ -59,6 +63,19 @@ public class SerializationSuccessTest {
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
         final String actual = assertDoesNotThrow(() -> objectMapper.writeValueAsString(sut));
+
+        System.out.println(actual);
+    }
+
+    @Test
+    @StdIo
+    @DisplayName("class + get() + inner class 조합: 문제 없음")
+    void test5(StdOut stdOut) {
+        final Success5 sut = new Success5("1.9,3.5,10.3");
+
+        final String actual = assertDoesNotThrow(() -> objectMapper.writeValueAsString(sut));
+
+        assertThat(stdOut.capturedLines()[0]).isEqualTo("getValues() 호출");
 
         System.out.println(actual);
     }
