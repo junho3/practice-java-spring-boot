@@ -5,6 +5,7 @@ import com.example.etc.serialization.sucess.Success2;
 import com.example.etc.serialization.sucess.Success3;
 import com.example.etc.serialization.sucess.Success4;
 import com.example.etc.serialization.sucess.Success5;
+import com.example.etc.serialization.sucess.Success6;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.BeforeEach;
@@ -76,6 +77,19 @@ public class SerializationSuccessTest {
         final String actual = assertDoesNotThrow(() -> objectMapper.writeValueAsString(sut));
 
         assertThat(stdOut.capturedLines()[0]).isEqualTo("getValues() 호출");
+
+        System.out.println(actual);
+    }
+
+    @Test
+    @StdIo
+    @DisplayName("record + inner record + @JsonIgnore 조합: 문제 없음")
+    void test6(StdOut stdOut) {
+        final Success6 sut = new Success6("1.9,3.5,10.3");
+
+        final String actual = assertDoesNotThrow(() -> objectMapper.writeValueAsString(sut));
+
+        assertThat(stdOut.capturedLines()).isEmpty();
 
         System.out.println(actual);
     }
