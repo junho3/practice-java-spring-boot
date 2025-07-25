@@ -61,6 +61,8 @@ public class SerializationSuccessTest {
     @DisplayName("class + inner class + FAIL_ON_EMPTY_BEANS 옵션 조합: 문제 없음")
     void test4() {
         final Success4 sut = new Success4("1.9,3.5,10.3");
+        // 직렬화 대상이 없을 때 또는 getter()가 없을 때 예외를 발생하지 않는 옵션
+        // {} empty Object 직렬화가 가능해지나 객체의 문제가 감춰짐
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
         final String actual = assertDoesNotThrow(() -> objectMapper.writeValueAsString(sut));
