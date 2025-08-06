@@ -6,8 +6,6 @@ import com.example.demo.core.stock.domain.QStock;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.stock.param.DecreaseStockParam;
 import com.example.demo.core.stock.param.IncreaseStockParam;
-import com.example.demo.core.stock.service.DecreaseStockService;
-import com.example.demo.core.stock.service.IncreaseStockService;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import com.example.demo.infrastructure.persistence.stock.StockRepository;
 import org.junit.jupiter.api.AfterEach;
