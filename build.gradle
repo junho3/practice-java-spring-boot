@@ -51,7 +51,8 @@ dependencies {
 
     implementation 'org.springframework.kafka:spring-kafka'
 
-    // 2.3.0 버전 사용 시 Bean 이슈 발생
+    // 2.3.0 버전 사용 시 RxJava3FallbackDecorator ClassNotFoundException 발생
+    // https://github.com/resilience4j/resilience4j/issues/2265
 //    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.3.0'
     implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
 
