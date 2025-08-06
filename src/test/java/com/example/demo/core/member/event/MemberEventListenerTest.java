@@ -8,8 +8,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -24,7 +24,7 @@ class MemberEventListenerTest {
     private ApplicationEventPublisher applicationEventPublisher;
     @InjectMocks
     private MemberEventListener memberEventListener;
-    @MockBean
+    @MockitoBean
     private SendMemberEmailService sendMemberEmailService;
 
     @Test

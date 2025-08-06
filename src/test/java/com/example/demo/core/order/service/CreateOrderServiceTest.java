@@ -15,9 +15,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.math.BigDecimal;
 
@@ -35,7 +35,7 @@ class CreateOrderServiceTest {
     @InjectMocks
     private CreateOrderService createOrderService;
 
-    @Mock
+    @MockitoBean
     private OrderNoGenerator orderNoGenerator;
 
     @AfterEach
