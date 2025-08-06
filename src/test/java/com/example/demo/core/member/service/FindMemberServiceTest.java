@@ -4,29 +4,26 @@ import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.core.member.domain.Member;
 import com.example.demo.core.member.result.FindMemberResult;
 import com.example.demo.infrastructure.persistence.member.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.example.demo.MemberFixtures.EMAIL;
 import static com.example.demo.MemberFixtures.MEMBER_ID;
 import static com.example.demo.MemberFixtures.MEMBER_NAME;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@IntegrationTest
 @DisplayName("FindMemberServiceTest")
+@IntegrationTest
+@RequiredArgsConstructor
 class FindMemberServiceTest {
 
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private FindMemberService findMemberService;
+    private final MemberRepository memberRepository;
+    private final FindMemberService findMemberService;
 
     @AfterEach
     void tearDown() {
@@ -66,10 +63,10 @@ class FindMemberServiceTest {
             @Test
             @DisplayName("Member를 리턴한다.")
             void it() {
-                FindMemberResult result = findMemberService.findByMemberId(memberId);
+                FindMemberResult actual = findMemberService.findByMemberId(memberId);
 
-                assertInstanceOf(FindMemberResult.class, result);
-                assertNotNull(result);
+                assertThat(actual).isNotNull();
+                assertThat(actual).isExactlyInstanceOf(FindMemberResult.class);
             }
         }
     }

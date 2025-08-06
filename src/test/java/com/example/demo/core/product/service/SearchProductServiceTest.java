@@ -4,36 +4,31 @@ import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.enums.product.ProductStatus;
 import com.example.demo.core.product.domain.FoodProduct;
-import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.product.param.SearchProductParam;
 import com.example.demo.core.product.result.SearchProductResult;
+import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import com.example.demo.infrastructure.persistence.stock.StockRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@IntegrationTest
 @DisplayName("SearchProductService")
+@IntegrationTest
+@RequiredArgsConstructor
 class SearchProductServiceTest extends TestDataInsertSupport {
 
-    @Autowired
-    private SearchProductService searchProductService;
-
-    @Autowired
-    private StockRepository stockRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
+    private final SearchProductService searchProductService;
+    private final StockRepository stockRepository;
+    private final ProductRepository productRepository;
 
     @AfterEach
     void tearDown() {
@@ -65,8 +60,8 @@ class SearchProductServiceTest extends TestDataInsertSupport {
             void it() {
                 final SearchProductResult actual = searchProductService.search(param);
 
-                assertInstanceOf(SearchProductResult.class, actual);
-                assertEquals(1, actual.getProducts().size());
+                assertThat(actual).isExactlyInstanceOf(SearchProductResult.class);
+                assertThat(actual.getProducts()).hasSize(1);
             }
         }
     }

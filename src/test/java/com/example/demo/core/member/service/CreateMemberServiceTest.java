@@ -5,27 +5,24 @@ import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.core.member.param.CreateMemberParam;
 import com.example.demo.core.member.result.FindMemberResult;
 import com.example.demo.infrastructure.persistence.member.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.example.demo.MemberFixtures.EMAIL;
 import static com.example.demo.MemberFixtures.MEMBER_ID;
 import static com.example.demo.MemberFixtures.MEMBER_NAME;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@IntegrationTest
 @DisplayName("CreateMemberService")
+@IntegrationTest
+@RequiredArgsConstructor
 class CreateMemberServiceTest {
 
-    @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private CreateMemberService createMemberService;
+    private final MemberRepository memberRepository;
+    private final CreateMemberService createMemberService;
 
     @AfterEach
     void tearDown() {
@@ -51,10 +48,10 @@ class CreateMemberServiceTest {
             void it() {
                 final FindMemberResult actual = createMemberService.create(param);
 
-                assertNotNull(actual);
-                assertEquals(MEMBER_ID, actual.getMemberId());
-                assertEquals(MEMBER_NAME, actual.getMemberName());
-                assertEquals(EMAIL, actual.getEmail());
+                assertThat(actual).isNotNull();
+                assertThat(actual.getMemberId()).isEqualTo(MEMBER_ID);
+                assertThat(actual.getMemberName()).isEqualTo(MEMBER_NAME);
+                assertThat(actual.getEmail()).isEqualTo(EMAIL);
             }
         }
     }
