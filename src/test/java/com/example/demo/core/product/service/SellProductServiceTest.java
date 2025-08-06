@@ -2,7 +2,6 @@ package com.example.demo.core.product.service;
 
 import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;
-import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.domain.FoodProduct;
 import com.example.demo.core.product.domain.Product;
@@ -10,12 +9,12 @@ import com.example.demo.core.product.result.FindProductResult;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import com.example.demo.infrastructure.persistence.stock.StockRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 
@@ -23,22 +22,20 @@ import static com.example.demo.ProductFixtures.PRODUCT_CODE;
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
 import static com.example.demo.common.enums.product.ProductStatus.SELLING;
 import static com.example.demo.common.enums.product.ProductStatus.SOLD_OUT;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static com.example.demo.common.exceptions.BusinessErrorCode.NOT_FOUND_PRODUCT;
+import static com.example.demo.common.exceptions.BusinessErrorCode.NOT_POSSIBLE_CHANGE_SELLING_AS_STOCK_QUANTITY_EMPTY;
+import static com.example.demo.common.exceptions.BusinessErrorCode.NOT_POSSIBLE_CHANGE_SELLING_AS_STOCK_QUANTITY_LESS_THAN_MIN_LIMIT_STOCK_QUANTITY;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@IntegrationTest
 @DisplayName("SellProductService")
+@IntegrationTest
+@RequiredArgsConstructor
 class SellProductServiceTest extends TestDataInsertSupport {
 
-    @Autowired
-    ProductRepository productRepository;
-
-    @Autowired
-    StockRepository stockRepository;
-
-    @Autowired
-    SellProductService sellProductService;
+    private final ProductRepository productRepository;
+    private final StockRepository stockRepository;
+    private final SellProductService sellProductService;
 
     @AfterEach
     void tearDown() {
@@ -57,11 +54,9 @@ class SellProductServiceTest extends TestDataInsertSupport {
             @Test
             @DisplayName("BusinessException을 던진다.")
             void it() {
-                BusinessException exception = assertThrows(BusinessException.class, () ->
-                    sellProductService.sell(PRODUCT_CODE)
-                );
-
-                assertEquals(BusinessErrorCode.NOT_FOUND_PRODUCT, exception.getBusinessErrorCode());
+                assertThatThrownBy(() -> sellProductService.sell(PRODUCT_CODE))
+                    .isExactlyInstanceOf(BusinessException.class)
+                    .extracting("businessErrorCode").isEqualTo(NOT_FOUND_PRODUCT);
             }
         }
 
@@ -85,14 +80,10 @@ class SellProductServiceTest extends TestDataInsertSupport {
                 @Test
                 @DisplayName("BusinessException을 던진다")
                 void it () {
-                    BusinessException exception = assertThrows(BusinessException.class, () ->
-                        sellProductService.sell(productCode)
-                    );
-
-                    assertEquals(
-                        BusinessErrorCode.NOT_POSSIBLE_CHANGE_SELLING_AS_STOCK_QUANTITY_EMPTY,
-                        exception.getBusinessErrorCode()
-                    );
+                    assertThatThrownBy(() -> sellProductService.sell(productCode))
+                        .isExactlyInstanceOf(BusinessException.class)
+                        .extracting("businessErrorCode")
+                        .isEqualTo(NOT_POSSIBLE_CHANGE_SELLING_AS_STOCK_QUANTITY_EMPTY);
                 }
             }
 
@@ -112,14 +103,10 @@ class SellProductServiceTest extends TestDataInsertSupport {
                 @Test
                 @DisplayName("BusinessException을 던진다.")
                 void it() {
-                    BusinessException exception = assertThrows(BusinessException.class, () ->
-                        sellProductService.sell(productCode)
-                    );
-
-                    assertEquals(
-                        BusinessErrorCode.NOT_POSSIBLE_CHANGE_SELLING_AS_STOCK_QUANTITY_LESS_THAN_MIN_LIMIT_STOCK_QUANTITY,
-                        exception.getBusinessErrorCode()
-                    );
+                    assertThatThrownBy(() -> sellProductService.sell(productCode))
+                        .isExactlyInstanceOf(BusinessException.class)
+                        .extracting("businessErrorCode")
+                        .isEqualTo(NOT_POSSIBLE_CHANGE_SELLING_AS_STOCK_QUANTITY_LESS_THAN_MIN_LIMIT_STOCK_QUANTITY);
                 }
             }
 
@@ -143,8 +130,8 @@ class SellProductServiceTest extends TestDataInsertSupport {
 
                     Product product = productRepository.findByProductCode(productCode).get();
 
-                    assertInstanceOf(FindProductResult.class, result);
-                    assertEquals(SELLING, product.getProductStatus());
+                    assertThat(result).isExactlyInstanceOf(FindProductResult.class);
+                    assertThat(product.getProductStatus()).isEqualTo(SELLING);
                 }
             }
         }

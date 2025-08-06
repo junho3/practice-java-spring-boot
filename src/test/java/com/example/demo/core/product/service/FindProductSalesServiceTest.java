@@ -9,30 +9,27 @@ import com.example.demo.core.product.result.FindProductSalesResult;
 import com.example.demo.infrastructure.persistence.product.ProductSalesRepository;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static io.github.resilience4j.circuitbreaker.CircuitBreaker.State.OPEN;
+import static org.assertj.core.api.Assertions.assertThat;
 
-@IntegrationTest
 @DisplayName("FindProductSalesService")
+@IntegrationTest
+@RequiredArgsConstructor
 class FindProductSalesServiceTest extends TestDataInsertSupport {
 
-    @Autowired
-    private ProductSalesRepository productSalesRepository;
-
-    @Autowired
-    private FindProductSalesService findProductSalesService;
-
-    @Autowired
-    private CircuitBreakerRegistry circuitBreakerRegistry;
+    private final ProductSalesRepository productSalesRepository;
+    private final FindProductSalesService findProductSalesService;
+    private final CircuitBreakerRegistry circuitBreakerRegistry;
 
     @AfterEach
     void tearDown() {
@@ -68,8 +65,8 @@ class FindProductSalesServiceTest extends TestDataInsertSupport {
 
                 final List<FindProductSalesResult> actual = findProductSalesService.top10(param);
 
-                assertEquals(10, actual.size());
-                assertEquals(11, actual.getFirst().salesQuantity());
+                assertThat(actual).hasSize(10);
+                assertThat(actual.getFirst().salesQuantity()).isEqualTo(11);
             }
         }
 
@@ -93,7 +90,7 @@ class FindProductSalesServiceTest extends TestDataInsertSupport {
                     findProductSalesService.top10(param);
                 }
 
-                assertEquals(CircuitBreaker.State.OPEN, circuitBreaker.getState());
+                assertThat(circuitBreaker.getState()).isEqualTo(OPEN);
             }
         }
     }

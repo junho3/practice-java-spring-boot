@@ -5,23 +5,22 @@ import com.example.demo.annotation.RepositoryTest;
 import com.example.demo.core.order.domain.OrderNo;
 import com.example.demo.core.order.result.OrderAggregateResult;
 import com.example.demo.infrastructure.persistence.order.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-@RepositoryTest
 @DisplayName("FindOrderService")
+@RepositoryTest
+@RequiredArgsConstructor
 class FindOrderServiceTest {
 
-    @Autowired
-    private OrderRepository orderRepository;
-
+    private final OrderRepository orderRepository;
     private FindOrderService sut;
 
     @BeforeEach

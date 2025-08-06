@@ -3,38 +3,36 @@ package com.example.demo.core.product.service;
 import com.example.demo.TestDataInsertSupport;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.common.enums.product.ProductStatus;
-import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.domain.FoodProduct;
 import com.example.demo.core.product.domain.Product;
 import com.example.demo.core.product.result.FindProductResult;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
 
 import static com.example.demo.ProductFixtures.PRODUCT_CODE;
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
 import static com.example.demo.common.enums.product.ProductStatus.SOLD_OUT;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static com.example.demo.common.exceptions.BusinessErrorCode.NOT_FOUND_PRODUCT;
+import static com.example.demo.common.exceptions.BusinessErrorCode.NOT_POSSIBLE_CHANGE_END_TO_SOLD_OUT;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@IntegrationTest
 @DisplayName("CreateProductService")
+@IntegrationTest
+@RequiredArgsConstructor
 class SoldOutProductServiceTest extends TestDataInsertSupport {
 
-    @Autowired
-    SoldOutProductService soldOutProductService;
-
-    @Autowired
-    ProductRepository productRepository;
+    private final SoldOutProductService soldOutProductService;
+    private final ProductRepository productRepository;
 
     @AfterEach
     void tearDown() {
@@ -52,11 +50,9 @@ class SoldOutProductServiceTest extends TestDataInsertSupport {
             @Test
             @DisplayName("BusinessException을 던진다.")
             void it() {
-                BusinessException exception = assertThrows(BusinessException.class, () ->
-                    soldOutProductService.soldOut(PRODUCT_CODE)
-                );
-
-                assertEquals(BusinessErrorCode.NOT_FOUND_PRODUCT, exception.getBusinessErrorCode());
+                assertThatThrownBy(() -> soldOutProductService.soldOut(PRODUCT_CODE))
+                    .isExactlyInstanceOf(BusinessException.class)
+                    .extracting("businessErrorCode").isEqualTo(NOT_FOUND_PRODUCT);
             }
         }
 
@@ -84,8 +80,8 @@ class SoldOutProductServiceTest extends TestDataInsertSupport {
 
                     Product product = productRepository.findByProductCode(productCode).get();
 
-                    assertInstanceOf(FindProductResult.class, result);
-                    assertEquals(SOLD_OUT, product.getProductStatus());
+                    assertThat(result).isExactlyInstanceOf(FindProductResult.class);
+                    assertThat(product.getProductStatus()).isEqualTo(SOLD_OUT);
                 }
             }
 
@@ -105,11 +101,10 @@ class SoldOutProductServiceTest extends TestDataInsertSupport {
                 @Test
                 @DisplayName("BusinessException을 던진다.")
                 void it() {
-                    BusinessException exception = assertThrows(BusinessException.class, () ->
-                        soldOutProductService.soldOut(productCode)
-                    );
-
-                    assertEquals(BusinessErrorCode.NOT_POSSIBLE_CHANGE_END_TO_SOLD_OUT, exception.getBusinessErrorCode());
+                    assertThatThrownBy(() -> soldOutProductService.soldOut(productCode))
+                        .isExactlyInstanceOf(BusinessException.class)
+                        .extracting("businessErrorCode")
+                        .isEqualTo(NOT_POSSIBLE_CHANGE_END_TO_SOLD_OUT);
                 }
             }
         }

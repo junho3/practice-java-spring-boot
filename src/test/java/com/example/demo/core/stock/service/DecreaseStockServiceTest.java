@@ -17,7 +17,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,7 +41,7 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
     @Autowired
     StockRepository stockRepository;
 
-    @MockBean
+    @MockitoBean
     SoldOutProductService soldOutProductService;
 
     @Autowired

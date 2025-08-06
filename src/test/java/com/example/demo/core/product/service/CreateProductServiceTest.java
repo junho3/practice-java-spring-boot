@@ -1,27 +1,28 @@
 package com.example.demo.core.product.service;
 
 import com.example.demo.annotation.IntegrationTest;
-import com.example.demo.common.exceptions.BusinessErrorCode;
 import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.domain.Product;
-import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.product.param.CreateProductParam;
+import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.infrastructure.kafka.product.ProductKafkaPublisher;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import com.example.demo.infrastructure.persistence.stock.StockRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.test.context.EmbeddedKafka;
 
 import static com.example.demo.ProductFixtures.PRODUCT_CODE;
 import static com.example.demo.ProductFixtures.PRODUCT_NAME;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static com.example.demo.common.exceptions.BusinessErrorCode.DUPLICATED_PRODUCT_CODE;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+@DisplayName("CreateProductService")
 @EmbeddedKafka(
     brokerProperties = {
         "listeners=PLAINTEXT://localhost:9092"
@@ -29,20 +30,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
     ports = { 9092 }
 )
 @IntegrationTest
-@DisplayName("CreateProductService")
+@RequiredArgsConstructor
 class CreateProductServiceTest {
-
-    @Autowired
-    private CreateProductService createProductService;
-
-    @Autowired
-    private ProductRepository productRepository;
-
-    @Autowired
-    private StockRepository stockRepository;
-
-    @Autowired
-    private ProductKafkaPublisher productKafkaPublisher;
+    private final CreateProductService createProductService;
+    private final ProductRepository productRepository;
+    private final StockRepository stockRepository;
+    private final ProductKafkaPublisher productKafkaPublisher;
 
     @AfterEach
     void tearDown() {
@@ -83,11 +76,11 @@ class CreateProductServiceTest {
 
                 Product product = productRepository.findByProductCode(productCode)
                     .orElseThrow();
-                assertEquals(productName, product.getProductName());
+                assertThat(product.getProductName()).isEqualTo(productName);
 
                 Stock stock = stockRepository.findByProductCode(productCode)
                         .orElseThrow();
-                assertEquals(quantity, stock.getQuantity());
+                assertThat(stock.getQuantity()).isEqualTo(quantity);
             }
         }
 
@@ -103,11 +96,9 @@ class CreateProductServiceTest {
             @Test
             @DisplayName("BusinessException을 던진다.")
             void it() {
-                BusinessException exception = assertThrows(BusinessException.class, () -> {
-                    createProductService.create(param);
-                });
-
-                assertEquals(BusinessErrorCode.DUPLICATED_PRODUCT_CODE, exception.getBusinessErrorCode());
+                assertThatThrownBy(() -> createProductService.create(param))
+                    .isExactlyInstanceOf(BusinessException.class)
+                    .extracting("businessErrorCode").isEqualTo(DUPLICATED_PRODUCT_CODE);
             }
         }
     }
