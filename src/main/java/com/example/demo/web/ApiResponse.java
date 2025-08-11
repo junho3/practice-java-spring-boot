@@ -46,7 +46,7 @@ public class ApiResponse<T> {
             '}';
     }
 
-    public static ApiResponse<Void> fail(String code, String message) {
+    public static <D> ApiResponse<D> fail(String code, String message) {
         return new ApiResponse<>(FALSE, code, message, null);
     }
 
