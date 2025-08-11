@@ -1,7 +1,9 @@
 package com.example.demo.web.v1.chat.request;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public record ChatRequest(
-    String query,
+    @NotEmpty String query,
     String model
 ) {
     public ChatRequest {

@@ -1,7 +1,10 @@
 package com.example.demo.core.chat.service;
 
+import com.example.demo.core.chat.ChatProviderException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.anthropic.AnthropicChatModel;
+import org.springframework.ai.anthropic.api.AnthropicApi;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -20,11 +23,12 @@ import java.util.List;
 public class ChatService {
 
     private final OpenAiApi openAiApi;
+    private final AnthropicApi anthropicApi;
 
     public ChatResponse openAiChat(
-        final String userInput,
-        final String systemMessage,
-        final String model
+            final String userInput,
+            final String systemMessage,
+            final String model
     ) {
         log.debug("OpenAI 챗 호출 시작 - 모델: {}", model);
 
@@ -51,7 +55,41 @@ public class ChatService {
             return chatModel.call(prompt);
         } catch (final Exception e) {
             log.error("OpenAI 챗 호출 중 오류 발생: {}", e.getMessage());
-            return null;
+            throw new ChatProviderException("LLM 응답 생성 중 오류 발생");
+        }
+    }
+
+    public ChatResponse anthropicApiChat(
+            final String userInput,
+            final String systemMessage,
+            final String model
+    ) {
+        log.debug("Anthropic 챗 호출 시작 - 모델: {}", model);
+
+        try {
+            // 메시지 구성
+            final List<Message> messages = List.of(
+                    new SystemMessage(systemMessage),
+                    new UserMessage(userInput)
+            );
+
+            // 챗 옵션 설정
+            final ChatOptions chatOptions = ChatOptions.builder()
+                    .model(model)
+                    .build();
+
+            // 프롬프트 생성
+            final Prompt prompt = new Prompt(messages, chatOptions);
+
+            // 챗 모델 생성 및 호출
+            final AnthropicChatModel chatModel = AnthropicChatModel.builder()
+                    .anthropicApi(anthropicApi)
+                    .build();
+
+            return chatModel.call(prompt);
+        } catch (final Exception e) {
+            log.error("Anthropic 챗 호출 중 오류 발생: {}", e.getMessage());
+            throw new ChatProviderException("LLM 응답 생성 중 오류 발생");
         }
     }
 }

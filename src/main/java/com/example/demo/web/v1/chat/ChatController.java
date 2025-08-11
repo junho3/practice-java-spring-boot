@@ -4,6 +4,7 @@ import com.example.demo.core.chat.service.ChatService;
 import com.example.demo.web.ApiResponse;
 import com.example.demo.web.v1.chat.request.ChatRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatResponse;
@@ -22,7 +23,7 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping("/query")
-    public ApiResponse<String> sendMessage(@RequestBody ChatRequest request) {
+    public ApiResponse<String> sendMessage(@Valid @RequestBody ChatRequest request) {
         log.info("Chat API 요청 받음: model= {}", request.model());
 
         final ChatResponse chatResponse = chatService.openAiChat(
@@ -30,12 +31,6 @@ public class ChatController {
             "You are a helpful AI assistant.",
             request.model()
         );
-
-        if (chatResponse == null) {
-            log.error("LLM 응답 생성 실패");
-
-            return ApiResponse.fail("ERROR", "LLM 응답 생성 중 오류 발생");
-        }
 
         return ApiResponse.success(chatResponse.getResult().getOutput().getText());
     }
