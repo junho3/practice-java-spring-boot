@@ -42,7 +42,7 @@ spring:
     problemdetails:
       enabled: true
   ai:
-    openai.api-key: ${OPENAI_API_KEY}
+    openai.api-key: OPENAI_API_KEY
 
 management:
   tracing:
