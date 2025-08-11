@@ -22,7 +22,7 @@ public class ChatController {
     private final ChatService chatService;
 
     @PostMapping("/query")
-    public ApiResponse<String> sendMessage(@RequestBody ChatRequest request) {
+    public ApiResponse<String> sendMessage(@Valid @RequestBody ChatRequest request) {
         log.info("Chat API 요청 받음: model= {}", request.model());
 
         final ChatResponse chatResponse = chatService.openAiChat(
