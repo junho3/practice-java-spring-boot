@@ -1,5 +1,6 @@
 package com.example.demo.core.chat.service;
 
+import com.example.demo.core.chat.ChatProviderException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.anthropic.AnthropicChatModel;
@@ -54,7 +55,7 @@ public class ChatService {
             return chatModel.call(prompt);
         } catch (final Exception e) {
             log.error("OpenAI 챗 호출 중 오류 발생: {}", e.getMessage());
-            return null;
+            throw new ChatProviderException("LLM 응답 생성 중 오류 발생");
         }
     }
 
@@ -88,7 +89,7 @@ public class ChatService {
             return chatModel.call(prompt);
         } catch (final Exception e) {
             log.error("Anthropic 챗 호출 중 오류 발생: {}", e.getMessage());
-            return null;
+            throw new ChatProviderException("LLM 응답 생성 중 오류 발생");
         }
     }
 }
