@@ -42,7 +42,7 @@ spring:
     problemdetails:
       enabled: true
   ai:
-    openai.api-key: "${OPENAI_API_KEY}" # ${OPENAI_API_KEY} 선언하면 github action 테스트 코드 CI에서 실패함. 원인은 모르겠음
+    openai.api-key: "OPENAI_API_KEY"
 
 management:
   tracing:
