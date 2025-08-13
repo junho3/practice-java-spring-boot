@@ -1,4 +1,4 @@
-package com.example.demo.config.ai;
+package com.example.demo.config.web.swagger;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -13,9 +13,9 @@ public class OpenApiConfig {
         return new OpenAPI()
             .info(
                 new Info()
-                    .title("Spring AI Tutorial API")
+                    .title("Java Spring Boot Tutorial Application")
                     .version("1.0")
-                    .description("Spring AI를 활용한 챗봇 API")
+                    .description("Java + Spring Boot 학습을 위한 애플리케이션")
             );
     }
 }
