@@ -68,6 +68,9 @@ dependencies {
     implementation 'org.springframework.ai:spring-ai-anthropic-spring-boot-starter'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
 
+    // PDF 처리 라이브러리
+    implementation 'org.apache.pdfbox:pdfbox:2.0.27'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
