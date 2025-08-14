@@ -35,13 +35,16 @@ public class RagController {
         @Parameter(description = "업로드할 PDF 파일", required = true)
         @RequestParam("file") MultipartFile file
     ) throws IOException {
-        // TempFile로 변환
         final File tempFile = File.createTempFile("upload_", ".pdf");
         log.info("임시 파일 경로 {}", tempFile.getAbsolutePath());
         file.transferTo(tempFile);
 
         final String text = ragService.uploadPdfFile(tempFile, file.getOriginalFilename());
 
-        System.out.println(text);
+        // TODO 컨트롤러에서 수행하는 임시 파일 생성 및 삭제를 서비스 레이어로 내리거나 다른 방법을 찾아야 함
+        if (tempFile.exists()) {
+            tempFile.delete();
+            log.info("임시 파일 삭제됨: {}", tempFile.getAbsolutePath());
+        }
     }
 }
