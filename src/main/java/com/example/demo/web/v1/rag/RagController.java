@@ -1,6 +1,6 @@
 package com.example.demo.web.v1.rag;
 
-import com.example.demo.core.rag.service.ExtractPdfFileService;
+import com.example.demo.core.rag.service.RagService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +24,7 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RequiredArgsConstructor
 public class RagController {
 
-    private final ExtractPdfFileService extractPdfFileService;
+    private final RagService ragService;
 
     @Operation(
         summary = "PDF 문서 업로드",
@@ -38,7 +38,7 @@ public class RagController {
         final File tempFile = File.createTempFile("upload_", ".pdf");
         file.transferTo(tempFile);
 
-        final String text = extractPdfFileService.extract(tempFile);
+        final String text = ragService.uploadPdfFile(tempFile, file.getOriginalFilename());
 
         System.out.println(text);
     }
