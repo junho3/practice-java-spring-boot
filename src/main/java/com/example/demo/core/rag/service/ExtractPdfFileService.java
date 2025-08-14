@@ -16,8 +16,7 @@ public class ExtractPdfFileService {
     public String extract(final File file) {
         log.info("PDF 텍스트 추출 시작: {}", file.getName());
 
-        try {
-            final PDDocument document = PDDocument.load(file);
+        try (final PDDocument document = PDDocument.load(file)) {
             log.info("PDF 문서 로드 성공: {} 페이지", document.getNumberOfPages());
 
             return new PDFTextStripper().getText(document);

@@ -35,7 +35,9 @@ public class RagController {
         @Parameter(description = "업로드할 PDF 파일", required = true)
         @RequestParam("file") MultipartFile file
     ) throws IOException {
+        // TempFile로 변환
         final File tempFile = File.createTempFile("upload_", ".pdf");
+        log.info("임시 파일 경로 {}", tempFile.getAbsolutePath());
         file.transferTo(tempFile);
 
         final String text = ragService.uploadPdfFile(tempFile, file.getOriginalFilename());
