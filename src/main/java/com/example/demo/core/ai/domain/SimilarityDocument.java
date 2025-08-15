@@ -1,8 +1,8 @@
-package com.example.demo.core.ai.result;
+package com.example.demo.core.ai.domain;
 
 import java.util.Map;
 
-public record DocumentSearchResult(
+public record SimilarityDocument(
     String id,
     String content,
     Map<String, Object> metadata,

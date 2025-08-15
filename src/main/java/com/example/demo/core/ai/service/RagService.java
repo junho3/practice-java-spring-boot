@@ -1,6 +1,6 @@
 package com.example.demo.core.ai.service;
 
-import com.example.demo.core.ai.result.DocumentSearchResult;
+import com.example.demo.core.ai.domain.SimilarityDocument;
 import com.example.demo.infrastructure.persistence.ai.VectorStoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +11,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -48,8 +49,20 @@ public class RagService {
         return documentId;
     }
 
-    public List<DocumentSearchResult> retrieve(final String question, final int maxResults) {
+    public List<SimilarityDocument> retrieve(final String question, final int maxResults) {
         log.info("검색 시작: {}, 최대 결과 수: {}", question, maxResults);
-        return vectorStoreRepository.similaritySearch(question, maxResults);
+        final List<Document> documents = vectorStoreRepository.similaritySearch(question, maxResults);
+
+        // 결과 매핑
+        return documents.stream()
+            .map(it -> new SimilarityDocument(
+                it.getMetadata().getOrDefault("id", "unknown").toString(),
+                it.getText() == null ? "" : it.getText(),
+                it.getMetadata().entrySet().stream()
+                    .filter(entry -> !"id".equals(entry.getKey()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
+                it.getScore() == null ? 0.0 : it.getScore()
+            ))
+            .toList();
     }
 }

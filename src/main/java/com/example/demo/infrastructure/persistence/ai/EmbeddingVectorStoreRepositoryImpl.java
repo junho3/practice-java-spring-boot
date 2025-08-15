@@ -1,6 +1,5 @@
 package com.example.demo.infrastructure.persistence.ai;
 
-import com.example.demo.core.ai.result.DocumentSearchResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.openai.OpenAiEmbeddingModel;
@@ -41,28 +40,24 @@ public class EmbeddingVectorStoreRepositoryImpl implements VectorStoreRepository
     }
 
     @Override
-    public List<DocumentSearchResult> similaritySearch(final String query, final int topK) {
+    public List<Document> similaritySearch(final String query, final int topK) {
         log.info("유사도 검색 시작 - 질의: {}, 최대 결과: {}", query, topK);
 
-        // 검색 요청 구성
-        final SearchRequest request = SearchRequest.builder()
-            .query(query)
-            .topK(topK)
-            .build();
-
         // 유사성 검색 실행
-        final List<Document> results = vectorStore.similaritySearch(request);
+        final List<Document> documents = vectorStore.similaritySearch(
+            SearchRequest.builder()
+                .query(query)
+                .topK(topK)
+                .build()
+        );
 
-        log.info("유사도 검색 완료 - 결과 수: {}", results.size());
+        if (documents == null) {
+            log.info("유사도 검색 완료 - 결과 없음");
+            return List.of();
+        }
 
-        // 결과 매핑
-        return results.stream()
-            .map(it -> new DocumentSearchResult(
-                it.getMetadata().get("id") == null ? "unknown" : it.getMetadata().get("id").toString(),
-                it.getText(),
-                it.getMetadata(),
-                it.getScore() == null ? 0.0 : it.getScore()
-            ))
-            .toList();
+        log.info("유사도 검색 완료 - 결과 수: {}", documents.size());
+
+        return documents;
     }
 }

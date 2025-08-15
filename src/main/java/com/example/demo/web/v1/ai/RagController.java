@@ -1,6 +1,6 @@
 package com.example.demo.web.v1.ai;
 
-import com.example.demo.core.ai.result.DocumentSearchResult;
+import com.example.demo.core.ai.domain.SimilarityDocument;
 import com.example.demo.core.ai.service.RagService;
 import com.example.demo.web.v1.ai.request.QueryRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,6 +60,6 @@ public class RagController {
     @PostMapping("/query")
     public void queryWithRag(@Valid @RequestBody QueryRequest request) {
         // 관련 문서 검색
-        final List<DocumentSearchResult> relevantDocs = ragService.retrieve(request.query(), request.maxResults());
+        final List<SimilarityDocument> relevantDocs = ragService.retrieve(request.query(), request.maxResults());
     }
 }
