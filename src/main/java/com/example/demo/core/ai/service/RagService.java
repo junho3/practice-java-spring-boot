@@ -1,5 +1,6 @@
 package com.example.demo.core.ai.service;
 
+import com.example.demo.core.ai.result.DocumentSearchResult;
 import com.example.demo.infrastructure.persistence.ai.VectorStoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,7 @@ import org.springframework.ai.document.Document;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -44,5 +46,10 @@ public class RagService {
         vectorStoreRepository.add(document);
 
         return documentId;
+    }
+
+    public List<DocumentSearchResult> retrieve(final String question, final int maxResults) {
+        log.info("검색 시작: {}, 최대 결과 수: {}", question, maxResults);
+        return vectorStoreRepository.similaritySearch(question, maxResults);
     }
 }

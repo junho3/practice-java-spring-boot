@@ -1,12 +1,16 @@
 package com.example.demo.web.v1.ai;
 
+import com.example.demo.core.ai.result.DocumentSearchResult;
 import com.example.demo.core.ai.service.RagService;
+import com.example.demo.web.v1.ai.request.QueryRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
@@ -46,5 +51,15 @@ public class RagController {
             tempFile.delete();
             log.info("임시 파일 삭제됨: {}", tempFile.getAbsolutePath());
         }
+    }
+
+    @Operation(
+        summary = "RAG 질의 수행",
+        description = "사용자 질문에 대해 관련 문서를 검색하고 RAG 기반 응답을 생성합니다."
+    )
+    @PostMapping("/query")
+    public void queryWithRag(@Valid @RequestBody QueryRequest request) {
+        // 관련 문서 검색
+        final List<DocumentSearchResult> relevantDocs = ragService.retrieve(request.query(), request.maxResults());
     }
 }

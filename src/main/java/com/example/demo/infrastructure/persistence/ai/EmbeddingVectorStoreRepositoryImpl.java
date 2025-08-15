@@ -1,9 +1,11 @@
 package com.example.demo.infrastructure.persistence.ai;
 
+import com.example.demo.core.ai.result.DocumentSearchResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.openai.OpenAiEmbeddingModel;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Repository;
@@ -36,5 +38,31 @@ public class EmbeddingVectorStoreRepositoryImpl implements VectorStoreRepository
         vectorStore.add(chunks);
 
         log.info("Vector 저장 완료 - ID {}", document.getMetadata().get("id"));
+    }
+
+    @Override
+    public List<DocumentSearchResult> similaritySearch(final String query, final int topK) {
+        log.info("유사도 검색 시작 - 질의: {}, 최대 결과: {}", query, topK);
+
+        // 검색 요청 구성
+        final SearchRequest request = SearchRequest.builder()
+            .query(query)
+            .topK(topK)
+            .build();
+
+        // 유사성 검색 실행
+        final List<Document> results = vectorStore.similaritySearch(request);
+
+        log.info("유사도 검색 완료 - 결과 수: {}", results.size());
+
+        // 결과 매핑
+        return results.stream()
+            .map(it -> new DocumentSearchResult(
+                it.getMetadata().get("id") == null ? "unknown" : it.getMetadata().get("id").toString(),
+                it.getText(),
+                it.getMetadata(),
+                it.getScore() == null ? 0.0 : it.getScore()
+            ))
+            .toList();
     }
 }
