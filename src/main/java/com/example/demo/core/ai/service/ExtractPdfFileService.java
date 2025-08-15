@@ -1,6 +1,6 @@
-package com.example.demo.core.rag.service;
+package com.example.demo.core.ai.service;
 
-import com.example.demo.core.rag.ExtractFileException;
+import com.example.demo.core.ai.ExtractFileException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;

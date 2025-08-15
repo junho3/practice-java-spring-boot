@@ -1,6 +1,6 @@
-package com.example.demo.web.v1.rag;
+package com.example.demo.web.v1.ai;
 
-import com.example.demo.core.rag.service.RagService;
+import com.example.demo.core.ai.service.RagService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

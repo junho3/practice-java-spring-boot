@@ -1,6 +1,6 @@
-package com.example.demo.core.rag.service;
+package com.example.demo.core.ai.service;
 
-import com.example.demo.infrastructure.persistence.rag.VectorStoreRepository;
+import com.example.demo.infrastructure.persistence.ai.VectorStoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;

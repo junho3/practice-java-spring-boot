@@ -1,4 +1,4 @@
-package com.example.demo.infrastructure.persistence.rag;
+package com.example.demo.infrastructure.persistence.ai;
 
 import org.springframework.ai.document.Document;
 

@@ -1,4 +1,4 @@
-package com.example.demo.infrastructure.persistence.rag;
+package com.example.demo.infrastructure.persistence.ai;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
