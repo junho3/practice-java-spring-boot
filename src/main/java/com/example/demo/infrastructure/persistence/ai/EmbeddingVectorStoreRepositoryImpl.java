@@ -1,9 +1,10 @@
-package com.example.demo.infrastructure.persistence.rag;
+package com.example.demo.infrastructure.persistence.ai;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.openai.OpenAiEmbeddingModel;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Repository;
@@ -36,5 +37,27 @@ public class EmbeddingVectorStoreRepositoryImpl implements VectorStoreRepository
         vectorStore.add(chunks);
 
         log.info("Vector 저장 완료 - ID {}", document.getMetadata().get("id"));
+    }
+
+    @Override
+    public List<Document> similaritySearch(final String query, final int topK) {
+        log.info("유사도 검색 시작 - 질의: {}, 최대 결과: {}", query, topK);
+
+        // 유사성 검색 실행
+        final List<Document> documents = vectorStore.similaritySearch(
+            SearchRequest.builder()
+                .query(query)
+                .topK(topK)
+                .build()
+        );
+
+        if (documents == null) {
+            log.info("유사도 검색 완료 - 결과 없음");
+            return List.of();
+        }
+
+        log.info("유사도 검색 완료 - 결과 수: {}", documents.size());
+
+        return documents;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.demo.web.v1.chat.request;
+package com.example.demo.web.v1.ai.request;
 
 import jakarta.validation.constraints.NotEmpty;
 

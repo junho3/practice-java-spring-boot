@@ -1,6 +1,6 @@
-package com.example.demo.core.chat.service;
+package com.example.demo.core.ai.service;
 
-import com.example.demo.core.chat.ChatProviderException;
+import com.example.demo.core.ai.ChatProviderException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.anthropic.AnthropicChatModel;

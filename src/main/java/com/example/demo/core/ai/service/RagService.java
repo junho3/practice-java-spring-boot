@@ -1,14 +1,17 @@
-package com.example.demo.core.rag.service;
+package com.example.demo.core.ai.service;
 
-import com.example.demo.infrastructure.persistence.rag.VectorStoreRepository;
+import com.example.demo.core.ai.domain.SimilarityDocument;
+import com.example.demo.infrastructure.persistence.ai.VectorStoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -44,5 +47,22 @@ public class RagService {
         vectorStoreRepository.add(document);
 
         return documentId;
+    }
+
+    public List<SimilarityDocument> retrieve(final String question, final int maxResults) {
+        log.info("검색 시작: {}, 최대 결과 수: {}", question, maxResults);
+        final List<Document> documents = vectorStoreRepository.similaritySearch(question, maxResults);
+
+        // 결과 매핑
+        return documents.stream()
+            .map(it -> new SimilarityDocument(
+                it.getMetadata().getOrDefault("id", "unknown").toString(),
+                it.getText() == null ? "" : it.getText(),
+                it.getMetadata().entrySet().stream()
+                    .filter(entry -> !"id".equals(entry.getKey()))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
+                it.getScore() == null ? 0.0 : it.getScore()
+            ))
+            .toList();
     }
 }

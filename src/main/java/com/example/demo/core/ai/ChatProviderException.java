@@ -1,4 +1,4 @@
-package com.example.demo.core.chat;
+package com.example.demo.core.ai;
 
 import java.io.Serial;
 

@@ -1,8 +1,8 @@
-package com.example.demo.web.v1.chat;
+package com.example.demo.web.v1.ai;
 
-import com.example.demo.core.chat.service.ChatService;
+import com.example.demo.core.ai.service.ChatService;
 import com.example.demo.web.ApiResponse;
-import com.example.demo.web.v1.chat.request.ChatRequest;
+import com.example.demo.web.v1.ai.request.ChatRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
