@@ -4,6 +4,7 @@ import com.example.demo.core.ai.domain.SimilarityDocument;
 import com.example.demo.infrastructure.persistence.ai.VectorStoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.document.Document;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
@@ -19,8 +21,16 @@ import java.util.stream.Collectors;
 public class RagService {
 
     private final ExtractPdfFileService extractPdfFileService;
+    private final ChatService chatService;
     private final VectorStoreRepository vectorStoreRepository;
 
+    /**
+     * PDF 파일을 업로드하여 벡터 스토어에 추가합니다.
+     *
+     * @param file PDF 파일
+     * @param originalFilename 원본 파일명
+     * @return 생성된 문서 ID
+     */
     public String uploadPdfFile(final File file, final String originalFilename) {
         // documentId 채번
         final String documentId = UUID.randomUUID().toString();
@@ -49,6 +59,13 @@ public class RagService {
         return documentId;
     }
 
+    /**
+     * 질의와 관련된 문서를 검색합니다.
+     *
+     * @param question 사용자 질문
+     * @param maxResults 최대 검색 결과 수
+     * @return 유사도 순으로 정렬된 문서 목록
+     */
     public List<SimilarityDocument> retrieve(final String question, final int maxResults) {
         log.info("검색 시작: {}, 최대 결과 수: {}", question, maxResults);
         final List<Document> documents = vectorStoreRepository.similaritySearch(question, maxResults);
@@ -64,5 +81,73 @@ public class RagService {
                 it.getScore() == null ? 0.0 : it.getScore()
             ))
             .toList();
+    }
+
+    /**
+     * 질문에 대한 답변을 생성하며, 참고한 정보 출처도 함께 제공합니다.
+     *
+     * @param question 사용자 질문
+     * @param relevantDocs 이미 검색된 관련 문서
+     * @param model 사용할 LLM 모델명
+     * @return 참고 출처가 포함된 응답
+     */
+    public String generateAnswerWithContexts(
+        final String question,
+        final List<SimilarityDocument> relevantDocs,
+        final String model
+    ) {
+        log.info("RAG 응답 생성 시작: {}, 모델: {}", question, model);
+
+        // 관련 문서 검색 또는 사용
+        if (relevantDocs.isEmpty()) {
+            log.info("관련 정보를 찾을 수 없음: {}", question);
+            return "관련 정보를 찾을 수 없습니다. 다른 질문을 시도하거나 관련 문서를 업로드해 주세요.";
+        }
+
+        // 문서 번호 부여 (응답에서 출처 표시를 위해)
+        final List<String> numberedDocs = IntStream.range(0, relevantDocs.size())
+            .mapToObj(i -> "[" + (i + 1) + "] " + relevantDocs.get(i).content())
+            .toList();
+
+        // 컨텍스트 결합
+        final String context = String.join("\n\n", numberedDocs);
+        log.info("컨텍스트 크기: {} 문자", context.length());
+
+        // 시스템 프롬프트 생성
+        final String systemPromptText = String.join("\n",
+            "당신은 지식 기반 Q&A 시스템입니다.",
+            "사용자의 질문에 대한 답변을 다음 정보를 바탕으로 생성해주세요.",
+            "주어진 정보에 답이 없다면 모른다고 솔직히 말해주세요.",
+            "답변 마지막에 사용한 정보의 출처 번호 [1], [2] 등을 반드시 포함해주세요.",
+            "정보:",
+            context
+        );
+
+        try {
+            ChatResponse response = chatService.openAiChat(question, systemPromptText, model);
+            log.debug("AI 응답 생성: {}", response);
+
+            String aiAnswer = response != null && response.getResult() != null &&
+                response.getResult().getOutput() != null &&
+                response.getResult().getOutput().getText() != null
+                ? response.getResult().getOutput().getText()
+                : "응답을 생성할 수 없습니다.";
+
+            // 참고 문서 정보 추가
+            StringBuilder sourceInfo = new StringBuilder("\n\n참고 문서:\n");
+            for (int i = 0; i < relevantDocs.size(); i++) {
+                SimilarityDocument doc = relevantDocs.get(i);
+                Object originalFilename = doc.metadata().getOrDefault("originalFilename", "Unknown file");
+                sourceInfo.append("[").append(i + 1).append("] ").append(originalFilename).append("\n");
+            }
+
+            return aiAnswer + sourceInfo;
+        } catch (Exception e) {
+            log.error("AI 모델 호출 중 오류 발생: {}", e.getMessage(), e);
+            return "AI 모델 호출 중 오류가 발생했습니다. 검색 결과만 제공합니다:\n\n" +
+                relevantDocs.stream()
+                    .map(SimilarityDocument::content)
+                    .collect(Collectors.joining("\n\n"));
+        }
     }
 }
