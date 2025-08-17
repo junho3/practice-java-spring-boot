@@ -61,5 +61,11 @@ public class RagController {
     public void queryWithRag(@Valid @RequestBody QueryRequest request) {
         // 관련 문서 검색
         final List<SimilarityDocument> relevantDocs = ragService.retrieve(request.query(), request.maxResults());
+
+        final String answer = ragService.generateAnswerWithContexts(
+            request.query(),
+            relevantDocs,
+            request.model()
+        );
     }
 }
