@@ -211,8 +211,8 @@ class DecreaseStockPessimisticLockServiceTest extends TestDataInsertSupport {
                     ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
                     CountDownLatch startLatch = new CountDownLatch(1);
                     CountDownLatch endLatch = new CountDownLatch(executeCount);
-                    AtomicInteger successCount = new AtomicInteger();
-                    AtomicInteger failureCount = new AtomicInteger();
+                    AtomicInteger successCount = new AtomicInteger(0);
+                    AtomicInteger failureCount = new AtomicInteger(0);
 
                     for (int i = 0; i < executeCount; i++) {
                         executorService.submit(() -> {
@@ -271,8 +271,8 @@ class DecreaseStockPessimisticLockServiceTest extends TestDataInsertSupport {
                     ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
                     CountDownLatch startLatch = new CountDownLatch(1);
                     CountDownLatch endLatch = new CountDownLatch(executeCount);
-                    AtomicInteger successCount = new AtomicInteger();
-                    AtomicInteger failureCount = new AtomicInteger();
+                    AtomicInteger successCount = new AtomicInteger(0);
+                    AtomicInteger failureCount = new AtomicInteger(0);
 
                     for (int i = 0; i < executeCount; i++) {
                         executorService.submit(() -> {
@@ -337,8 +337,8 @@ class DecreaseStockPessimisticLockServiceTest extends TestDataInsertSupport {
                     ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
                     CountDownLatch startLatch = new CountDownLatch(1);
                     CountDownLatch endLatch = new CountDownLatch(executeCount);
-                    AtomicInteger successCount = new AtomicInteger();
-                    AtomicInteger failureCount = new AtomicInteger();
+                    AtomicInteger successCount = new AtomicInteger(0);
+                    AtomicInteger failureCount = new AtomicInteger(0);
 
                     for (int i = 0; i < executeCount; i++) {
                         executorService.submit(() -> {
@@ -407,8 +407,8 @@ class DecreaseStockPessimisticLockServiceTest extends TestDataInsertSupport {
                     ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
                     CountDownLatch startLatch = new CountDownLatch(1);
                     CountDownLatch endLatch = new CountDownLatch(executeCount);
-                    AtomicInteger successCount = new AtomicInteger();
-                    AtomicInteger failureCount = new AtomicInteger();
+                    AtomicInteger successCount = new AtomicInteger(0);
+                    AtomicInteger failureCount = new AtomicInteger(0);
 
                     for (int i = 0; i < executeCount; i++) {
                         executorService.submit(() -> {
