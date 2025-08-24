@@ -23,19 +23,19 @@ public class DecreaseStockService {
     private final SoldOutProductService soldOutProductService;
 
     public void decrease(final DecreaseStockParam param) {
-        param.getStocks()
+        param.stocks()
             .stream()
-            .sorted(Comparator.comparing(DecreaseStockParam.Stock::getProductCode))
+            .sorted(Comparator.comparing(DecreaseStockParam.Stock::productCode))
             .collect(Collectors.toCollection(LinkedHashSet::new))
             .forEach(item -> {
-                    Stock decreasedStock = stockRepository.findByProductCodeForUpdate(item.getProductCode())
+                    Stock decreasedStock = stockRepository.findByProductCodeForUpdate(item.productCode())
                         .orElseThrow()
-                        .decrease(item.getQuantity());
+                        .decrease(item.quantity());
 
                     log.info("[Decrease Stock] stockId: {} quantity: {}", decreasedStock.getStockId(), decreasedStock.getQuantity());
 
                     if (decreasedStock.isLimitQuantity()) {
-                        soldOutProductService.soldOut(item.getProductCode());
+                        soldOutProductService.soldOut(item.productCode());
                     }
                 }
             );
