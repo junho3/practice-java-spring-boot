@@ -34,11 +34,11 @@ import static org.mockito.Mockito.when;
 
 @IntegrationTest
 @RequiredArgsConstructor
-@DisplayName("DecreaseStockService")
-class DecreaseStockServiceTest extends TestDataInsertSupport {
+@DisplayName("DecreaseStockPessimisticLockService")
+class DecreaseStockPessimisticLockServiceTest extends TestDataInsertSupport {
 
     private final StockRepository stockRepository;
-    private final DecreaseStockService decreaseStockService;
+    private final DecreaseStockPessimisticLockService sut;
 
     @MockitoBean
     SoldOutProductService soldOutProductService;
@@ -84,7 +84,7 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @Test
                 @DisplayName("정상적으로 재고를 차감하고, 재고가 모두 소진된 상품은 SoldOut()을 호출한다.")
                 void it() {
-                    decreaseStockService.decrease(param);
+                    sut.decrease(param);
 
                     List<Stock> actual = jpaQueryFactory.selectFrom(QStock.stock)
                         .where(QStock.stock.productCode.in(List.of("A202307300130", "A202307300131")))
@@ -122,7 +122,7 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @Test
                 @DisplayName("InvalidStockQuantityException을 던지고, 차감한 재고를 롤백한다.")
                 void it() {
-                    assertThatThrownBy(() -> decreaseStockService.decrease(param))
+                    assertThatThrownBy(() -> sut.decrease(param))
                         .isExactlyInstanceOf(InvalidStockQuantityException.class)
                         .extracting("businessErrorCode")
                         .isEqualTo(INVALID_STOCK_QUANTITY);
@@ -161,7 +161,7 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @Test
                 @DisplayName("BusinessException을 던지고, 차감한 재고를 롤백한다.")
                 void it() {
-                    assertThatThrownBy(() -> decreaseStockService.decrease(param))
+                    assertThatThrownBy(() -> sut.decrease(param))
                         .isExactlyInstanceOf(InvalidStockQuantityException.class)
                         .extracting("businessErrorCode")
                         .isEqualTo(INVALID_STOCK_QUANTITY);
@@ -211,14 +211,14 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
                     CountDownLatch startLatch = new CountDownLatch(1);
                     CountDownLatch endLatch = new CountDownLatch(executeCount);
-                    AtomicInteger successCount = new AtomicInteger();
-                    AtomicInteger failureCount = new AtomicInteger();
+                    AtomicInteger successCount = new AtomicInteger(0);
+                    AtomicInteger failureCount = new AtomicInteger(0);
 
                     for (int i = 0; i < executeCount; i++) {
                         executorService.submit(() -> {
                                 try {
                                     startLatch.await();
-                                    decreaseStockService.decrease(param);
+                                    sut.decrease(param);
                                     successCount.incrementAndGet();
                                 } catch (Exception e) {
                                     failureCount.incrementAndGet();
@@ -271,14 +271,14 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
                     CountDownLatch startLatch = new CountDownLatch(1);
                     CountDownLatch endLatch = new CountDownLatch(executeCount);
-                    AtomicInteger successCount = new AtomicInteger();
-                    AtomicInteger failureCount = new AtomicInteger();
+                    AtomicInteger successCount = new AtomicInteger(0);
+                    AtomicInteger failureCount = new AtomicInteger(0);
 
                     for (int i = 0; i < executeCount; i++) {
                         executorService.submit(() -> {
                                 try {
                                     startLatch.await();
-                                    decreaseStockService.decrease(param);
+                                    sut.decrease(param);
                                     successCount.incrementAndGet();
                                 } catch (Exception e) {
                                     failureCount.incrementAndGet();
@@ -337,14 +337,14 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
                     CountDownLatch startLatch = new CountDownLatch(1);
                     CountDownLatch endLatch = new CountDownLatch(executeCount);
-                    AtomicInteger successCount = new AtomicInteger();
-                    AtomicInteger failureCount = new AtomicInteger();
+                    AtomicInteger successCount = new AtomicInteger(0);
+                    AtomicInteger failureCount = new AtomicInteger(0);
 
                     for (int i = 0; i < executeCount; i++) {
                         executorService.submit(() -> {
                                 try {
                                     startLatch.await();
-                                    decreaseStockService.decrease(param);
+                                    sut.decrease(param);
                                     successCount.incrementAndGet();
                                 } catch (Exception e) {
                                     failureCount.incrementAndGet();
@@ -407,14 +407,14 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
                     CountDownLatch startLatch = new CountDownLatch(1);
                     CountDownLatch endLatch = new CountDownLatch(executeCount);
-                    AtomicInteger successCount = new AtomicInteger();
-                    AtomicInteger failureCount = new AtomicInteger();
+                    AtomicInteger successCount = new AtomicInteger(0);
+                    AtomicInteger failureCount = new AtomicInteger(0);
 
                     for (int i = 0; i < executeCount; i++) {
                         executorService.submit(() -> {
                                 try {
                                     startLatch.await();
-                                    decreaseStockService.decrease(param);
+                                    sut.decrease(param);
                                     successCount.incrementAndGet();
                                 } catch (Exception e) {
                                     failureCount.incrementAndGet();
