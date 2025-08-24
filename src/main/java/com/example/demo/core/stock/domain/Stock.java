@@ -1,7 +1,5 @@
 package com.example.demo.core.stock.domain;
 
-import com.example.demo.common.exceptions.BusinessErrorCode;
-import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.config.persistence.AuditEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -42,11 +40,11 @@ public class Stock extends AuditEntity {
         long decreasedQuantity = this.quantity - quantity;
 
         if (decreasedQuantity < this.minLimitQuantity) {
-            throw new BusinessException(BusinessErrorCode.INVALID_STOCK_QUANTITY);
+            throw new InvalidStockQuantityException();
         }
 
         if (decreasedQuantity < 0) {
-            throw new BusinessException(BusinessErrorCode.INVALID_STOCK_QUANTITY);
+            throw new InvalidStockQuantityException();
         }
 
         this.quantity = decreasedQuantity;

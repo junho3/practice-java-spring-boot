@@ -3,9 +3,9 @@ package com.example.demo.core.stock.service;
 import com.example.demo.TestDataInsertSupport;
 import com.example.demo.TestFixtures;
 import com.example.demo.annotation.IntegrationTest;
-import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.result.FindProductResult;
 import com.example.demo.core.product.service.SoldOutProductService;
+import com.example.demo.core.stock.domain.InvalidStockQuantityException;
 import com.example.demo.core.stock.domain.QStock;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.stock.param.DecreaseStockParam;
@@ -120,10 +120,10 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 }
 
                 @Test
-                @DisplayName("BusinessException을 던지고, 차감한 재고를 롤백한다.")
+                @DisplayName("InvalidStockQuantityException을 던지고, 차감한 재고를 롤백한다.")
                 void it() {
                     assertThatThrownBy(() -> decreaseStockService.decrease(param))
-                        .isExactlyInstanceOf(BusinessException.class)
+                        .isExactlyInstanceOf(InvalidStockQuantityException.class)
                         .extracting("businessErrorCode")
                         .isEqualTo(INVALID_STOCK_QUANTITY);
 
@@ -162,7 +162,7 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @DisplayName("BusinessException을 던지고, 차감한 재고를 롤백한다.")
                 void it() {
                     assertThatThrownBy(() -> decreaseStockService.decrease(param))
-                        .isExactlyInstanceOf(BusinessException.class)
+                        .isExactlyInstanceOf(InvalidStockQuantityException.class)
                         .extracting("businessErrorCode")
                         .isEqualTo(INVALID_STOCK_QUANTITY);
 
