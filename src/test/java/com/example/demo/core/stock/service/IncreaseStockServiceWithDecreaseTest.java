@@ -32,7 +32,7 @@ class IncreaseStockServiceWithDecreaseTest extends TestDataInsertSupport {
     IncreaseStockService increaseStockService;
 
     @Autowired
-    DecreaseStockService decreaseStockService;
+    DecreaseStockPessimisticLockService decreaseStockPessimisticLockService;
 
     @Autowired
     StockRepository stockRepository;
@@ -90,7 +90,7 @@ class IncreaseStockServiceWithDecreaseTest extends TestDataInsertSupport {
                     executorService.submit(() -> {
                             try {
                                 increaseStockService.increase(increaseStockParam);
-                                decreaseStockService.decrease(decreaseStockParam);
+                                decreaseStockPessimisticLockService.decrease(decreaseStockParam);
                             } finally {
                                 latch.countDown();
                             }
