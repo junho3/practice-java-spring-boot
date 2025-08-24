@@ -20,10 +20,11 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 
     @Modifying
     @Query(
-        value =
-            " UPDATE stock SET quantity = (quantity - :quantity) " +
-            " WHERE product_code = :productCode " +
-            " AND quantity >= :quantity ",
+        value = """
+            UPDATE stock SET quantity = (quantity - :quantity)
+            WHERE product_code = :productCode
+            AND quantity >= :quantity
+            """,
         nativeQuery = true
     )
     int decreaseQuantity(
