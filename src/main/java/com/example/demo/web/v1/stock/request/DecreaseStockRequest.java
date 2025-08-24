@@ -1,32 +1,21 @@
 package com.example.demo.web.v1.stock.request;
 
 import com.example.demo.core.stock.param.DecreaseStockParam;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class DecreaseStockRequest {
+public record DecreaseStockRequest(@Valid @Size(min = 1) Set<Stock> stocks) {
 
-    @NotEmpty
-    private Set<Stock> stocks;
-
-    @Getter
-    public static class Stock {
-
-        private final String productCode;
-        private final long quantity;
-
-        public Stock(String productCode, long quantity) {
-            this.productCode = productCode;
-            this.quantity = quantity;
-        }
-
+    public record Stock(
+        @NotNull @NotEmpty String productCode,
+        @Positive long quantity
+    ) {
         public DecreaseStockParam.Stock toParam() {
             return new DecreaseStockParam.Stock(productCode, quantity);
         }

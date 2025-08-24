@@ -1,27 +1,24 @@
 package com.example.demo.core.stock.param;
 
-import lombok.Getter;
-
+import java.util.Objects;
 import java.util.Set;
 
-@Getter
-public class DecreaseStockParam {
+public record DecreaseStockParam(Set<Stock> stocks) {
 
-    private final Set<Stock> stocks;
+    public record Stock(
+        String productCode,
+        long quantity
+    ) {
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            Stock stock = (Stock) o;
+            return Objects.equals(productCode, stock.productCode);
+        }
 
-    public DecreaseStockParam(Set<Stock> stocks) {
-        this.stocks = stocks;
-    }
-
-    @Getter
-    public static class Stock {
-
-        private final String productCode;
-        private final long quantity;
-
-        public Stock(String productCode, long quantity) {
-            this.productCode = productCode;
-            this.quantity = quantity;
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(productCode);
         }
     }
 }

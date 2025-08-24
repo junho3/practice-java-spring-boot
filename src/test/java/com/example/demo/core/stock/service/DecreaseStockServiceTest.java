@@ -1,51 +1,47 @@
 package com.example.demo.core.stock.service;
 
 import com.example.demo.TestDataInsertSupport;
+import com.example.demo.TestFixtures;
 import com.example.demo.annotation.IntegrationTest;
-import com.example.demo.common.enums.product.ProductStatus;
-import com.example.demo.common.exceptions.BusinessErrorCode;
-import com.example.demo.common.exceptions.BusinessException;
 import com.example.demo.core.product.result.FindProductResult;
 import com.example.demo.core.product.service.SoldOutProductService;
+import com.example.demo.core.stock.domain.InvalidStockQuantityException;
 import com.example.demo.core.stock.domain.QStock;
 import com.example.demo.core.stock.domain.Stock;
 import com.example.demo.core.stock.param.DecreaseStockParam;
 import com.example.demo.infrastructure.persistence.stock.StockRepository;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.example.demo.ProductFixtures.PRODUCT_NAME;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.times;
+import static com.example.demo.common.exceptions.BusinessErrorCode.INVALID_STOCK_QUANTITY;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @IntegrationTest
+@RequiredArgsConstructor
 @DisplayName("DecreaseStockService")
 class DecreaseStockServiceTest extends TestDataInsertSupport {
 
-    @Autowired
-    StockRepository stockRepository;
+    private final StockRepository stockRepository;
+    private final DecreaseStockService decreaseStockService;
 
     @MockitoBean
     SoldOutProductService soldOutProductService;
-
-    @Autowired
-    DecreaseStockService decreaseStockService;
 
     @AfterEach
     void tearDown() {
@@ -80,14 +76,8 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     saveAll(stocks);
 
                     when(soldOutProductService.soldOut("A202307300130")).thenReturn(
-                        new FindProductResult(
-                            "A202307300130",
-                            PRODUCT_NAME,
-                            ProductStatus.SOLD_OUT,
-                            100,
-                            LocalDateTime.now(),
-                            LocalDateTime.now()
-                        )
+                        TestFixtures.get().giveMeBuilder(FindProductResult.class)
+                            .sample()
                     );
                 }
 
@@ -96,16 +86,17 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 void it() {
                     decreaseStockService.decrease(param);
 
-                    List<Stock> results = jpaQueryFactory.selectFrom(QStock.stock)
+                    List<Stock> actual = jpaQueryFactory.selectFrom(QStock.stock)
                         .where(QStock.stock.productCode.in(List.of("A202307300130", "A202307300131")))
                         .fetch();
 
-                    assertAll(
-                        () -> assertEquals(0, results.get(0).getQuantity()),
-                        () -> assertEquals(5, results.get(1).getQuantity()),
-                        () -> verify(soldOutProductService, times(1)).soldOut("A202307300130"),
-                        () -> verify(soldOutProductService, times(0)).soldOut("A202307300131")
-                    );
+                    assertSoftly(it -> {
+                        it.assertThat(actual.getFirst().getQuantity()).isEqualTo(0);
+                        it.assertThat(actual.get(1).getQuantity()).isEqualTo(5);
+                    });
+
+                    verify(soldOutProductService).soldOut("A202307300130");
+                    verify(soldOutProductService, never()).soldOut("A202307300131");
                 }
             }
 
@@ -129,21 +120,21 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 }
 
                 @Test
-                @DisplayName("BusinessException을 던지고, 차감한 재고를 롤백한다.")
+                @DisplayName("InvalidStockQuantityException을 던지고, 차감한 재고를 롤백한다.")
                 void it() {
-                    BusinessException exception = assertThrows(BusinessException.class, () -> {
-                        decreaseStockService.decrease(param);
-                    });
+                    assertThatThrownBy(() -> decreaseStockService.decrease(param))
+                        .isExactlyInstanceOf(InvalidStockQuantityException.class)
+                        .extracting("businessErrorCode")
+                        .isEqualTo(INVALID_STOCK_QUANTITY);
 
-                    List<Stock> results = jpaQueryFactory.selectFrom(QStock.stock)
+                    List<Stock> actual = jpaQueryFactory.selectFrom(QStock.stock)
                         .where(QStock.stock.productCode.in(List.of("A202307300132", "A202307300133")))
                         .fetch();
 
-                    assertAll(
-                        () -> assertEquals(BusinessErrorCode.INVALID_STOCK_QUANTITY, exception.getBusinessErrorCode()),
-                        () -> assertEquals(10, results.get(0).getQuantity()),
-                        () -> assertEquals(0, results.get(1).getQuantity())
-                    );
+                    assertSoftly(it -> {
+                        it.assertThat(actual.getFirst().getQuantity()).isEqualTo(10);
+                        it.assertThat(actual.get(1).getQuantity()).isEqualTo(0);
+                    });
                 }
             }
 
@@ -170,28 +161,29 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @Test
                 @DisplayName("BusinessException을 던지고, 차감한 재고를 롤백한다.")
                 void it() {
-                    BusinessException exception = assertThrows(BusinessException.class, () -> {
-                        decreaseStockService.decrease(param);
-                    });
+                    assertThatThrownBy(() -> decreaseStockService.decrease(param))
+                        .isExactlyInstanceOf(InvalidStockQuantityException.class)
+                        .extracting("businessErrorCode")
+                        .isEqualTo(INVALID_STOCK_QUANTITY);
 
-                    List<Stock> results = jpaQueryFactory.selectFrom(QStock.stock)
+                    List<Stock> actual = jpaQueryFactory.selectFrom(QStock.stock)
                         .where(QStock.stock.productCode.in(List.of("A202307300140", "A202307300141")))
                         .fetch();
 
-                    assertAll(
-                        () -> assertEquals(BusinessErrorCode.INVALID_STOCK_QUANTITY, exception.getBusinessErrorCode()),
-                        () -> assertEquals(10, results.get(0).getQuantity()),
-                        () -> assertEquals(10, results.get(1).getQuantity())
-                    );
+                    assertSoftly(it -> {
+                        it.assertThat(actual.getFirst().getQuantity()).isEqualTo(10);
+                        it.assertThat(actual.get(1).getQuantity()).isEqualTo(10);
+                    });
                 }
             }
         }
 
         @Nested
-        @DisplayName("동시에 10번의 재고를 차감했을 때")
+        @DisplayName("동시에 총 10번의 재고를 차감했을 때")
         class Context_tenTimesAsTheSameTime {
 
-            int threadCount = 10;
+            int threadCount = 5; // 스레드 개수
+            int executeCount = 10; // 수행 회수
 
             @Nested
             @DisplayName("재고가 충분할 경우")
@@ -216,30 +208,41 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @Test
                 @DisplayName("정상적으로 50개씩 재고를 차감한다.")
                 void it() throws InterruptedException {
-                    ExecutorService executorService = Executors.newFixedThreadPool(5);
-                    CountDownLatch latch = new CountDownLatch(threadCount);
+                    ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+                    CountDownLatch startLatch = new CountDownLatch(1);
+                    CountDownLatch endLatch = new CountDownLatch(executeCount);
+                    AtomicInteger successCount = new AtomicInteger();
+                    AtomicInteger failureCount = new AtomicInteger();
 
-                    for (int i = 0; i < threadCount; i++) {
+                    for (int i = 0; i < executeCount; i++) {
                         executorService.submit(() -> {
                                 try {
+                                    startLatch.await();
                                     decreaseStockService.decrease(param);
+                                    successCount.incrementAndGet();
+                                } catch (Exception e) {
+                                    failureCount.incrementAndGet();
                                 } finally {
-                                    latch.countDown();
+                                    endLatch.countDown();
                                 }
                             }
                         );
                     }
 
-                    latch.await();
+                    startLatch.countDown();
+                    endLatch.await();
+                    executorService.shutdown();
 
-                    List<Stock> results = jpaQueryFactory.selectFrom(QStock.stock)
+                    List<Stock> actual = jpaQueryFactory.selectFrom(QStock.stock)
                         .where(QStock.stock.productCode.in(List.of("A202307300134", "A202307300135")))
                         .fetch();
 
-                    assertAll(
-                        () -> assertEquals(50, results.get(0).getQuantity()),
-                        () -> assertEquals(50, results.get(1).getQuantity())
-                    );
+                    assertSoftly(it -> {
+                        it.assertThat(successCount.get()).isEqualTo(10);
+                        it.assertThat(failureCount.get()).isEqualTo(0);
+                        it.assertThat(actual.getFirst().getQuantity()).isEqualTo(50);
+                        it.assertThat(actual.get(1).getQuantity()).isEqualTo(50);
+                    });
                 }
             }
 
@@ -265,29 +268,41 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                 @Test
                 @DisplayName("BusinessException을 던지고, 마지막 차감 실패한 재고를 롤백하여 4개가 남는다.")
                 void it() throws InterruptedException {
-                    ExecutorService executorService = Executors.newFixedThreadPool(5);
-                    CountDownLatch latch = new CountDownLatch(threadCount);
+                    ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+                    CountDownLatch startLatch = new CountDownLatch(1);
+                    CountDownLatch endLatch = new CountDownLatch(executeCount);
+                    AtomicInteger successCount = new AtomicInteger();
+                    AtomicInteger failureCount = new AtomicInteger();
 
-                    for (int i = 0; i < threadCount; i++) {
+                    for (int i = 0; i < executeCount; i++) {
                         executorService.submit(() -> {
                                 try {
+                                    startLatch.await();
                                     decreaseStockService.decrease(param);
+                                    successCount.incrementAndGet();
+                                } catch (Exception e) {
+                                    failureCount.incrementAndGet();
                                 } finally {
-                                    latch.countDown();
+                                    endLatch.countDown();
                                 }
                             }
                         );
                     }
-                    latch.await();
 
-                    List<Stock> results = jpaQueryFactory.selectFrom(QStock.stock)
+                    startLatch.countDown();
+                    endLatch.await();
+                    executorService.shutdown();
+
+                    List<Stock> actual = jpaQueryFactory.selectFrom(QStock.stock)
                         .where(QStock.stock.productCode.in(List.of("A202307300136", "A202307300137")))
                         .fetch();
 
-                    assertAll(
-                        () -> assertEquals(4, results.get(0).getQuantity()),
-                        () -> assertEquals(4, results.get(1).getQuantity())
-                    );
+                    assertSoftly(it -> {
+                        it.assertThat(successCount.get()).isEqualTo(9);
+                        it.assertThat(failureCount.get()).isEqualTo(1);
+                        it.assertThat(actual.getFirst().getQuantity()).isEqualTo(4);
+                        it.assertThat(actual.get(1).getQuantity()).isEqualTo(4);
+                    });
                 }
             }
 
@@ -311,46 +326,52 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                     saveAll(stocks);
 
                     when(soldOutProductService.soldOut("A202307300138")).thenReturn(
-                        new FindProductResult(
-                            "A202307300138",
-                            PRODUCT_NAME,
-                            ProductStatus.SOLD_OUT,
-                            100,
-                            LocalDateTime.now(),
-                            LocalDateTime.now()
-                        )
+                        TestFixtures.get().giveMeBuilder(FindProductResult.class)
+                            .sample()
                     );
                 }
 
                 @Test
                 @DisplayName("정상적으로 50개씩 재고를 차감하고, 재고가 모두 소진된 상품은 SoldOut()을 호출한다.")
                 void it() throws InterruptedException {
-                    ExecutorService executorService = Executors.newFixedThreadPool(5);
-                    CountDownLatch latch = new CountDownLatch(threadCount);
+                    ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+                    CountDownLatch startLatch = new CountDownLatch(1);
+                    CountDownLatch endLatch = new CountDownLatch(executeCount);
+                    AtomicInteger successCount = new AtomicInteger();
+                    AtomicInteger failureCount = new AtomicInteger();
 
-                    for (int i = 0; i < threadCount; i++) {
+                    for (int i = 0; i < executeCount; i++) {
                         executorService.submit(() -> {
                                 try {
+                                    startLatch.await();
                                     decreaseStockService.decrease(param);
+                                    successCount.incrementAndGet();
+                                } catch (Exception e) {
+                                    failureCount.incrementAndGet();
                                 } finally {
-                                    latch.countDown();
+                                    endLatch.countDown();
                                 }
                             }
                         );
                     }
 
-                    latch.await();
+                    startLatch.countDown();
+                    endLatch.await();
+                    executorService.shutdown();
 
-                    List<Stock> results = jpaQueryFactory.selectFrom(QStock.stock)
+                    List<Stock> actual = jpaQueryFactory.selectFrom(QStock.stock)
                         .where(QStock.stock.productCode.in(List.of("A202307300138", "A202307300139")))
                         .fetch();
 
-                    assertAll(
-                        () -> assertEquals(0, results.get(0).getQuantity()),
-                        () -> assertEquals(1, results.get(1).getQuantity()),
-                        () -> verify(soldOutProductService, times(1)).soldOut("A202307300138"),
-                        () -> verify(soldOutProductService, times(0)).soldOut("A202307300139")
-                    );
+                    assertSoftly(it -> {
+                        it.assertThat(successCount.get()).isEqualTo(10);
+                        it.assertThat(failureCount.get()).isEqualTo(0);
+                        it.assertThat(actual.getFirst().getQuantity()).isEqualTo(0);
+                        it.assertThat(actual.get(1).getQuantity()).isEqualTo(1);
+                    });
+
+                    verify(soldOutProductService).soldOut("A202307300138");
+                    verify(soldOutProductService, never()).soldOut("A202307300139");
                 }
             }
 
@@ -371,49 +392,56 @@ class DecreaseStockServiceTest extends TestDataInsertSupport {
                         new Stock("A202307300142", 100, 50),
                         new Stock("A202307300143", 100, 49)
                     );
+
                     saveAll(stocks);
 
                     when(soldOutProductService.soldOut("A202307300142")).thenReturn(
-                        new FindProductResult(
-                            "A202307300142",
-                            PRODUCT_NAME,
-                            ProductStatus.SOLD_OUT,
-                            100,
-                            LocalDateTime.now(),
-                            LocalDateTime.now()
-                        )
+                        TestFixtures.get().giveMeBuilder(FindProductResult.class)
+                            .sample()
                     );
                 }
 
                 @Test
                 @DisplayName("정상적으로 50개씩 재고를 차감하고, 최소 제한 재고수량인 상품은 SoldOut()을 호출한다.")
                 void it() throws InterruptedException {
-                    ExecutorService executorService = Executors.newFixedThreadPool(5);
-                    CountDownLatch latch = new CountDownLatch(threadCount);
+                    ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+                    CountDownLatch startLatch = new CountDownLatch(1);
+                    CountDownLatch endLatch = new CountDownLatch(executeCount);
+                    AtomicInteger successCount = new AtomicInteger();
+                    AtomicInteger failureCount = new AtomicInteger();
 
-                    for (int i = 0; i < threadCount; i++) {
+                    for (int i = 0; i < executeCount; i++) {
                         executorService.submit(() -> {
                                 try {
+                                    startLatch.await();
                                     decreaseStockService.decrease(param);
+                                    successCount.incrementAndGet();
+                                } catch (Exception e) {
+                                    failureCount.incrementAndGet();
                                 } finally {
-                                    latch.countDown();
+                                    endLatch.countDown();
                                 }
                             }
                         );
                     }
 
-                    latch.await();
+                    startLatch.countDown();
+                    endLatch.await();
+                    executorService.shutdown();
 
-                    List<Stock> results = jpaQueryFactory.selectFrom(QStock.stock)
+                    List<Stock> actual = jpaQueryFactory.selectFrom(QStock.stock)
                         .where(QStock.stock.productCode.in(List.of("A202307300142", "A202307300143")))
                         .fetch();
 
-                    assertAll(
-                        () -> assertEquals(50, results.get(0).getQuantity()),
-                        () -> assertEquals(50, results.get(1).getQuantity()),
-                        () -> verify(soldOutProductService, times(1)).soldOut("A202307300142"),
-                        () -> verify(soldOutProductService, times(0)).soldOut("A202307300143")
-                    );
+                    assertSoftly(it -> {
+                        it.assertThat(successCount.get()).isEqualTo(10);
+                        it.assertThat(failureCount.get()).isEqualTo(0);
+                        it.assertThat(actual.getFirst().getQuantity()).isEqualTo(50);
+                        it.assertThat(actual.get(1).getQuantity()).isEqualTo(50);
+                    });
+
+                    verify(soldOutProductService).soldOut("A202307300142");
+                    verify(soldOutProductService, never()).soldOut("A202307300143");
                 }
             }
         }
