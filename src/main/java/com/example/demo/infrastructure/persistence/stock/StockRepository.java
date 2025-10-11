@@ -9,10 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
     Optional<Stock> findByProductCode(String productCode);
+
+    @Query("SELECT s FROM Stock s")
+    Stream<Stock> streamAll();
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT s FROM Stock s WHERE s.productCode = :productCode")
