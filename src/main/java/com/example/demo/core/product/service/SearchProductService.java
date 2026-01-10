@@ -29,4 +29,14 @@ public class SearchProductService {
 
         return SearchProductResult.from(products);
     }
+
+    @Cacheable(
+        value = "products",
+        keyGenerator = "searchProductKeyGenerator"
+    )
+    public SearchProductResult searchWithCacheByKeyGenerator(final SearchProductParam param) {
+        final Page<Product> products = productRepository.search(param);
+
+        return SearchProductResult.from(products);
+    }
 }
