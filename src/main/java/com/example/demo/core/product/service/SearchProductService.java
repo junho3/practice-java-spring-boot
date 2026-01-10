@@ -7,6 +7,7 @@ import com.example.demo.core.product.result.SearchProductResult;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -70,6 +71,20 @@ public class SearchProductService {
         final Page<Product> products = productRepository.search(param);
 
         log.info("searchWithCacheAsNotEmpty");
+
+        return SearchProductResult.from(products);
+    }
+
+    @CachePut(
+        value = "products",
+        keyGenerator = "searchProductKeyGenerator",
+        condition = "#param.pageable.pageNumber == 0",
+        unless = "#result.products.isEmpty()"
+    )
+    public SearchProductResult refreshSearchCache(final SearchProductParam param) {
+        final Page<Product> products = productRepository.search(param);
+
+        log.info("refreshSearchCache");
 
         return SearchProductResult.from(products);
     }
