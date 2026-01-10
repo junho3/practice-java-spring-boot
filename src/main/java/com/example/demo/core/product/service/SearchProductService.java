@@ -7,6 +7,7 @@ import com.example.demo.core.product.result.SearchProductResult;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -87,5 +88,13 @@ public class SearchProductService {
         log.info("refreshSearchCache");
 
         return SearchProductResult.from(products);
+    }
+
+    @CacheEvict(
+        value = "products",
+        keyGenerator = "searchProductKeyGenerator"
+    )
+    public void evictSearchCache(final SearchProductParam param) {
+        // 캐시만 삭제
     }
 }
