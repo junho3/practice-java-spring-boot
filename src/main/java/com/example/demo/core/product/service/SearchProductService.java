@@ -6,10 +6,12 @@ import com.example.demo.core.product.param.SearchProductParam;
 import com.example.demo.core.product.result.SearchProductResult;
 import com.example.demo.infrastructure.persistence.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @ReadTransactional
 @RequiredArgsConstructor
@@ -20,12 +22,16 @@ public class SearchProductService {
     public SearchProductResult search(final SearchProductParam param) {
         final Page<Product> products = productRepository.search(param);
 
+        log.info("search");
+
         return SearchProductResult.from(products);
     }
 
     @Cacheable(value = "products", key = "#param")
     public SearchProductResult searchWithCache(final SearchProductParam param) {
         final Page<Product> products = productRepository.search(param);
+
+        log.info("searchWithCache");
 
         return SearchProductResult.from(products);
     }
@@ -36,6 +42,21 @@ public class SearchProductService {
     )
     public SearchProductResult searchWithCacheByKeyGenerator(final SearchProductParam param) {
         final Page<Product> products = productRepository.search(param);
+
+        log.info("searchWithCacheByKeyGenerator");
+
+        return SearchProductResult.from(products);
+    }
+
+    @Cacheable(
+        value = "products",
+        keyGenerator = "searchProductKeyGenerator",
+        condition = "#param.pageable.pageNumber == 0"
+    )
+    public SearchProductResult searchWithCacheAsFirstPage(final SearchProductParam param) {
+        final Page<Product> products = productRepository.search(param);
+
+        log.info("searchWithCacheAsFirstPage");
 
         return SearchProductResult.from(products);
     }
