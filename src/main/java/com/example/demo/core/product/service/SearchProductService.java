@@ -60,4 +60,17 @@ public class SearchProductService {
 
         return SearchProductResult.from(products);
     }
+
+    @Cacheable(
+        value = "products",
+        keyGenerator = "searchProductKeyGenerator",
+        unless = "#result.products.isEmpty()"
+    )
+    public SearchProductResult searchWithCacheAsNotEmpty(final SearchProductParam param) {
+        final Page<Product> products = productRepository.search(param);
+
+        log.info("searchWithCacheAsNotEmpty");
+
+        return SearchProductResult.from(products);
+    }
 }
