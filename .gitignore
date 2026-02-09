@@ -35,3 +35,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Claude Flow ###
+.claude-flow/
+.claude/
+.mcp.json
+.jqwik-database
+CLAUDE.md
