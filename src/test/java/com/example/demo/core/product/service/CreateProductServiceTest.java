@@ -26,7 +26,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @EmbeddedKafka(
     brokerProperties = {
         "listeners=PLAINTEXT://localhost:0"
-    }
+    },
+    bootstrapServersProperty = "kafka.producer.bootstrap-servers"
 )
 @IntegrationTest
 @RequiredArgsConstructor
