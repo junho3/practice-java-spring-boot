@@ -25,9 +25,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DisplayName("CreateProductService")
 @EmbeddedKafka(
     brokerProperties = {
-        "listeners=PLAINTEXT://localhost:9092"
-    },
-    ports = { 9092 }
+        "listeners=PLAINTEXT://localhost:0"
+    }
 )
 @IntegrationTest
 @RequiredArgsConstructor

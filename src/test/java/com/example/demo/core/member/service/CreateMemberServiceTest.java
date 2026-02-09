@@ -1,6 +1,6 @@
 package com.example.demo.core.member.service;
 
-import com.example.demo.TestFixtures;
+import com.example.demo.MemberFixtures;
 import com.example.demo.annotation.IntegrationTest;
 import com.example.demo.core.member.event.CreateMemberEvent;
 import com.example.demo.core.member.param.CreateMemberParam;
@@ -41,7 +41,7 @@ class CreateMemberServiceTest {
         @DisplayName("CreateMemberParam이 주어지면")
         class Context {
 
-            final CreateMemberParam param = TestFixtures.get().giveMeOne(CreateMemberParam.class);
+            final CreateMemberParam param = MemberFixtures.generateCreateMemberParam();
 
             @Test
             @DisplayName("Member를 생성하고 이벤트를 발행한다.")
