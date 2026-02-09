@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ProductSalesRepository extends JpaRepository<ProductSales, Long> {
     List<ProductSales> findTop10BySalesDateOrderBySalesQuantityDesc(LocalDate salesDate);
+
+    List<ProductSales> findBySalesDateAndProductCodeIn(LocalDate salesDate, List<String> productCodes);
 }
