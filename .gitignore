@@ -38,7 +38,11 @@ out/
 
 ### Claude Flow ###
 .claude-flow/
-.claude/
+.omc/
+.claude/*
+# 팀 공유: 코드 리뷰 커맨드·규칙은 커밋 (settings.local.json 등 로컬 설정은 계속 무시)
+!.claude/commands/
+!.claude/rules/
 .mcp.json
 .jqwik-database
 CLAUDE.md

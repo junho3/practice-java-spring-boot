@@ -3,7 +3,19 @@ plugins {
 	id 'org.springframework.boot' version '3.5.4'
 	id 'io.spring.dependency-management' version '1.1.7'
     id 'java-test-fixtures'
+    id 'pmd'
 }
+
+// 하드 게이트(2층) — 예외 드문 결정적 규칙만. 현재 report-only.
+pmd {
+    toolVersion = '7.7.0'
+    ruleSetFiles = files("config/pmd/junho3-ruleset.xml")
+    ruleSets = []               // 기본 룰셋 무시, 최소 커스텀만
+    ignoreFailures = true       // report-only: 볼륨 확인 후 false 로 승격
+    consoleOutput = true
+}
+tasks.named('pmdTest') { enabled = false }               // 테스트 코드는 제외
+tasks.matching { it.name == 'pmdTestFixtures' }.configureEach { enabled = false }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
